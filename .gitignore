@@ -1,0 +1,23 @@
+# Eclipse
+bin/
+.settings/
+.classpath
+.project
+
+# Java
+*.class
+*.log
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# OneDrive
+*.tmp
+*.lnk
+
+# Maven (si aparece)
+target/
+
+# Gradle (si aparece)
+build/
