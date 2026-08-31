@@ -4,7 +4,6 @@
 
 <hibernate-mapping>
     <class name="datos.Empleado" table="empleado">
-<<<<<<< HEAD
         <id name="idEmpleado" column="id_empleado" type="long">
             <generator class="identity"/>
         </id>
@@ -26,28 +25,6 @@
         <joined-subclass name="datos.Cajero" table="cajero">
             <key column="id_empleado"/>
             <property name="turno" column="turno" type="string" not-null="true"/>
-=======
-        <id name="idEmpleado" column="idEmpleado" type="long">
-            <generator class="identity"/>
-        </id>
-        <property name="edad" column="edad" type="integer"/>
-        <property name="nombre" column="nombre" type="string"/>
-        <property name="apellido" column="apellido" type="string"/>
-        <property name="dni" column="dni" type="integer"/>
-        <property name="fechaNacimiento" column="fechaNacimiento" type="org.hibernate.type.LocalDateType"/>
-        <property name="fechaIngreso" column="fechaIngreso" type="org.hibernate.type.LocalDateType"/>
-        <property name="sueldoBase" column="sueldoBase" type="double"/>
-
-        <joined-subclass name="datos.Cocinero" table="cocinero">
-            <key column="idEmpleado"/>
-            <property name="especialidadCulinaria" column="especialidadCulinaria" type="string"/>
-            <property name="plus" column="plus" type="double"/>
-        </joined-subclass>
-
-        <joined-subclass name="datos.Cajero" table="cajero">
-            <key column="idEmpleado"/>
-            <property name="turno" column="turno" type="string"/>
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         </joined-subclass>
     </class>
 </hibernate-mapping>

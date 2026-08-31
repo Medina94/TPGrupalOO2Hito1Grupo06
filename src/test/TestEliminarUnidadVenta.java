@@ -8,7 +8,7 @@ public class TestEliminarUnidadVenta {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		UnidadVentaABM abm= new UnidadVentaABM();
-		long idUnidadVenta=10;
+		long idUnidadVenta=7;
 		UnidadVenta unidadVenta=abm.traer(idUnidadVenta);
 		System.out.printf("Unidad de venta a eliminar: %s\n",unidadVenta);
 		

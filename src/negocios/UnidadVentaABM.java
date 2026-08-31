@@ -4,11 +4,11 @@ import java.util.List;
 import dao.UnidadVentaDao;
 
 import datos.UnidadVenta;
-<<<<<<< HEAD
 import datos.PuestoDesarmable;
 import datos.Empleado;
 import datos.Festival;
 import datos.FoodTruck;
+import datos.Pedido;
 import datos.Plato;
 
 public class UnidadVentaABM {
@@ -50,42 +50,23 @@ public class UnidadVentaABM {
 	}
 	
     
-=======
-
-public class UnidadVentaABM {
-    private UnidadVentaDao dao = new UnidadVentaDao();
-
-    public UnidadVenta traer(long idUnidadVenta) {
-    	return dao.traer(idUnidadVenta);
-    }
-
-    
-    public UnidadVenta traer(String codigo) {
-        return dao.traer(codigo);
-    }
- 
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
     public void modificar(UnidadVenta u) throws Exception {
         if (traer(u.getCodigo()) == null) {
             throw new Exception("ERROR: No existe una unidad de venta con el codigo" + u.getCodigo());
         }
-<<<<<<< HEAD
         UnidadVentaDao.getInstance().actualizar(u);
     }
 
     public void eliminar(long idUnidadVenta) throws Exception {
-        UnidadVenta u =  UnidadVentaDao.getInstance().traerUnidadVentaYEmpleados(idUnidadVenta);
+        UnidadVenta u = UnidadVentaDao.getInstance().traerUnidadVentaYDependencias(idUnidadVenta);
+
         if (u == null) {
             throw new Exception("ERROR: La unidad de venta no existe");
         }
 
-        // 1. Desvincular el responsable
-        u.setResponsable(null);
-
-        // 2. Liberar los empleados asociados (limpiar la FK en la entidad Empleado)
-        if (u.getEmpleados() != null ) {
-            for (Empleado emp : u.getEmpleados()) {
-                emp.setUnidadVenta(null);
+        if (u.getEmpleados() != null) {
+            for (Empleado e : u.getEmpleados()) {
+                e.setUnidadVenta(null);
             }
             u.getEmpleados().clear();
         }
@@ -96,12 +77,14 @@ public class UnidadVentaABM {
             }
             u.getPlatos().clear();
         }
-        // 3. Validar otras dependencias que impidan borrar (platos, pedidos, etc.)
-        if (u.getPlatos() != null ) {
-            throw new Exception("ERROR: No se puede eliminar la unidad de venta porque posee platos asociados");
+        
+        if (u.getPedidos() != null) {
+            for (Pedido p : u.getPedidos()) {
+                p.setUnidadVenta(null);
+            }
+            u.getPedidos().clear();
         }
 
-        // 4. Actualizar estado y eliminar
         UnidadVentaDao.getInstance().actualizar(u);
         UnidadVentaDao.getInstance().eliminar(u);
     }
@@ -145,40 +128,6 @@ public class UnidadVentaABM {
     	double costo=20000;
     	
     	return costo;
-=======
-        dao.actualizar(u);
-    }
-
-    public void eliminar(String codigo) throws Exception {
-        UnidadVenta u = dao.traer(codigo);
-        if (u == null) {
-            throw new Exception("ERROR: La unidad de venta no existe");
-        }
-        dao.eliminar(u);
-    }
-
-    public List<UnidadVenta> traer() {
-        return dao.traer();
-    }
-    
-    public UnidadVenta traerUnidadVentaYPersonal(long idUnidadVenta) {
-    	return dao.traerUnidadYPersonal(idUnidadVenta);
-    }
-    public UnidadVenta traerUnidadVentaYPlatos(long idUnidadVenta) {
-    	return dao.traerUnidadYPlatos(idUnidadVenta);
-    }
-    public UnidadVenta traerUnidadVentaYPedidos(long idUnidadVenta) {
-    	return dao.traerUnidadYPedidos(idUnidadVenta);
-    }
-    
-    public long agregar(UnidadVenta u) throws Exception {
-        
-        if(u.getCodigo().length()!=10) {
-        	throw new Exception("ERROR: El codigo tiene que tener 10 caracteres");
-        }
-        
-        return dao.agregar(u);
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
     }
 
 }

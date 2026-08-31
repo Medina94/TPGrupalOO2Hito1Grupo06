@@ -30,10 +30,7 @@ public class VentaDao {
             tx.commit();
         } catch (HibernateException he) {
             manejaExcepcion(he);
-<<<<<<< HEAD
             throw he;
-=======
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         } finally {
             session.close();
         }
@@ -47,10 +44,7 @@ public class VentaDao {
             tx.commit();
         } catch (HibernateException he) {
             manejaExcepcion(he);
-<<<<<<< HEAD
             throw he;
-=======
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         } finally {
             session.close();
         }
@@ -63,17 +57,13 @@ public class VentaDao {
             tx.commit();
         } catch (HibernateException he) {
             manejaExcepcion(he);
-<<<<<<< HEAD
             throw he;
-=======
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         } finally {
             session.close();
         }
     }
 
     public Venta traer(long idVenta) {
-<<<<<<< HEAD
         Venta objeto = null;
         try {
             iniciaOperacion();
@@ -82,17 +72,6 @@ public class VentaDao {
             session.close();
         }
         return objeto;
-=======
-        Venta venta = null;
-        try {
-            iniciaOperacion();
-			String hQL = "from Venta v inner join fetch v.pedido p where v.idVenta=:idVenta";
-			venta = (Venta) session.createQuery(hQL).setParameter("idVenta", idVenta).uniqueResult();
-        } finally {
-            session.close();
-        }
-        return venta;
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
     }
 
     public List<Venta> traer(Pedido p) {

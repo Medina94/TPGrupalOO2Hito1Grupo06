@@ -3,10 +3,6 @@ import java.time.LocalDate;
 
 public abstract class Empleado {
 	private long idEmpleado;
-<<<<<<< HEAD
-=======
-	private int edad;
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 	private String nombre;
 	private String apellido;
 	private int dni;
@@ -14,7 +10,6 @@ public abstract class Empleado {
 	private LocalDate fechaIngreso;
 	private double sueldoBase;
 	private UnidadVenta unidadVenta;
-<<<<<<< HEAD
 	private int antiguedad;
 	
 	public Empleado() {}
@@ -23,25 +18,13 @@ public abstract class Empleado {
 			LocalDate fechaIngreso, double sueldoBase) {
 		super();
 		
-=======
-	
-	public Empleado() {}
-	
-	public Empleado(int edad, String nombre, String apellido, int dni, LocalDate fechaNacimiento,
-			LocalDate fechaIngreso, double sueldoBase) {
-		super();
-		this.edad = edad;
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
 		this.fechaNacimiento = fechaNacimiento;
 		this.fechaIngreso = fechaIngreso;
 		this.sueldoBase = sueldoBase;
-<<<<<<< HEAD
 		
-=======
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 	}
 	
 	public long getIdEmpleado() {
@@ -51,16 +34,7 @@ public abstract class Empleado {
 	protected void setIdEmpleado(long idEmpleado) {
 	    this.idEmpleado = idEmpleado;
 	}
-<<<<<<< HEAD
 
-=======
-	public int getEdad() {
-		return edad;
-	}
-	public void setEdad(int edad) {
-		this.edad = edad;
-	}
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 	public String getNombre() {
 		return nombre;
 	}
@@ -105,7 +79,6 @@ public abstract class Empleado {
 		this.unidadVenta=unidadVenta;
 	}
 	
-<<<<<<< HEAD
 	public int getAntiguedad() {
 		return antiguedad;
 	}
@@ -118,13 +91,6 @@ public abstract class Empleado {
 		return "Empleado [idEmpleado="+idEmpleado+", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni
 				+ ", fechaNacimiento=" + fechaNacimiento + ", fechaIngreso=" + fechaIngreso + ", sueldoBase="
 				+ sueldoBase + ", antiguedad=" + antiguedad + "]";
-=======
-	@Override
-	public String toString() {
-		return "Empleado [edad=" + edad + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni
-				+ ", fechaNacimiento=" + fechaNacimiento + ", fechaIngreso=" + fechaIngreso + ", sueldoBase="
-				+ sueldoBase + "]";
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 	}
 	
 	

@@ -4,7 +4,6 @@
 
 <hibernate-mapping>
     <class name="datos.UnidadVenta" table="unidad_venta">
-<<<<<<< HEAD
         <id name="idUnidadVenta" column="id_unidad_venta" type="long">
             <generator class="identity"/>
         </id>
@@ -28,34 +27,10 @@
 
         <set name="pedidos" table="pedido" order-by="id_pedido asc" inverse="true" lazy="true">
             <key column="id_unidadVenta"/>
-=======
-        <id name="idUnidadVenta" column="idUnidadVenta" type="long">
-            <generator class="identity"/>
-        </id>
-        <property name="nombreComercial" column="nombreComercial" type="string"/>
-        <property name="superficie" column="superficie" type="double"/>
-        <property name="codigo" column="codigo" type="string"/>
-
-        <many-to-one name="responsable" class="datos.Empleado" column="idEmpleado"/>
-
-        <set name="personal" table="unidad_venta_personal" cascade="none">
-            <key column="idUnidadVenta"/>
-            <many-to-many class="datos.Empleado" column="idEmpleado"/>
-        </set>
-
-        <set name="platos" table="unidad_venta_plato" cascade="none">
-            <key column="idUnidadVenta"/>
-            <many-to-many class="datos.Plato" column="idPlato"/>
-        </set>
-
-        <set name="pedidos" table="pedido" inverse="true">
-            <key column="idUnidadVenta"/>
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
             <one-to-many class="datos.Pedido"/>
         </set>
 
         <joined-subclass name="datos.FoodTruck" table="food_truck">
-<<<<<<< HEAD
             <key column="id_unidad_venta"/>
             <property name="patente" column="patente" type="string" not-null="true"/>
             <property name="conexionElectrica" column="conexion_electrica" type="boolean" not-null="true"/>
@@ -67,17 +42,6 @@
             <property name="cantidadCarpas" column="cantidad_carpas" type="integer" not-null="true"/>
             <property name="minutos" column="minutos" type="integer" not-null="true"/>
             <property name="costosPorMontaje" column="costos_por_montaje" type="double" not-null="true"/>
-=======
-            <key column="idUnidadVenta"/>
-            <property name="patente" column="patente" type="string"/>
-            <property name="conexionElectrica" column="conexionElectrica" type="boolean"/>
-        </joined-subclass>
-
-        <joined-subclass name="datos.PuestoDesarmable" table="puesto_desarmable">
-            <key column="idUnidadVenta"/>
-            <property name="cantidadCarpas" column="cantidadCarpas" type="integer"/>
-            <property name="minutos" column="minutos" type="integer"/>
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         </joined-subclass>
     </class>
 </hibernate-mapping>

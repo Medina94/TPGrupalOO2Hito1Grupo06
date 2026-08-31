@@ -7,7 +7,7 @@ public class TestTraerUnidadVentaYEmpleados {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		long idUnidadVenta=10;
+		long idUnidadVenta=1;
 		UnidadVentaABM uAbm=new UnidadVentaABM();
 		
 		UnidadVenta unidadVenta=uAbm.traerUnidadVentaYEmpleados(idUnidadVenta);

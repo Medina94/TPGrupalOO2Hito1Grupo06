@@ -1,17 +1,9 @@
 package dao;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-<<<<<<< HEAD
-=======
-
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 import datos.Plato;
 import datos.UnidadVenta;
 
@@ -37,10 +29,7 @@ public class PlatoDao {
             tx.commit();
         } catch (HibernateException he) {
             manejaExcepcion(he);
-<<<<<<< HEAD
             throw he;
-=======
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         } finally {
             session.close();
         }
@@ -54,10 +43,7 @@ public class PlatoDao {
             tx.commit();
         } catch (HibernateException he) {
             manejaExcepcion(he);
-<<<<<<< HEAD
             throw he;
-=======
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         } finally {
             session.close();
         }
@@ -70,37 +56,23 @@ public class PlatoDao {
             tx.commit();
         } catch (HibernateException he) {
             manejaExcepcion(he);
-<<<<<<< HEAD
             throw he;
-=======
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         } finally {
             session.close();
         }
     }
-<<<<<<< HEAD
 
     public Plato traer(long idPlato) {
         Plato plato = null;
         try {
             iniciaOperacion();
             plato = session.get(Plato.class, idPlato);
-=======
-    
-    public Plato traer(String nombre) {
-        Plato plato = null;
-        try {
-            iniciaOperacion();
-            String hQL = "from Plato p inner join fetch p.UnidadVenta u where p.nombre=:nombre";
-			plato = (Plato) session.createQuery(hQL).setParameter("nombre", nombre).uniqueResult();
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         } finally {
             session.close();
         }
         return plato;
     }
     
-<<<<<<< HEAD
     public Plato traer(String nombre) {
         Plato objeto = null;
         try {
@@ -135,29 +107,5 @@ public class PlatoDao {
     		session.close();
     	}
     	return lista;
-=======
-    public Plato traer(long idPlato) {
-    	Plato plato=null;
-    	try {
-			iniciaOperacion();
-			plato = session.get(Plato.class,idPlato);
-		}finally {
-			session.close();
-		}
-    	
-    	return plato;
-    }
-
-    public List<Plato> traer(UnidadVenta u) {
-    	List<Plato> lista = null;
-		try {
-			iniciaOperacion();
-			String hQL = "from Plato p inner join fetch p.unidadVenta u where u.idUnidadVenta=:idUnidadVenta";
-			lista = session.createQuery(hQL, Plato.class).setParameter("idUnidadVenta", u.getIdUnidadVenta()).getResultList();
-		} finally {
-			session.close();
-		}
-		return lista;
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
     }
 }

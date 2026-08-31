@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<<<<<< HEAD
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-=======
-<!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
     <class name="datos.Pedido" table="pedido">
-<<<<<<< HEAD
         <id name="idPedido" column="id_pedido" type="long">
             <generator class="identity"/>
         </id>
@@ -20,19 +14,6 @@
 
         <set name="ventas" table="venta" order-by="id_venta asc" inverse="true" lazy="true" fetch="select">
             <key column="id_pedido"/>
-=======
-        <id name="idPedido" column="idPedido">
-            <generator class="identity"/>
-        </id>
-
-        <property name="fecha" column="fecha" type="java.time.LocalDate" not-null="true"/>
-
-        <many-to-one name="festival" class="datos.Festival" column="idFestival" not-null="true"/>
-        <many-to-one name="unidadVenta" class="datos.UnidadVenta" column="idUnidadVenta" not-null="true"/>
-
-        <set name="ventas" table="venta" order-by="idVenta asc" inverse="true" lazy="true" fetch="select">
-            <key column="idPedido"/>
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
             <one-to-many class="datos.Venta"/>
         </set>
     </class>

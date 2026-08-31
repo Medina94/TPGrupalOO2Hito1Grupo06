@@ -4,7 +4,6 @@
 
 <hibernate-mapping>
     <class name="datos.Venta" table="venta">
-<<<<<<< HEAD
         <id name="idVenta" column="id_venta" type="long">
             <generator class="identity"/>
         </id>
@@ -12,14 +11,5 @@
 
         <many-to-one name="plato" class="datos.Plato" column="id_plato" not-null="true"/>
         <many-to-one name="pedido" class="datos.Pedido" column="id_pedido" not-null="true"/>
-=======
-        <id name="idVenta" column="idVenta" type="long">
-            <generator class="identity"/>
-        </id>
-        <property name="cantidad" column="cantidad" type="integer"/>
-
-        <many-to-one name="plato" class="datos.Plato" column="idPlato" not-null="true"/>
-        <many-to-one name="pedido" class="datos.Pedido" column="idPedido" not-null="true"/>
->>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
     </class>
 </hibernate-mapping>
