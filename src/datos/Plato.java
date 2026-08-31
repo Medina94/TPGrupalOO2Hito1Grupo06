@@ -1,12 +1,16 @@
 package datos;
 
+<<<<<<< HEAD
 import java.util.Set;
 
+=======
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 public class Plato {
     private long idPlato;
     private String nombre;
     private double precioVenta;
     private double costoProduccion;
+<<<<<<< HEAD
     private UnidadVenta unidadVenta;
     private Set<Venta> ventas;
 
@@ -24,6 +28,21 @@ public class Plato {
     	return idPlato; 
     }
     protected void setIdPlato(long idPlato) { 
+=======
+
+    public Plato() {}
+
+    public Plato(String nombre, double precioVenta, double costoProduccion) {
+        this.nombre = nombre;
+        this.precioVenta = precioVenta;
+        this.costoProduccion = costoProduccion;
+    }
+
+    public long getIdPlato() { 
+    	return idPlato; 
+    }
+    public void setIdPlato(long idPlato) { 
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
     	this.idPlato = idPlato; 
     }
 
@@ -48,6 +67,7 @@ public class Plato {
     	this.costoProduccion = costoProduccion; 
     }
 
+<<<<<<< HEAD
     public UnidadVenta getUnidadVenta() { 
         return unidadVenta; 
     }
@@ -67,6 +87,12 @@ public class Plato {
 	public String toString() {
 		return "Plato [idPlato=" + idPlato + ", nombre=" + nombre + ", precioVenta=" + precioVenta
 				+ ", costoProduccion=" + costoProduccion + "]\n";
+=======
+	@Override
+	public String toString() {
+		return "Plato [idPlato=" + idPlato + ", nombre=" + nombre + ", precioVenta=" + precioVenta
+				+ ", costoProduccion=" + costoProduccion + "]";
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 	}
     
     

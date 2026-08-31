@@ -16,6 +16,7 @@ public class TestVenta {
 		VentaABM vAbm = new VentaABM();
 		PedidoABM peAbm = new PedidoABM();
 		
+<<<<<<< HEAD
 		
 		
 		
@@ -70,6 +71,25 @@ public class TestVenta {
 			System.out.println(e.getMessage());
 		}
 		
+=======
+		long idPlato=1;
+		long idPedido=1;
+		
+		Pedido pedido=peAbm.traer(idPedido);
+		Plato plato=pAbm.traer(idPlato);
+		
+		
+		try {
+			Venta venta=new Venta(plato,4);
+			venta.setPedido(pedido);
+			long ultimoIdVenta=vAbm.agregar(venta);
+			System.out.printf("Id venta: %d", ultimoIdVenta);
+		}catch(Exception e) {
+			e.printStackTrace();
+			e.getLocalizedMessage();
+		}
+		
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 	}
 
 }

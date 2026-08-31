@@ -7,7 +7,11 @@
     <session-factory>
         <!-- conexion con la BD-->
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+<<<<<<< HEAD
         <property name="connection.url">jdbc:mysql://localhost:3306/mydb?serverTimezone=America/Argentina/Buenos_Aires</property>
+=======
+        <property name="connection.url">jdbc:mysql://localhost:3306/festival_db?serverTimezone=America/Argentina/Buenos_Aires</property>
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         <property name="connection.username">root</property>
         <property name="connection.password">3224</property>
         <property name="connection.pool_size">1</property>

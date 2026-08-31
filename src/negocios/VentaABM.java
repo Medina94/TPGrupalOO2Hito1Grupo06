@@ -7,7 +7,15 @@ import datos.Pedido;
 
 public class VentaABM {
     private VentaDao dao = new VentaDao();
+<<<<<<< HEAD
     
+=======
+
+    public Venta traer(long id) {
+        return dao.traer(id);
+    }
+
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
     public int agregar(Venta v) throws Exception {
         return dao.agregar(v);
     }
@@ -26,10 +34,13 @@ public class VentaABM {
         }
         dao.eliminar(v);
     }
+<<<<<<< HEAD
     
     public Venta traer(long id) {
         return dao.traer(id);
     }
+=======
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 
     public List<Venta> traer(Pedido p) {
         return dao.traer(p);

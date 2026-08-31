@@ -8,6 +8,13 @@ import datos.Festival;
 public class FestivalABM {
     private FestivalDao dao = new FestivalDao();
 
+<<<<<<< HEAD
+=======
+    public Festival traer(String nombre) {
+        return dao.traer(nombre);
+    }
+
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
     public int agregar(String nombre, String temporada, LocalDate inicio, LocalDate fin) throws Exception {
         if (traer(nombre) != null) {
             throw new Exception("ERROR: Ya existe un festival con el nombre " + nombre);
@@ -23,6 +30,7 @@ public class FestivalABM {
         dao.actualizar(f);
     }
 
+<<<<<<< HEAD
     public void eliminar(long idFestival) throws Exception {
         Festival f = dao.traer(idFestival);
         
@@ -44,12 +52,24 @@ public class FestivalABM {
     public Festival traer(String nombre) {
         return dao.traer(nombre);
     }
+=======
+    public void eliminar(String nombre) throws Exception {
+        Festival f = dao.traer(nombre);
+        if (f == null) {
+            throw new Exception("ERROR: El festival no existe");
+        }
+        dao.eliminar(f);
+    }
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 
     public List<Festival> traer() {
         return dao.traer();
     }
+<<<<<<< HEAD
     
     public Festival traerFestivalYUnidadesDeVenta(long idFestival) {
     	return dao.traerFestivalYUnidadesVenta(idFestival);
     }
+=======
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 }

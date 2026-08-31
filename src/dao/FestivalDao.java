@@ -2,12 +2,19 @@ package dao;
 
 import java.util.ArrayList;
 import java.util.List;
+<<<<<<< HEAD
 
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+=======
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 import datos.Festival;
 
 public class FestivalDao {
@@ -32,7 +39,10 @@ public class FestivalDao {
             tx.commit();
         } catch (HibernateException he) {
             manejaExcepcion(he);
+<<<<<<< HEAD
             throw he;
+=======
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         } finally {
             session.close();
         }
@@ -46,7 +56,10 @@ public class FestivalDao {
             tx.commit();
         } catch (HibernateException he) {
             manejaExcepcion(he);
+<<<<<<< HEAD
             throw he;
+=======
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         } finally {
             session.close();
         }
@@ -59,12 +72,16 @@ public class FestivalDao {
             tx.commit();
         } catch (HibernateException he) {
             manejaExcepcion(he);
+<<<<<<< HEAD
             throw he;
+=======
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         } finally {
             session.close();
         }
     }
 
+<<<<<<< HEAD
     public Festival traer(long idFestival) {
     	Festival objeto = null;
     	try {
@@ -93,12 +110,34 @@ public class FestivalDao {
         try {
             iniciaOperacion();
             lista = session.createQuery("from Festival f order by f.nombre asc", Festival.class).getResultList();     
+=======
+    public Festival traer(String nombre) {
+        Festival festival = null;
+        try {
+            iniciaOperacion();
+            festival = (Festival) session.createQuery("from Festival f where f.nombre = :nombre")
+                    .setParameter("nombre", nombre)
+                    .uniqueResult();
+        } finally {
+            session.close();
+        }
+        return festival;
+    }
+
+    public List<Festival> traer() {
+        List<Festival> lista = new ArrayList<>();
+        try {
+            iniciaOperacion();
+            Query<Festival> query = session.createQuery("from Festival f order by f.nombre asc", Festival.class);
+            lista = query.getResultList();
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         } finally {
             session.close();
         }
         return lista;
     }
     
+<<<<<<< HEAD
     public Festival traerFestivalYUnidadesVenta(long idFestival)throws HibernateException{
     	Festival objeto=null;
     	try {
@@ -113,4 +152,6 @@ public class FestivalDao {
     	return objeto;
     }
     
+=======
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 }

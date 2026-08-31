@@ -7,10 +7,17 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+<<<<<<< HEAD
 import datos.Venta;
 import datos.Pedido;
 import datos.UnidadVenta;
 
+=======
+import datos.Pedido;
+import datos.UnidadVenta;
+
+
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 public class PedidoDao {
     private Session session;
     private Transaction tx;
@@ -33,7 +40,10 @@ public class PedidoDao {
             tx.commit();
         } catch (HibernateException he) {
             manejaExcepcion(he);
+<<<<<<< HEAD
             throw he;
+=======
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         } finally {
             session.close();
         }
@@ -47,7 +57,10 @@ public class PedidoDao {
             tx.commit();
         } catch (HibernateException he) {
             manejaExcepcion(he);
+<<<<<<< HEAD
             throw he;
+=======
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         } finally {
             session.close();
         }
@@ -60,13 +73,17 @@ public class PedidoDao {
             tx.commit();
         } catch (HibernateException he) {
             manejaExcepcion(he);
+<<<<<<< HEAD
             throw he;
+=======
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         } finally {
             session.close();
         }
     }
 
     public Pedido traer(long idPedido) {
+<<<<<<< HEAD
         Pedido objeto = null;
         try {
             iniciaOperacion();
@@ -82,11 +99,30 @@ public class PedidoDao {
         try {
             iniciaOperacion();     
             lista = session.createQuery("from Pedido p order by p.idPedido asc", Pedido.class).getResultList();
+=======
+        Pedido pedido = null;
+        try {
+            iniciaOperacion();
+            pedido = session.get(Pedido.class,idPedido);
+        } finally {
+            session.close();
+        }
+        return pedido;
+    }
+
+    public List<Pedido> traer(UnidadVenta u) {
+        List<Pedido> lista = null;
+        try {
+            iniciaOperacion();
+            String hQL = "from Pedido p inner join fetch p.UnidadVenta u where u.idUnidadVenta=:idUnidadVenta";
+			lista = session.createQuery(hQL, Pedido.class).setParameter("idUnidadVenta", u.getIdUnidadVenta()).getResultList();
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
         } finally {
             session.close();
         }
         return lista;
     }
+<<<<<<< HEAD
     
     public List<Pedido> traer(UnidadVenta u) {
     	List<Pedido> lista = null;
@@ -111,8 +147,24 @@ public class PedidoDao {
                 Hibernate.initialize(v.getPlato());
             }
         } finally {
+=======
+   
+    public Pedido traerPedidoYVentas(long idPedido) throws HibernateException{
+        Pedido objeto=null;
+        try {
+            iniciaOperacion();
+            String hql = "from Pedido p where p.idPedido=:idPedido";
+            objeto=(Pedido) session.createQuery(hql).setParameter("idPedido",idPedido).uniqueResult();
+            Hibernate.initialize(objeto.getVentas());
+        }
+        finally {
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
             session.close();
         }
         return objeto;
     }
+<<<<<<< HEAD
+=======
+    
+>>>>>>> c8e297fe96c8bc76cef998c427cea5863f7bc759
 }
