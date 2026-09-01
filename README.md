@@ -6,7 +6,7 @@ TP Programación Orientada a Objetos 2 UNLa - Primer entrega
 - Cristian Medina - GitHub: Medina94
 - Valentina Ponzo - GitHub: valentinaponzo
 - José Arratia - GitHub: josearratia03
-- Nombre Apellido - GitHub: usuario
+- Cristian Prantera - GitHub: cristianprantera
 
 
 ## Casos de Uso
