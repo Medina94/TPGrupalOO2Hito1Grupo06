@@ -5,6 +5,7 @@ TP Programación Orientada a Objetos 2 UNLa - Primer entrega
 - Alejandro Escalier - GitHub: cocoQuemad0
 - Cristian Medina - GitHub: Medina94
 - Valentina Ponzo - GitHub: valentinaponzo
+- José Arratia - GitHub: josearratia03
 - Nombre Apellido - GitHub: usuario
 
 
