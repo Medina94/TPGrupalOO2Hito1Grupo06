@@ -7,13 +7,22 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import datos.Venta;
 import datos.Pedido;
 import datos.UnidadVenta;
+import datos.Venta;
 
 public class PedidoDao {
     private Session session;
     private Transaction tx;
+    private static PedidoDao instancia = null;
+    
+    protected PedidoDao() {}
+    
+    public static PedidoDao getInstance() {
+    	if(instancia==null)
+    	   instancia=new PedidoDao();
+    	return instancia;
+    }
 
     private void iniciaOperacion() throws HibernateException {
         session = HibernateUtil.getSessionFactory().openSession();

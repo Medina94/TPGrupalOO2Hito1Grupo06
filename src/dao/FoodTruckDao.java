@@ -2,15 +2,26 @@ package dao;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+
 import datos.FoodTruck;
 
 public class FoodTruckDao {
     private Session session;
     private Transaction tx;
+    private static FoodTruckDao instancia = null;
+    
+    protected FoodTruckDao() {}
+    
+    public static FoodTruckDao getInstance() {
+    	if(instancia==null)
+    	   instancia=new FoodTruckDao();
+    	return instancia;
+    }
 
     private void iniciaOperacion() throws HibernateException {
         session = HibernateUtil.getSessionFactory().openSession();

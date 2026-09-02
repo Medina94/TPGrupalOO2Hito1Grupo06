@@ -1,15 +1,15 @@
 package test;
 
 
-import negocios.PedidoABM;
 import datos.Pedido;
+import negocios.PedidoABM;
 
 public class TestTraerPedidoYVentas {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		long idPedido=1;
-		PedidoABM pAbm=new PedidoABM();
+		PedidoABM pAbm= PedidoABM.getInstance();
 
 		
 		Pedido pedido=pAbm.traerPedidoYVentas(idPedido);

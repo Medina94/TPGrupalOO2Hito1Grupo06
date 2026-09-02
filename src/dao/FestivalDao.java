@@ -13,6 +13,15 @@ import datos.Festival;
 public class FestivalDao {
     private Session session;
     private Transaction tx;
+    private static FestivalDao instancia = null;
+    
+    protected FestivalDao() {}
+    
+    public static FestivalDao getInstance() {
+    	if(instancia==null)
+    	   instancia=new FestivalDao();
+    	return instancia;
+    }
 
     private void iniciaOperacion() throws HibernateException {
         session = HibernateUtil.getSessionFactory().openSession();

@@ -12,10 +12,17 @@ import org.hibernate.query.Query;
 import datos.Cocinero;
 
 public class CocineroDao {
-	
-	
 	private static Session session;
 	private Transaction tx;
+	private static CocineroDao instancia = null;
+    
+    protected CocineroDao() {}
+    
+    public static CocineroDao getInstance() {
+    	if(instancia==null)
+    	   instancia=new CocineroDao();
+    	return instancia;
+    }
 	
 	private void iniciaOperacion() throws HibernateException {
 		session = HibernateUtil.getSessionFactory().openSession();

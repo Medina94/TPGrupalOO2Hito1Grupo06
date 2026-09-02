@@ -2,14 +2,23 @@ package negocios;
 
 
 import java.util.List;
+
 import dao.CajeroDao;
 import datos.Cajero;
 
 public class CajeroABM {
-    private CajeroDao dao = new CajeroDao();
-
+	private static CajeroABM instancia = null;
+	
+	protected CajeroABM() {}
+	
+	public static CajeroABM getInstance() {
+		if(instancia==null)
+		   instancia=new CajeroABM();
+		return instancia;
+	}
+	
     public Cajero traer(int dni) {
-        return dao.traer(dni);
+        return CajeroDao.getInstance().traer(dni);
     }
 
 
@@ -17,19 +26,19 @@ public class CajeroABM {
         if (traer(c.getDni()) == null) {
             throw new Exception("ERROR: No existe un cajero con el DNI " + c.getDni());
         }
-        dao.actualizar(c);
+        CajeroDao.getInstance().actualizar(c);
     }
 
     public void eliminar(int dni) throws Exception {
-        Cajero c = dao.traer(dni);
+        Cajero c = CajeroDao.getInstance().traer(dni);
         if (c == null) {
             throw new Exception("ERROR: El cajero no existe");
         }
-        dao.eliminar(c);
+        CajeroDao.getInstance().eliminar(c);
     }
 
     public List<Cajero> traer() {
-        return dao.traer();
+        return CajeroDao.getInstance().traer();
     }
 }
 

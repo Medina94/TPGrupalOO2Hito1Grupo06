@@ -8,41 +8,49 @@ import datos.Pedido;
 import datos.UnidadVenta;
 
 public class PedidoABM {
-    private PedidoDao dao = new PedidoDao();
-
+	private static PedidoABM instancia = null;
+	
+	protected PedidoABM() {}
+	
+	public static PedidoABM getInstance() {
+		if(instancia==null)
+		   instancia=new PedidoABM();
+		return instancia;
+	}
+	
     public int agregar(Pedido p) throws Exception {
     	p.setFecha(LocalDate.now());
-        return dao.agregar(p);
+        return PedidoDao.getInstance().agregar(p);
     }
 
     public void modificar(Pedido p) throws Exception {
         if (traer(p.getIdPedido()) == null) {
             throw new Exception("ERROR: No existe el pedido con ID " + p.getIdPedido());
         }
-        dao.actualizar(p);
+        PedidoDao.getInstance().actualizar(p);
     }
 
     public void eliminar(long idPedido) throws Exception {
-        Pedido p = dao.traer(idPedido);
+        Pedido p = PedidoDao.getInstance().traer(idPedido);
         if (p == null) {
             throw new Exception("ERROR: El pedido no existe");
         }
-        dao.eliminar(p);
+        PedidoDao.getInstance().eliminar(p);
     }
 
     public Pedido traer(long idPedido) {
-        return dao.traer(idPedido);
+        return PedidoDao.getInstance().traer(idPedido);
     }
     
     public List<Pedido> traer() {
-        return dao.traer();
+        return PedidoDao.getInstance().traer();
     }
     
     public List<Pedido> traer(UnidadVenta u){
-    	return dao.traer(u);
+    	return PedidoDao.getInstance().traer(u);
     }
     
     public Pedido traerPedidoYVentas(long idPedido) {
-    	return dao.traerPedidoYVentas(idPedido);
+    	return PedidoDao.getInstance().traerPedidoYVentas(idPedido);
     }
 }

@@ -1,20 +1,19 @@
 package test;
 
+import datos.Pedido;
 import datos.Plato;
 import datos.Venta;
-import datos.Pedido;
-
+import negocios.PedidoABM;
 import negocios.PlatoABM;
 import negocios.VentaABM;
-import negocios.PedidoABM;
 
 public class TestVenta {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		PlatoABM pAbm = new PlatoABM();
-		VentaABM vAbm = new VentaABM();
-		PedidoABM peAbm = new PedidoABM();
+
+		PlatoABM pAbm = PlatoABM.getInstance();
+		VentaABM vAbm = VentaABM.getInstance();
+		PedidoABM peAbm = PedidoABM.getInstance();
 		
 		long idPedido=2;
 		

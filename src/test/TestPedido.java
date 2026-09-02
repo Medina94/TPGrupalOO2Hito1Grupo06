@@ -3,16 +3,15 @@ package test;
 import datos.Festival;
 import datos.Pedido;
 import datos.UnidadVenta;
-
 import negocios.FestivalABM;
-import negocios.UnidadVentaABM;
 import negocios.PedidoABM;
+import negocios.UnidadVentaABM;
 
 public class TestPedido {
 
 	public static void main(String[] args) {
-		PedidoABM pAbm = new PedidoABM();
-		FestivalABM fAbm = new FestivalABM();
+		PedidoABM pAbm = PedidoABM.getInstance();
+		FestivalABM fAbm = FestivalABM.getInstance();
 		UnidadVentaABM uAbm = new UnidadVentaABM();
 		
 		long idUnidadVenta= 1;

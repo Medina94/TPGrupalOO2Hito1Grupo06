@@ -1,15 +1,26 @@
 package dao;
 
 import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
 import datos.Plato;
 import datos.UnidadVenta;
 
 public class PlatoDao {
     private Session session;
     private Transaction tx;
+    private static PlatoDao instancia = null;
+    
+    protected PlatoDao() {}
+    
+    public static PlatoDao getInstance() {
+    	if(instancia==null)
+    	   instancia=new PlatoDao();
+    	return instancia;
+    }
 
     private void iniciaOperacion() throws HibernateException {
         session = HibernateUtil.getSessionFactory().openSession();

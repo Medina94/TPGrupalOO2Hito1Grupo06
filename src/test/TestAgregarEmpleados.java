@@ -2,15 +2,14 @@ package test;
 
 import datos.Empleado;
 import datos.UnidadVenta;
-
 import negocios.EmpleadoABM;
 import negocios.UnidadVentaABM;
 
 public class TestAgregarEmpleados {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		EmpleadoABM eAbm = new EmpleadoABM();
+
+		EmpleadoABM eAbm = EmpleadoABM.getInstance();
 		UnidadVentaABM uAbm = new UnidadVentaABM();
 		
 		try {

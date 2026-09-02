@@ -2,15 +2,14 @@ package test;
 
 import datos.Plato;
 import datos.UnidadVenta;
-
-import negocios.UnidadVentaABM;
 import negocios.PlatoABM;
+import negocios.UnidadVentaABM;
 
 public class TestPlato {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		PlatoABM abm = new PlatoABM();
+		PlatoABM abm = PlatoABM.getInstance();
 		UnidadVentaABM uAbm = new UnidadVentaABM();
 		
 		long idUnidadVenta=1;

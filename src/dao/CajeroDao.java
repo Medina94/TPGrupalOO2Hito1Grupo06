@@ -11,10 +11,17 @@ import org.hibernate.query.Query;
 import datos.Cajero;
 
 public class CajeroDao {
-	
-	
 	private static Session session;
 	private Transaction tx;
+	private static CajeroDao instancia = null;
+    
+    protected CajeroDao() {}
+    
+    public static CajeroDao getInstance() {
+    	if(instancia==null)
+    	   instancia=new CajeroDao();
+    	return instancia;
+    }
 	
 	private void iniciaOperacion() throws HibernateException {
 		session = HibernateUtil.getSessionFactory().openSession();

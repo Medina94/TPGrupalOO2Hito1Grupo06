@@ -9,7 +9,7 @@ public class TestActualizarFestival {
 
     public static void main(String[] args) {
 
-        FestivalABM abm = new FestivalABM();
+        FestivalABM abm = FestivalABM.getInstance();
 
         try {
 

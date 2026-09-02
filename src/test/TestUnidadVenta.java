@@ -2,17 +2,16 @@ package test;
 
 import datos.Empleado;
 import datos.Festival;
-
-import negocios.FestivalABM;
 import negocios.EmpleadoABM;
+import negocios.FestivalABM;
 import negocios.UnidadVentaABM;
 
 public class TestUnidadVenta {
 
 	public static void main(String[] args) {
 		
-		FestivalABM fAbm= new FestivalABM();
-		EmpleadoABM eAbm= new EmpleadoABM();
+		FestivalABM fAbm= FestivalABM.getInstance();
+		EmpleadoABM eAbm= EmpleadoABM.getInstance();
 		
 		long idFestival=1;
 		Festival festival=fAbm.traer(idFestival);

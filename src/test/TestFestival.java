@@ -1,11 +1,12 @@
 package test;
 
 import java.time.LocalDate;
+
 import negocios.FestivalABM;
 public class TestFestival {
 
 	public static void main(String[] args) {
-		FestivalABM abm = new FestivalABM();
+		FestivalABM abm = FestivalABM.getInstance();
 
 		try {
 			long ultimoIdFestival;

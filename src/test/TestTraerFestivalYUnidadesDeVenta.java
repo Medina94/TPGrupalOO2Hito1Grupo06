@@ -1,14 +1,14 @@
 package test;
 
-import negocios.FestivalABM;
 import datos.Festival;
+import negocios.FestivalABM;
 
 public class TestTraerFestivalYUnidadesDeVenta {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		long idFestival=1;
-		FestivalABM fAbm=new FestivalABM();
+		FestivalABM fAbm= FestivalABM.getInstance();
 		
 		Festival festival=fAbm.traerFestivalYUnidadesDeVenta(idFestival);
 		System.out.printf("Traer Festival y Unidades de venta idFestival=%d\n",idFestival);

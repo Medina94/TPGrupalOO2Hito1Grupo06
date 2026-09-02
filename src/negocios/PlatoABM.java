@@ -9,37 +9,45 @@ import datos.Plato;
 import datos.UnidadVenta;
 
 public class PlatoABM {
-    private PlatoDao dao = new PlatoDao();
-
+	private static PlatoABM instancia = null;
+	
+	protected PlatoABM() {}
+	
+	public static PlatoABM getInstance() {
+		if(instancia==null)
+		   instancia=new PlatoABM();
+		return instancia;
+	}
+	
     public int agregar(Plato p) throws Exception {    
-        return dao.agregar(p);
+        return PlatoDao.getInstance().agregar(p);
     }
 
     public void modificar(Plato p) throws Exception {
-        dao.actualizar(p);
+    	PlatoDao.getInstance().actualizar(p);
     }
 
     public void eliminar(long idPlato) throws Exception {
-        Plato p = dao.traer(idPlato);
+        Plato p = PlatoDao.getInstance().traer(idPlato);
         if (p == null) {
             throw new Exception("ERROR: El plato no existe");
         }
-        dao.eliminar(p);
+        PlatoDao.getInstance().eliminar(p);
     }
     
     public Plato traer(long idPlato) {
-    	return dao.traer(idPlato);
+    	return PlatoDao.getInstance().traer(idPlato);
     }
     
     public Plato traer(String nombre) {
-        return dao.traer(nombre);
+        return PlatoDao.getInstance().traer(nombre);
     }
 
     public List<Plato> traer() throws HibernateException {
-    	return dao.traer();
+    	return PlatoDao.getInstance().traer();
     }
     
     public List<Plato> traer(UnidadVenta u) {
-        return dao.traer(u);
+        return PlatoDao.getInstance().traer(u);
     }
 }

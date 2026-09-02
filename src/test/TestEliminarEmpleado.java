@@ -7,7 +7,7 @@ public class TestEliminarEmpleado {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		EmpleadoABM abm = new EmpleadoABM();
+		EmpleadoABM abm = EmpleadoABM.getInstance();
 		long idEmpleado=2;
 		Empleado empleado=abm.traer(idEmpleado);
 		System.out.printf("Empleado a eliminar: %s\n",empleado);

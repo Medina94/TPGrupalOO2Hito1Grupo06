@@ -6,32 +6,40 @@ import datos.Venta;
 import datos.Pedido;
 
 public class VentaABM {
-    private VentaDao dao = new VentaDao();
-    
+	private static VentaABM instancia = null;
+	
+	protected VentaABM() {}
+	
+	public static VentaABM getInstance() {
+		if(instancia==null)
+		   instancia=new VentaABM();
+		return instancia;
+	}
+	    
     public int agregar(Venta v) throws Exception {
-        return dao.agregar(v);
+        return VentaDao.getInstance().agregar(v);
     }
 
     public void modificar(Venta v) throws Exception {
         if (traer(v.getIdVenta()) == null) {
             throw new Exception("ERROR: No existe venta con ID " + v.getIdVenta());
         }
-        dao.actualizar(v);
+        VentaDao.getInstance().actualizar(v);
     }
 
     public void eliminar(long id) throws Exception {
-        Venta v = dao.traer(id);
+        Venta v = VentaDao.getInstance().traer(id);
         if (v == null) {
             throw new Exception("ERROR: La venta no existe");
         }
-        dao.eliminar(v);
+        VentaDao.getInstance().eliminar(v);
     }
     
     public Venta traer(long id) {
-        return dao.traer(id);
+        return VentaDao.getInstance().traer(id);
     }
 
     public List<Venta> traer(Pedido p) {
-        return dao.traer(p);
+        return VentaDao.getInstance().traer(p);
     }
 }

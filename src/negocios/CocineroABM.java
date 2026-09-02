@@ -1,32 +1,41 @@
 package negocios;
 
 import java.util.List;
+
 import dao.CocineroDao;
 import datos.Cocinero;
 
 public class CocineroABM {
-    private CocineroDao dao = new CocineroDao();
-
+	private static CocineroABM instancia = null;
+	
+	protected CocineroABM() {}
+	
+	public static CocineroABM getInstance() {
+		if(instancia==null)
+		   instancia=new CocineroABM();
+		return instancia;
+	}
+	
     public Cocinero traer(int dni) {
-        return dao.traer(dni);
+        return CocineroDao.getInstance().traer(dni);
     }
 
     public void modificar(Cocinero c) throws Exception {
         if (traer(c.getDni()) == null) {
             throw new Exception("ERROR: No existe un cocinero con el DNI " + c.getDni());
         }
-        dao.actualizar(c);
+        CocineroDao.getInstance().actualizar(c);
     }
 
     public void eliminar(int dni) throws Exception {
-        Cocinero c = dao.traer(dni);
+        Cocinero c = CocineroDao.getInstance().traer(dni);
         if (c == null) {
             throw new Exception("ERROR: El cocinero no existe");
         }
-        dao.eliminar(c);
+        CocineroDao.getInstance().eliminar(c);
     }
 
     public List<Cocinero> traer() {
-        return dao.traer();
+        return CocineroDao.getInstance().traer();
     }
 }

@@ -2,15 +2,26 @@ package dao;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+
 import datos.PuestoDesarmable;
 
 public class PuestoDesarmableDao {
     private Session session;
     private Transaction tx;
+    private static PuestoDesarmableDao instancia = null;
+    
+    protected PuestoDesarmableDao() {}
+    
+    public static PuestoDesarmableDao getInstance() {
+    	if(instancia==null)
+    	   instancia=new PuestoDesarmableDao();
+    	return instancia;
+    }
 
     private void iniciaOperacion() throws HibernateException {
         session = HibernateUtil.getSessionFactory().openSession();

@@ -1,16 +1,27 @@
 package dao;
 
 import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import datos.Venta;
+
 import datos.Pedido;
+import datos.Venta;
 
 
 public class VentaDao {
     private Session session;
     private Transaction tx;
+    private static VentaDao instancia = null;
+    
+    protected VentaDao() {}
+    
+    public static VentaDao getInstance() {
+    	if(instancia==null)
+    	   instancia=new VentaDao();
+    	return instancia;
+    }
 
     private void iniciaOperacion() throws HibernateException {
         session = HibernateUtil.getSessionFactory().openSession();

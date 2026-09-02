@@ -12,9 +12,9 @@ import datos.Cajero;
 import datos.UnidadVenta;
 
 public class EmpleadoABM {
-	
 	private static EmpleadoABM instancia = null;
 	
+	protected EmpleadoABM() {}
 	
 	public static EmpleadoABM getInstance() {
 		if(instancia==null)
