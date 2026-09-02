@@ -27,3 +27,7 @@ TP Programación Orientada a Objetos 2 UNLa - Primer entrega
 - **Consultar Unidad de Venta por código**
   Consulta una Unidad de Venta por su código y determina si corresponde a un `FoodTruck` o un `PuestoDesarmable`.
   Relación: **Herencia** entre `UnidadVenta`, `FoodTruck` y `PuestoDesarmable`.
+
+# José Arratia
+- **Traer Festival por fecha**
+  
