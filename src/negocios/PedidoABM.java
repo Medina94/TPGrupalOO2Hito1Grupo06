@@ -1,9 +1,11 @@
 package negocios;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import dao.PedidoDao;
 
+import dao.FestivalDao;
+import dao.PedidoDao;
 import datos.Pedido;
 import datos.UnidadVenta;
 
@@ -52,5 +54,21 @@ public class PedidoABM {
     
     public Pedido traerPedidoYVentas(long idPedido) {
     	return PedidoDao.getInstance().traerPedidoYVentas(idPedido);
+    }
+    
+    public List<Pedido> traerByFestival(long idFestival){
+    	return PedidoDao.getInstance().traerPedidosFestival(idFestival);
+    }
+    
+    public List<Pedido> traerByFestival(long idFestival, String fecha) throws Exception{
+    	if(FestivalDao.getInstance().traer(idFestival) == null) {
+    		throw new Exception("ERROR: No existe un festival con id=" + idFestival);
+    	}
+    	try {    		
+    		LocalDate fechaFormat = LocalDate.parse(fecha, DateTimeFormatter.ISO_LOCAL_DATE);
+    		return PedidoDao.getInstance().traerPedidosFestival(idFestival, fechaFormat);
+    	}catch (Exception e) {
+    		throw new Exception("ERROR: Fecha invalida");
+    	}
     }
 }

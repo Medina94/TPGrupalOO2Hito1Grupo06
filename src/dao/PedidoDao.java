@@ -1,5 +1,7 @@
 package dao;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Hibernate;
@@ -79,7 +81,9 @@ public class PedidoDao {
         Pedido objeto = null;
         try {
             iniciaOperacion();
-            objeto = (Pedido)session.get(Pedido.class, idPedido);
+            objeto = session.get(Pedido.class, idPedido);
+            Hibernate.initialize(objeto.getUnidadVenta()); // inicializa el proxy
+            Hibernate.initialize(objeto.getUnidadVenta()); // fuerza la subclase real
         } finally {
             session.close();
         }
@@ -124,4 +128,56 @@ public class PedidoDao {
         }
         return objeto;
     }
+    
+    /**
+     * Recibe un idFestival y devuelve todos los pedidos que se realizaron
+     * @param idFestival
+     * @return
+     * @throws HibernateException
+     */
+    public List<Pedido> traerPedidosFestival(long idFestival) throws HibernateException {
+    	List<Pedido> pedidos = new ArrayList<Pedido>();
+    	try {
+    		iniciaOperacion();
+    		String hql = "from Pedido p where p.festival.idFestival=:idFestival";
+    		pedidos = session.createQuery(hql, Pedido.class).setParameter("idFestival", idFestival).getResultList();
+    		for (Pedido p : pedidos) {
+    		    Hibernate.initialize(p.getFestival());
+    		    Hibernate.initialize(p.getVentas());
+    		    Hibernate.initialize(p.getUnidadVenta());
+    		}
+    	}finally {
+            session.close();
+		}
+    	return pedidos;
+    }
+    
+    /**
+     * Recibe un idFestival y devuelve todos los pedidos que se realizaron en {fecha}
+     * @param idFestival
+     * @return
+     * @throws HibernateException
+     */
+    public List<Pedido> traerPedidosFestival(long idFestival, LocalDate fecha) throws HibernateException {
+    	List<Pedido> pedidos = new ArrayList<Pedido>();
+    	try {
+    		iniciaOperacion();
+    		String hql = "from Pedido p where p.festival.idFestival = :idFestival and p.fecha = :fecha";
+    		pedidos = session.createQuery(hql, Pedido.class)
+    				.setParameter("idFestival", idFestival)
+    				.setParameter("fecha", fecha)
+    				.getResultList();
+
+    		for (Pedido p : pedidos) {
+    		    Hibernate.initialize(p.getFestival());
+    		    Hibernate.initialize(p.getVentas());
+    		    Hibernate.initialize(p.getUnidadVenta());
+    		}
+    		
+    	}finally {
+            session.close();
+		}
+    	return pedidos;
+    }
+    
 }

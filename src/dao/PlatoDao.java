@@ -119,4 +119,18 @@ public class PlatoDao {
     	}
     	return lista;
     }
+    
+    public List<Plato> traerByIdFestiva(long idFestival){
+    	List<Plato> platos = null;
+    	try {
+    		iniciaOperacion();
+    		String hql = "select p from UnidadVenta u join u.platos p where u.festival.idFestival = :idFestival";
+    		platos = session.createQuery(hql, Plato.class)
+                    .setParameter("idFestival", idFestival)
+                    .getResultList();
+    	}finally {
+    		session.close();
+    	}
+    	return platos;
+    }
 }

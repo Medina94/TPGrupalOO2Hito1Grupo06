@@ -15,7 +15,7 @@ public class TestUnidadVenta {
 		
 		long idFestival=1;
 		Festival festival=fAbm.traer(idFestival);
-		long idEmpleado = 3;
+		long idEmpleado = 1;
 		Empleado empleado = eAbm.traer(idEmpleado);
 		
 		

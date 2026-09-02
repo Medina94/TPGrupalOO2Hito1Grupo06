@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 
+import dao.FestivalDao;
 import dao.PlatoDao;
 import datos.Plato;
 import datos.UnidadVenta;
@@ -49,5 +50,12 @@ public class PlatoABM {
     
     public List<Plato> traer(UnidadVenta u) {
         return PlatoDao.getInstance().traer(u);
+    }
+    
+    public List<Plato> traerByFestival(long idFestival) throws Exception {
+    	if(FestivalDao.getInstance().traer(idFestival) == null) {
+    		throw new Exception("ERROR: No existe un festival con id=" + idFestival);
+    	}
+    	return PlatoDao.getInstance().traerByIdFestiva(idFestival);
     }
 }
