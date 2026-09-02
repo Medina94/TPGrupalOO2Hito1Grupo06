@@ -2,7 +2,7 @@
 TP Programación Orientada a Objetos 2 UNLa - Primer entrega
 # Integrantes
 
-- Alejandro Escalier - GitHub: EscalierAlejandro
+- Alejandro Escalier - GitHub: cocoQuemad0
 - Cristian Medina - GitHub: Medina94
 - Valentina Ponzo - GitHub: valentinaponzo
 - José Arratia - GitHub: josearratia03
@@ -27,3 +27,12 @@ TP Programación Orientada a Objetos 2 UNLa - Primer entrega
 - **Consultar Unidad de Venta por código**
   Consulta una Unidad de Venta por su código y determina si corresponde a un `FoodTruck` o un `PuestoDesarmable`.
   Relación: **Herencia** entre `UnidadVenta`, `FoodTruck` y `PuestoDesarmable`.
+
+# Prantera Cristian
+
+- **Actualizar Plato**
+  Consulta un Plato existente por su ID, modifica su precio de venta y actualiza el registro en la base de datos mediante Hibernate.
+
+- **Consultar Platos por precio mayor a**
+  Consulta y filtra una lista de Platos cuyo precio de venta sea superior a un monto específico.
+  Relación: **Uno a Muchos (1:N)** entre `UnidadVenta` y `Plato`.
