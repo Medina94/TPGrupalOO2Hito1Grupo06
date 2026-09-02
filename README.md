@@ -30,4 +30,12 @@ TP Programación Orientada a Objetos 2 UNLa - Primer entrega
 
 # José Arratia
 - **Traer Festival por fecha**
-  Se agrega un festival de prueba y luego se trae por fecha inicio y se muestra
+
+# Cristian Prantera
+
+- **Actualizar Plato**
+  Consulta un Plato existente por su ID, modifica su precio de venta y actualiza el registro en la base de datos mediante Hibernate.
+
+- **Consultar Platos por precio mayor a**
+  Consulta y filtra una lista de Platos cuyo precio de venta sea superior a un monto específico.
+  Relación: **Uno a Muchos (1:N)** entre `UnidadVenta` y `Plato`.
