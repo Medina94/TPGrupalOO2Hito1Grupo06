@@ -1,5 +1,6 @@
 package dao;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import datos.Festival;
+
 
 public class FestivalDao {
     private Session session;
@@ -75,6 +77,17 @@ public class FestivalDao {
     	}
     	return objeto;
     }
+    
+	public Festival traer(LocalDate fecha) {
+		Festival objeto = null;
+		try {
+			iniciaOperacion();
+	        objeto = (Festival) session.createQuery("from Festival f where f.fechaInicio=:fecha").setParameter("fecha", fecha).uniqueResult();
+	    } finally {
+	    	session.close();
+	    }
+	        return objeto;
+	    }
     
     public Festival traer(String nombre) {
         Festival objeto = null;

@@ -41,6 +41,10 @@ public class FestivalABM {
     	return dao.traer(idFestival);
     }
     
+    public Festival traer(LocalDate fecha) {
+    	return dao.traer(fecha);
+    }
+    
     public Festival traer(String nombre) {
         return dao.traer(nombre);
     }
