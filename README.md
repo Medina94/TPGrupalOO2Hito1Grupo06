@@ -30,7 +30,7 @@ TP Programación Orientada a Objetos 2 UNLa - Primer entrega
 
 # José Arratia
 - **Traer Festival por fecha**
-  Se agrega un festival de prueba y luego se lo trae por la fecha de inicio y se muestra en pantalla
+  Se agrega un festival de prueba y luego se lo trae por la fecha de inicio.
 
 # Cristian Prantera
 
