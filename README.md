@@ -28,6 +28,19 @@ TP Programación Orientada a Objetos 2 UNLa - Primer entrega
   Consulta una Unidad de Venta por su código y determina si corresponde a un `FoodTruck` o un `PuestoDesarmable`.
   Relación: **Herencia** entre `UnidadVenta`, `FoodTruck` y `PuestoDesarmable`.
 
+# José Arratia
+- **Traer Festival por fecha**
+  Se agrega un festival de prueba y luego se lo trae por la fecha de inicio.
+
+# Cristian Prantera
+
+- **Actualizar Plato**
+  Consulta un Plato existente por su ID, modifica su precio de venta y actualiza el registro en la base de datos mediante Hibernate.
+
+- **Consultar Platos por precio mayor a**
+  Consulta y filtra una lista de Platos cuyo precio de venta sea superior a un monto específico.
+  Relación: **Uno a Muchos (1:N)** entre `UnidadVenta` y `Plato`.
+
 
 # Medina Cristian
 
