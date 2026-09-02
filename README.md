@@ -2,7 +2,7 @@
 TP Programación Orientada a Objetos 2 UNLa - Primer entrega
 # Integrantes
 
-- Alejandro Escalier - GitHub: cocoQuemad0
+- Alejandro Escalier - GitHub: EscalierAlejandro
 - Cristian Medina - GitHub: Medina94
 - Valentina Ponzo - GitHub: valentinaponzo
 - José Arratia - GitHub: josearratia03
