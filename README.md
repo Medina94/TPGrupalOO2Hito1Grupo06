@@ -36,3 +36,17 @@ TP Programación Orientada a Objetos 2 UNLa - Primer entrega
 - **Consultar Platos por precio mayor a**
   Consulta y filtra una lista de Platos cuyo precio de venta sea superior a un monto específico.
   Relación: **Uno a Muchos (1:N)** entre `UnidadVenta` y `Plato`.
+
+# Escalier Alejandro
+
+- **Consultar Unidad de Venta y Empleados**
+  Consulta los empleados con el mismo código de unidad de venta.
+  Relación: **Uno a Muchos (1:N)** entre `UnidadVenta` y `Empleado`.
+
+- **Consultar Unidad de Venta y Pedidos**
+  Consulta los Pedidos con el mismo código de unida de venta.
+  Relación: **Uno a Muchos (1:N)** entre `UnidadVenta` y `Pedido`.
+
+- **Consultar Unidad de Venta y Platos**
+  Consulta los Platos con el mismo código de unidad de venta.
+  Relación: **Uno a Muchos (1:N)** entre `UnidadVenta` y `Plato`.
