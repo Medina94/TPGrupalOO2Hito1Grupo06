@@ -51,3 +51,18 @@ TP Programación Orientada a Objetos 2 UNLa - Primer entrega
 - **Consultar Platos por Festival**
   Consulta los platos correspondientes a un Festival a partir de su Id.
   Relación: **Uno a Muchos** entre `Festival` y `Platos`.
+
+# Escalier Alejandro
+
+- **Consultar Empleados de Unidad de Venta**
+  Consulta el listado de empleados correspondientes a una Unidad de venta a partir de su IDUnidadVenta.
+  Relación: **Uno a Muchos (1:N)** entre `UnidadVenta` y `Empleado`.
+
+- **Consultar Platos de Unidad de Venta**
+  Consulta el listado de platos correspondientes a una Unidad de venta a partir de su IDUnidadVenta.
+  Relación: **Uno a Muchos (1:N)** entre `UnidadVenta` y `Plato`.
+
+- **Consultar Pedidos de Unidad de Venta**
+  Consulta el listado de pedidos correspondientes a una Unidad de venta a partir de su IDUnidadVenta.
+  Relación: **Uno a Muchos (1:N)** entre `UnidadVenta` y `Pedido`.
+
