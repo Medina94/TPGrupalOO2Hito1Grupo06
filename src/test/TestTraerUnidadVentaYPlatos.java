@@ -8,7 +8,7 @@ public class TestTraerUnidadVentaYPlatos {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		long idUnidadVenta=1;
-		UnidadVentaABM uAbm=new UnidadVentaABM();
+		UnidadVentaABM uAbm=UnidadVentaABM.getInstance();
 		
 		UnidadVenta unidadVenta=uAbm.traerUnidadVentaYPlatos(idUnidadVenta);
 		System.out.printf("Traer Unidad de Venta y Platos idUnidadVenta=%d\n",idUnidadVenta);
