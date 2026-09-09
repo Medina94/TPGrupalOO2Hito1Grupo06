@@ -17,9 +17,10 @@ public class PlatoDao {
     protected PlatoDao() {}
     
     public static PlatoDao getInstance() {
-    	if(instancia==null)
-    	   instancia=new PlatoDao();
-    	return instancia;
+        if (instancia == null) {
+            instancia = new PlatoDao();
+        }
+        return instancia;
     }
 
     private void iniciaOperacion() throws HibernateException {
@@ -88,49 +89,65 @@ public class PlatoDao {
         Plato objeto = null;
         try {
             iniciaOperacion();
-            
             objeto = (Plato) session.createQuery("from Plato p where p.nombre=:nombre")
-                    .setParameter("nombre", nombre).uniqueResult();
+                    .setParameter("nombre", nombre)
+                    .uniqueResult();
         } finally {
             session.close();
         }
         return objeto;
     }
 
-    public List<Plato> traer() throws HibernateException{
+    public List<Plato> traer() throws HibernateException {
         List<Plato> lista = null;
         try {
             iniciaOperacion();
-            lista = session.createQuery("from Plato p order by p.nombre asc", Plato.class).getResultList();
+            lista = session.createQuery("from Plato p order by p.nombre asc", Plato.class)
+                    .getResultList();
         } finally {
             session.close();
         }
         return lista;
     }
     
-    public List<Plato> traer(UnidadVenta u){
-    	List<Plato>  lista=null;
-    	try {
-    		iniciaOperacion();
-    		String hQL= "from Plato p inner join fetch p.unidadVenta u where u.idUnidadVenta=:idUnidadVenta";
-    		lista = session.createQuery(hQL, Plato.class).setParameter("idUnidadVenta",u.getIdUnidadVenta()).getResultList();
-    	}finally {
-    		session.close();
-    	}
-    	return lista;
+    public List<Plato> traer(UnidadVenta u) {
+        List<Plato> lista = null;
+        try {
+            iniciaOperacion();
+            String hQL = "from Plato p inner join fetch p.unidadVenta u where u.idUnidadVenta=:idUnidadVenta";
+            lista = session.createQuery(hQL, Plato.class)
+                    .setParameter("idUnidadVenta", u.getIdUnidadVenta())
+                    .getResultList();
+        } finally {
+            session.close();
+        }
+        return lista;
     }
     
-    public List<Plato> traerByIdFestiva(long idFestival){
-    	List<Plato> platos = null;
-    	try {
-    		iniciaOperacion();
-    		String hql = "select p from UnidadVenta u join u.platos p where u.festival.idFestival = :idFestival";
-    		platos = session.createQuery(hql, Plato.class)
+    public List<Plato> traerByIdFestiva(long idFestival) {
+        List<Plato> platos = null;
+        try {
+            iniciaOperacion();
+            String hql = "select p from UnidadVenta u join u.platos p where u.festival.idFestival = :idFestival";
+            platos = session.createQuery(hql, Plato.class)
                     .setParameter("idFestival", idFestival)
                     .getResultList();
-    	}finally {
-    		session.close();
-    	}
-    	return platos;
+        } finally {
+            session.close();
+        }
+        return platos;
+    }
+
+    public List<Plato> traerPrecioMayorA(double precio) {
+        List<Plato> lista = null;
+        try {
+            iniciaOperacion();
+            lista = session.createQuery("from Plato p where p.precioVenta > :precio order by p.precioVenta asc", Plato.class)
+                    .setParameter("precio", precio)
+                    .getResultList();
+        } finally {
+            session.close();
+        }
+        return lista;
     }
 }
