@@ -13,7 +13,16 @@ public class TestTraerFestivalFecha {
 		
 		System.out.println("AGREGAR FESTIVAL");
 		try {
-			long idFestival = festivalABM.agregar("Epicentro Lanus", "invierno", LocalDate.now(), LocalDate.of(2026,9,23));
+			long idFestival = festivalABM.agregar("Epicentro Lanus", "Invierno", LocalDate.of(2026, 6, 21), LocalDate.of(2026, 9, 21));
+			System.out.printf("SE AGREGO EL FESTIVAL CON ID: %d ", idFestival);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
+		
+		System.out.println("AGREGAR FESTIVAL 2");
+		try {
+			long idFestival = festivalABM.agregar("Parque Lanus", "Verano", LocalDate.of(2026, 12, 21), LocalDate.of(2026, 3, 21));
 			System.out.printf("SE AGREGO EL FESTIVAL CON ID: %d ", idFestival);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -21,7 +30,7 @@ public class TestTraerFestivalFecha {
 		}
 		
 		System.out.println("TRAER FESTIVAL POR FECHA");
-		Festival festival=festivalABM.traer(LocalDate.of(2026, 9, 2));
+		Festival festival=festivalABM.traer(LocalDate.of(2026, 12, 21));
 		System.out.println(festival);
 	}
 
