@@ -61,4 +61,8 @@ public class FestivalABM {
     public Festival traerFestivalYUnidadesDeVenta(long idFestival) {
     	return FestivalDao.getInstance().traerFestivalYUnidadesVenta(idFestival);
     }
+    
+    public Festival traer(LocalDate fecha) {
+    	return FestivalDao.getInstance().traer(fecha);
+    }
 }

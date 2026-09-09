@@ -1,5 +1,6 @@
 package dao;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,5 +122,16 @@ public class FestivalDao {
     	}
     	return objeto;
     }
+    
+    public Festival traer(LocalDate fecha) {
+		Festival objeto = null;
+		try {
+			iniciaOperacion();
+	        objeto = (Festival) session.createQuery("from Festival f where f.fechaInicio=:fecha").setParameter("fecha", fecha).uniqueResult();
+	    } finally {
+	    	session.close();
+	    }
+	        return objeto;
+	    }
     
 }
