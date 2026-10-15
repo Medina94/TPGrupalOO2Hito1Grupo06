@@ -21,4 +21,16 @@ public class FestivalService {
     public List<Festival> listarFestivales() {
         return festivalRepository.findAllByOrderByFechaInicioAsc();
     }
+
+    @Transactional(readOnly = true)
+    public Festival buscarPorId(Long idFestival) {
+
+        return festivalRepository
+                .findById(idFestival)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "El festival seleccionado no existe."
+                        )
+                );
+    }
 }

@@ -2,19 +2,12 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-    <title>
-        Festivales - Epicentro Gourmet
-    </title>
+    <title>Festivales - Epicentro Gourmet</title>
 
     <style>
-
         * {
             margin: 0;
             padding: 0;
@@ -27,14 +20,10 @@
             color: #222;
         }
 
-
-        /* NAVBAR */
-
         .navbar {
             background: #17258f;
             color: white;
             padding: 18px 30px;
-
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -57,11 +46,9 @@
         .logout-button {
             background: white;
             color: #17258f;
-
             border: none;
             padding: 9px 15px;
             border-radius: 7px;
-
             cursor: pointer;
             font-weight: bold;
         }
@@ -70,17 +57,11 @@
             background: #ededed;
         }
 
-
-        /* CONTENIDO */
-
         .container {
             max-width: 1150px;
             margin: 40px auto;
             padding: 0 25px 50px;
         }
-
-
-        /* ENCABEZADO */
 
         .header {
             margin-bottom: 28px;
@@ -102,23 +83,15 @@
             color: #6d6d6d;
         }
 
-
-        /* BOTÓN NUEVA UNIDAD */
-
         .btn-nueva-unidad {
             background: #17258f;
             color: white;
-
             text-decoration: none;
-
             padding: 12px 18px;
             border-radius: 8px;
-
             font-size: 14px;
             font-weight: bold;
-
             white-space: nowrap;
-
             transition: 0.2s;
         }
 
@@ -127,24 +100,17 @@
             transform: translateY(-1px);
         }
 
-
-        /* TARJETA */
-
         .card {
             background: white;
             border-radius: 12px;
-
             padding: 25px;
-
-            box-shadow:
-                0 3px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-
             margin-bottom: 20px;
         }
 
@@ -155,16 +121,11 @@
         .cantidad {
             background: #eef0ff;
             color: #17258f;
-
             padding: 7px 12px;
             border-radius: 20px;
-
             font-size: 13px;
             font-weight: bold;
         }
-
-
-        /* TABLA */
 
         table {
             width: 100%;
@@ -173,21 +134,15 @@
 
         th {
             text-align: left;
-
             padding: 13px;
-
             background: #f1f2f7;
             color: #444;
-
             font-size: 14px;
         }
 
         td {
             padding: 15px 13px;
-
-            border-bottom:
-                1px solid #e7e7e7;
-
+            border-bottom: 1px solid #e7e7e7;
             font-size: 14px;
         }
 
@@ -195,19 +150,28 @@
             background: #fafaff;
         }
 
-
-        /* SIN FESTIVALES */
-
         .empty-message {
             padding: 35px;
-
             text-align: center;
-
             color: #777;
         }
 
+        .btn-ver {
+            display: inline-block;
+            background: #eef0ff;
+            color: #17258f;
+            text-decoration: none;
+            padding: 8px 13px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
 
-        /* RESPONSIVE */
+        .btn-ver:hover {
+            background: #17258f;
+            color: white;
+        }
 
         @media (max-width: 750px) {
 
@@ -232,219 +196,152 @@
             td {
                 padding: 10px 7px;
             }
-
         }
-
     </style>
-
 </head>
-
 
 <body>
 
+<nav class="navbar">
 
-    <!-- BARRA SUPERIOR -->
+    <h1>Epicentro Gourmet</h1>
 
-    <nav class="navbar">
+    <div class="user-area">
 
-        <h1>
-            Epicentro Gourmet
-        </h1>
+        <span>
+            Usuario:
+            <strong th:text="${username}">
+                usuario
+            </strong>
+        </span>
+
+        <form th:action="@{/logout}" method="post">
+
+            <button
+                type="submit"
+                class="logout-button">
+
+                Cerrar sesión
+
+            </button>
+
+        </form>
+
+    </div>
+
+</nav>
 
 
-        <div class="user-area">
+<main class="container">
 
-            <span>
+    <div class="header header-actions">
 
-                Usuario:
+        <div>
 
-                <strong
-                    th:text="${username}">
-                    usuario
-                </strong>
+            <h2>Festivales</h2>
+
+            <p>
+                Consultá los festivales registrados
+                en Epicentro Gourmet.
+            </p>
+
+        </div>
+
+        <a
+            th:if="${esAdmin}"
+            th:href="@{/admin/unidades/nueva}"
+            class="btn-nueva-unidad">
+
+            + Nueva Unidad de Venta
+
+        </a>
+
+    </div>
+
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <h3>Listado de festivales</h3>
+
+            <span
+                class="cantidad"
+                th:text="${#lists.size(festivales)} + ' festivales'">
+
+                0 festivales
 
             </span>
 
-
-            <form
-                th:action="@{/logout}"
-                method="post">
-
-                <button
-                    type="submit"
-                    class="logout-button">
-
-                    Cerrar sesión
-
-                </button>
-
-            </form>
-
         </div>
 
-    </nav>
 
+        <div
+            class="empty-message"
+            th:if="${#lists.isEmpty(festivales)}">
 
-
-    <!-- CONTENIDO -->
-
-    <main class="container">
-
-
-        <!-- ENCABEZADO -->
-
-        <div class="header header-actions">
-
-
-            <div>
-
-                <h2>
-                    Festivales
-                </h2>
-
-                <p>
-                    Consultá los festivales registrados
-                    en Epicentro Gourmet.
-                </p>
-
-            </div>
-
-
-            <!-- SOLO LO VE EL ADMINISTRADOR -->
-
-            <a
-                th:if="${esAdmin}"
-                th:href="@{/admin/unidades/nueva}"
-                class="btn-nueva-unidad">
-
-                + Nueva Unidad de Venta
-
-            </a>
-
+            No hay festivales registrados actualmente.
 
         </div>
 
 
+        <table th:if="${!#lists.isEmpty(festivales)}">
 
-        <!-- LISTADO -->
+            <thead>
 
-        <section class="card">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Temporada</th>
+                    <th>Fecha de inicio</th>
+                    <th>Fecha de fin</th>
+                    <th th:if="${esAdmin}">
+                        Acciones
+                    </th>
+                </tr>
 
+            </thead>
 
-            <div class="card-header">
+            <tbody>
 
-                <h3>
-                    Listado de festivales
-                </h3>
+                <tr th:each="festival : ${festivales}">
 
+                    <td th:text="${festival.nombre}">
+                        Festival
+                    </td>
 
-                <span
-                    class="cantidad"
-                    th:text="${#lists.size(festivales)} + ' festivales'">
+                    <td th:text="${festival.temporada}">
+                        Temporada
+                    </td>
 
-                    0 festivales
+                    <td th:text="${festival.fechaInicio}">
+                        2026-01-01
+                    </td>
 
-                </span>
+                    <td th:text="${festival.fechaFin}">
+                        2026-01-10
+                    </td>
 
-            </div>
+                    <td th:if="${esAdmin}">
 
+                        <a
+                            th:href="@{/admin/festivales/{id}/unidades(id=${festival.idFestival})}"
+                            class="btn-ver">
 
+                            Ver unidades
 
-            <!-- SI NO HAY FESTIVALES -->
+                        </a>
 
-            <div
-                class="empty-message"
-                th:if="${#lists.isEmpty(festivales)}">
+                    </td>
 
-                No hay festivales registrados actualmente.
+                </tr>
 
-            </div>
+            </tbody>
 
+        </table>
 
+    </section>
 
-            <!-- SI HAY FESTIVALES -->
-
-            <table
-                th:if="${!#lists.isEmpty(festivales)}">
-
-
-                <thead>
-
-                    <tr>
-
-                        <th>
-                            Nombre
-                        </th>
-
-                        <th>
-                            Temporada
-                        </th>
-
-                        <th>
-                            Fecha de inicio
-                        </th>
-
-                        <th>
-                            Fecha de fin
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody>
-
-
-                    <tr
-                        th:each="festival : ${festivales}">
-
-
-                        <td
-                            th:text="${festival.nombre}">
-
-                            Festival
-
-                        </td>
-
-
-                        <td
-                            th:text="${festival.temporada}">
-
-                            Temporada
-
-                        </td>
-
-
-                        <td
-                            th:text="${festival.fechaInicio}">
-
-                            2026-01-01
-
-                        </td>
-
-
-                        <td
-                            th:text="${festival.fechaFin}">
-
-                            2026-01-10
-
-                        </td>
-
-
-                    </tr>
-
-
-                </tbody>
-
-            </table>
-
-
-        </section>
-
-
-    </main>
-
+</main>
 
 </body>
 
