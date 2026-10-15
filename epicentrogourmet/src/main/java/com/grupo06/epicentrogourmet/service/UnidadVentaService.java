@@ -1,6 +1,7 @@
 package com.grupo06.epicentrogourmet.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,21 @@ public class UnidadVentaService {
         this.passwordEncoder = passwordEncoder;
     }
 
+
+    // CONSULTA DE UNIDADES POR FESTIVAL
+
+    @Transactional(readOnly = true)
+    public List<UnidadVenta> listarPorFestival(Long idFestival) {
+
+        return unidadVentaRepository
+                .findByFestival_IdFestivalOrderByNombreComercialAsc(
+                        idFestival
+                );
+    }
+
+
+    // REGISTRO DE UNIDAD + RESPONSABLE
+
     @Transactional
     public UnidadVenta registrarUnidadConResponsable(
             RegistroUnidadResponsableDTO dto) {
@@ -67,7 +83,8 @@ public class UnidadVentaService {
 
         Empleado responsable = crearResponsable(dto);
 
-        responsable = empleadoRepository.save(responsable);
+        responsable =
+                empleadoRepository.save(responsable);
 
         Usuario usuario = new Usuario(
                 dto.getUsername().trim(),
@@ -79,9 +96,14 @@ public class UnidadVentaService {
         usuarioRepository.save(usuario);
 
         UnidadVenta unidadVenta =
-                crearUnidadVenta(dto, festival, responsable);
+                crearUnidadVenta(
+                        dto,
+                        festival,
+                        responsable
+                );
 
-        unidadVenta = unidadVentaRepository.save(unidadVenta);
+        unidadVenta =
+                unidadVentaRepository.save(unidadVenta);
 
         AsignacionEmpleado asignacion =
                 new AsignacionEmpleado(
@@ -95,14 +117,23 @@ public class UnidadVentaService {
         return unidadVenta;
     }
 
+
+    // VALIDACIONES DE DATOS ÚNICOS
+
     private void validarDatosUnicos(
             RegistroUnidadResponsableDTO dto) {
 
-        String codigo = dto.getCodigo().trim();
-        String email = dto.getEmailResponsable().trim();
-        String username = dto.getUsername().trim();
+        String codigo =
+                dto.getCodigo().trim();
+
+        String email =
+                dto.getEmailResponsable().trim();
+
+        String username =
+                dto.getUsername().trim();
 
         if (unidadVentaRepository.existsByCodigo(codigo)) {
+
             throw new IllegalArgumentException(
                     "Ya existe una unidad de venta con ese código."
             );
@@ -117,23 +148,30 @@ public class UnidadVentaService {
         }
 
         if (empleadoRepository.existsByEmail(email)) {
+
             throw new IllegalArgumentException(
                     "Ya existe un empleado con ese email."
             );
         }
 
         if (usuarioRepository.existsByUsername(username)) {
+
             throw new IllegalArgumentException(
                     "El nombre de usuario ya se encuentra registrado."
             );
         }
     }
 
+
+    // CREACIÓN DEL RESPONSABLE
+
     private Empleado crearResponsable(
             RegistroUnidadResponsableDTO dto) {
 
         String tipoEmpleado =
-                dto.getTipoEmpleado().trim().toUpperCase();
+                dto.getTipoEmpleado()
+                        .trim()
+                        .toUpperCase();
 
         if ("COCINERO".equals(tipoEmpleado)) {
 
@@ -148,12 +186,16 @@ public class UnidadVentaService {
             RolCocina rolCocina;
 
             try {
-                rolCocina = RolCocina.valueOf(
-                        dto.getRolCocina()
-                                .trim()
-                                .toUpperCase()
-                );
+
+                rolCocina =
+                        RolCocina.valueOf(
+                                dto.getRolCocina()
+                                        .trim()
+                                        .toUpperCase()
+                        );
+
             } catch (IllegalArgumentException e) {
+
                 throw new IllegalArgumentException(
                         "El rol de cocina seleccionado no es válido."
                 );
@@ -170,6 +212,7 @@ public class UnidadVentaService {
             );
         }
 
+
         if ("CAJERO".equals(tipoEmpleado)) {
 
             if (dto.getTurno() == null
@@ -183,12 +226,16 @@ public class UnidadVentaService {
             Turno turno;
 
             try {
-                turno = Turno.valueOf(
-                        dto.getTurno()
-                                .trim()
-                                .toUpperCase()
-                );
+
+                turno =
+                        Turno.valueOf(
+                                dto.getTurno()
+                                        .trim()
+                                        .toUpperCase()
+                        );
+
             } catch (IllegalArgumentException e) {
+
                 throw new IllegalArgumentException(
                         "El turno seleccionado no es válido."
                 );
@@ -205,10 +252,14 @@ public class UnidadVentaService {
             );
         }
 
+
         throw new IllegalArgumentException(
                 "El tipo de empleado seleccionado no es válido."
         );
     }
+
+
+    // CREACIÓN DE LA UNIDAD
 
     private UnidadVenta crearUnidadVenta(
             RegistroUnidadResponsableDTO dto,
@@ -216,7 +267,9 @@ public class UnidadVentaService {
             Empleado responsable) {
 
         String tipoUnidad =
-                dto.getTipoUnidad().trim().toUpperCase();
+                dto.getTipoUnidad()
+                        .trim()
+                        .toUpperCase();
 
         if ("FOOD_TRUCK".equals(tipoUnidad)) {
 
@@ -238,6 +291,7 @@ public class UnidadVentaService {
                     dto.isConexionElectrica()
             );
         }
+
 
         if ("PUESTO_DESARMABLE".equals(tipoUnidad)) {
 
@@ -268,15 +322,20 @@ public class UnidadVentaService {
             );
         }
 
+
         throw new IllegalArgumentException(
                 "El tipo de unidad seleccionado no es válido."
         );
     }
 
+
+    // FECHA DE INICIO DE LA ASIGNACIÓN
+
     private LocalDate obtenerFechaInicioAsignacion(
             Festival festival) {
 
-        LocalDate hoy = LocalDate.now();
+        LocalDate hoy =
+                LocalDate.now();
 
         if (festival.getFechaInicio().isAfter(hoy)) {
             return festival.getFechaInicio();

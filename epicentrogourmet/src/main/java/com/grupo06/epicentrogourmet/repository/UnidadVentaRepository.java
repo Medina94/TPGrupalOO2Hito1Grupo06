@@ -1,5 +1,7 @@
 package com.grupo06.epicentrogourmet.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +12,9 @@ public interface UnidadVentaRepository
         extends JpaRepository<UnidadVenta, Long> {
 
     boolean existsByCodigo(String codigo);
+
+    List<UnidadVenta>
+            findByFestival_IdFestivalOrderByNombreComercialAsc(
+                    Long idFestival
+            );
 }

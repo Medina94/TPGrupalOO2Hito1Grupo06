@@ -1,5 +1,7 @@
 package com.grupo06.epicentrogourmet.controller;
 
+import java.util.List;
+
 import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -7,10 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.grupo06.epicentrogourmet.dto.RegistroUnidadResponsableDTO;
+import com.grupo06.epicentrogourmet.entity.Festival;
+import com.grupo06.epicentrogourmet.entity.UnidadVenta;
 import com.grupo06.epicentrogourmet.service.FestivalService;
 import com.grupo06.epicentrogourmet.service.UnidadVentaService;
 
@@ -28,10 +33,41 @@ public class UnidadVentaController {
         this.festivalService = festivalService;
     }
 
+
+    // LISTADO DE UNIDADES POR FESTIVAL
+
+    @GetMapping("/admin/festivales/{idFestival}/unidades")
+    public String listarUnidadesPorFestival(
+            @PathVariable Long idFestival,
+            Model model) {
+
+        Festival festival =
+                festivalService.buscarPorId(idFestival);
+
+        List<UnidadVenta> unidades =
+                unidadVentaService.listarPorFestival(idFestival);
+
+        model.addAttribute(
+                "festival",
+                festival
+        );
+
+        model.addAttribute(
+                "unidades",
+                unidades
+        );
+
+        return "unidades-por-festival";
+    }
+
+
+    // FORMULARIO DE ALTA
+
     @GetMapping("/admin/unidades/nueva")
     public String mostrarFormulario(Model model) {
 
         if (!model.containsAttribute("registroUnidad")) {
+
             model.addAttribute(
                     "registroUnidad",
                     new RegistroUnidadResponsableDTO()
@@ -45,6 +81,9 @@ public class UnidadVentaController {
 
         return "unidad-form";
     }
+
+
+    // REGISTRO DE UNIDAD + RESPONSABLE
 
     @PostMapping("/admin/unidades/nueva")
     public String registrarUnidad(

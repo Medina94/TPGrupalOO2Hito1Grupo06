@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Unidades de Venta - Epicentro Gourmet</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6fa;
+            color: #222;
+        }
+
+        .navbar {
+            background: #17258f;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            font-size: 22px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: 40px auto;
+            padding: 0 25px 50px;
+        }
+
+        .header {
+            margin-bottom: 28px;
+        }
+
+        .header h2 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6d6d6d;
+        }
+
+        .festival-info {
+            background: #eef0ff;
+            color: #17258f;
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header h3 {
+            font-size: 20px;
+        }
+
+        .cantidad {
+            background: #eef0ff;
+            color: #17258f;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 13px;
+            background: #f1f2f7;
+            color: #444;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px 13px;
+            border-bottom: 1px solid #e7e7e7;
+            font-size: 14px;
+        }
+
+        tbody tr:hover {
+            background: #fafaff;
+        }
+
+        .empty-message {
+            padding: 35px;
+            text-align: center;
+            color: #777;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .food-truck {
+            background: #e8f4ff;
+            color: #1769aa;
+        }
+
+        .puesto {
+            background: #fff3df;
+            color: #9b5d00;
+        }
+
+        @media (max-width: 800px) {
+
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .container {
+                margin-top: 25px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th,
+            td {
+                padding: 10px 7px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <h1>Epicentro Gourmet</h1>
+
+    <a th:href="@{/}">
+        ← Volver a festivales
+    </a>
+
+</nav>
+
+
+<main class="container">
+
+    <div class="header">
+
+        <h2>Unidades de Venta</h2>
+
+        <p>
+            Consultá las unidades registradas para el festival seleccionado.
+        </p>
+
+        <div
+            class="festival-info"
+            th:text="${festival.nombre + ' - ' + festival.temporada}">
+            Festival
+        </div>
+
+    </div>
+
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <h3>Listado de unidades</h3>
+
+            <span
+                class="cantidad"
+                th:text="${#lists.size(unidades)} + ' unidades'">
+                0 unidades
+            </span>
+
+        </div>
+
+
+        <!-- SI NO HAY UNIDADES -->
+        <div
+            class="empty-message"
+            th:if="${#lists.isEmpty(unidades)}">
+
+            No hay unidades de venta registradas para este festival.
+
+        </div>
+
+
+        <!-- SI HAY UNIDADES -->
+        <table th:if="${!#lists.isEmpty(unidades)}">
+
+            <thead>
+
+                <tr>
+                    <th>Nombre comercial</th>
+                    <th>Tipo</th>
+                    <th>Código</th>
+                    <th>Superficie</th>
+                    <th>Responsable</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr th:each="unidad : ${unidades}">
+
+                    <td th:text="${unidad.nombreComercial}">
+                        Unidad
+                    </td>
+
+                    <td>
+
+                        <span
+                            th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.FoodTruck)}"
+                            class="badge food-truck">
+                            Food Truck
+                        </span>
+
+                        <span
+                            th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.PuestoDesarmable)}"
+                            class="badge puesto">
+                            Puesto Desarmable
+                        </span>
+
+                    </td>
+
+                    <td th:text="${unidad.codigo}">
+                        CODIGO0000
+                    </td>
+
+                    <td th:text="${unidad.superficie + ' m²'}">
+                        0 m²
+                    </td>
+
+                    <td th:text="${unidad.responsable.nombre + ' ' + unidad.responsable.apellido}">
+                        Responsable
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>
