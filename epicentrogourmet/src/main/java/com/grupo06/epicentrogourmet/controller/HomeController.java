@@ -1,8 +1,8 @@
 package com.grupo06.epicentrogourmet.controller;
 
-import java.security.Principal;
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,17 +20,40 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String inicio(Model model, Principal principal) {
+    public String inicio(
+            Model model,
+            Authentication authentication) {
 
         List<Festival> festivales =
                 festivalService.listarFestivales();
 
-        model.addAttribute("festivales", festivales);
+        model.addAttribute(
+                "festivales",
+                festivales
+        );
 
-        if (principal != null) {
+        if (authentication != null) {
+
             model.addAttribute(
                     "username",
-                    principal.getName()
+                    authentication.getName()
+            );
+
+            boolean esAdmin =
+                    authentication
+                            .getAuthorities()
+                            .stream()
+                            .anyMatch(authority ->
+                                    authority
+                                            .getAuthority()
+                                            .equals(
+                                                    "ROLE_ADMINISTRADOR"
+                                            )
+                            );
+
+            model.addAttribute(
+                    "esAdmin",
+                    esAdmin
             );
         }
 
