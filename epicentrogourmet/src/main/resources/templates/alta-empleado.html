@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Registrar Empleado - Epicentro Gourmet</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6fa;
+            color: #222;
+        }
+
+        .navbar {
+            background: #17258f;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            font-size: 22px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: 40px auto;
+            padding: 0 25px 50px;
+        }
+
+        .page-header {
+            margin-bottom: 28px;
+        }
+
+        .page-header h2 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #6d6d6d;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.07);
+        }
+
+        .card h3 {
+            font-size: 20px;
+            margin-bottom: 22px;
+            color: #17258f;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 7px;
+            color: #333;
+        }
+
+        input,
+        select {
+            height: 45px;
+            border: 1px solid #d7d9e0;
+            border-radius: 8px;
+            padding: 0 12px;
+            font-size: 14px;
+            background: #fafafa;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #243bff;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(36, 59, 255, 0.10);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+        }
+
+        .field-error {
+            color: #b42318;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .alert {
+            padding: 14px 16px;
+            border-radius: 9px;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .alert-error {
+            background: #fff0f0;
+            color: #b42318;
+            border: 1px solid #ffd0cc;
+        }
+
+        .alert-success {
+            background: #effbf3;
+            color: #17783c;
+            border: 1px solid #c8efd4;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 12px 22px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-secondary {
+            background: #e9eaf0;
+            color: #333;
+        }
+
+        .btn-primary {
+            background: #17258f;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #243bff;
+        }
+
+        .conditional-section {
+            display: none;
+        }
+
+        .section-note {
+            color: #777;
+            font-size: 13px;
+            margin-top: -12px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 750px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 16px 20px;
+            }
+
+            .container {
+                margin-top: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <h1>Epicentro Gourmet</h1>
+
+    <a th:href="@{/}">
+        ← Volver a festivales
+    </a>
+
+</nav>
+
+
+<main class="container">
+
+    <div class="page-header">
+
+        <h2>Registrar Empleado</h2>
+
+        <p>
+            Registrá el nuevo empleado y las credenciales de acceso al sistema.
+        </p>
+
+    </div>
+
+
+    <!-- ERROR GENERAL -->
+    <div
+            th:if="${errorGeneral}"
+            class="alert alert-error"
+            th:text="${errorGeneral}">
+    </div>
+
+
+    <!-- ÉXITO -->
+    <div
+            th:if="${mensajeExito}"
+            class="alert alert-success"
+            th:text="${mensajeExito}">
+    </div>
+
+
+    <form
+            th:action="@{/admin/empleados/nuevo}"
+            th:object="${registroEmpleado}"
+            method="post">
+
+
+
+
+
+
+        <section class="card">
+
+            <h3>1. Datos del Empleado</h3>
+
+            <p class="section-note">
+                Completá los datos personales y el tipo de empleado.
+            </p>
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label for="nombre">
+                        Nombre
+                    </label>
+
+                    <input
+                            type="text"
+                            id="nombre"
+                            th:field="*{nombre}">
+
+                    <span
+                            class="field-error"
+                            th:if="${#fields.hasErrors('nombre')}"
+                            th:errors="*{nombre}">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="apellido">
+                        Apellido
+                    </label>
+
+                    <input
+                            type="text"
+                            id="apellido"
+                            th:field="*{apellido}">
+
+                    <span
+                            class="field-error"
+                            th:if="${#fields.hasErrors('apellido')}"
+                            th:errors="*{apellido}">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="dni">
+                        DNI
+                    </label>
+
+                    <input
+                            type="number"
+                            id="dni"
+                            th:field="*{dni}">
+
+                    <span
+                            class="field-error"
+                            th:if="${#fields.hasErrors('dni')}"
+                            th:errors="*{dni}">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                            type="email"
+                            id="email"
+                            th:field="*{email}"
+                            placeholder="empleado@email.com">
+
+                    <span
+                            class="field-error"
+                            th:if="${#fields.hasErrors('email')}"
+                            th:errors="*{email}">
+                    </span>
+
+                </div>
+
+
+                <!-- FECHA NACIMIENTO -->
+                <div class="form-group">
+
+                    <label for="fechaNacimiento">
+                        Fecha de nacimiento
+                    </label>
+
+                    <input
+                            type="date"
+                            id="fechaNacimiento"
+                            th:field="*{fechaNacimiento}">
+
+                    <!-- Fecha inválida -->
+                    <span
+                            class="field-error"
+                            th:if="${#fields.hasErrors('fechaNacimiento')}"
+                            th:errors="*{fechaNacimiento}">
+                    </span>
+
+                    <!-- Menor de edad -->
+                    <span
+                            class="field-error"
+                            th:if="${#fields.hasErrors('mayorDeEdad')}"
+                            th:errors="*{mayorDeEdad}">
+                    </span>
+
+                </div>
+
+
+                <!-- FECHA INGRESO -->
+                <div class="form-group">
+
+                    <label for="fechaIngreso">
+                        Fecha de ingreso
+                    </label>
+
+                    <input
+                            type="date"
+                            id="fechaIngreso"
+                            th:field="*{fechaIngreso}">
+
+                    <span
+                            class="field-error"
+                            th:if="${#fields.hasErrors('fechaIngreso')}"
+                            th:errors="*{fechaIngreso}">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="tipoEmpleado">
+                        Tipo de empleado
+                    </label>
+
+                    <select
+                            id="tipoEmpleado"
+                            th:field="*{tipoEmpleado}"
+                            onchange="actualizarTipoEmpleado()">
+
+                        <option value="">
+                            Seleccionar...
+                        </option>
+
+                        <option value="COCINERO">
+                            Personal de cocina
+                        </option>
+
+                        <option value="CAJERO">
+                            Cajero
+                        </option>
+
+                    </select>
+
+                    <span
+                            class="field-error"
+                            th:if="${#fields.hasErrors('tipoEmpleado')}"
+                            th:errors="*{tipoEmpleado}">
+                    </span>
+
+                </div>
+
+
+                <!-- COCINERO -->
+                <div
+                        id="datosCocinero"
+                        class="form-group conditional-section">
+
+                    <label for="rolCocina">
+                        Rol de cocina
+                    </label>
+
+                    <select
+                            id="rolCocina"
+                            th:field="*{rolCocina}">
+
+                        <option value="">
+                            Seleccionar...
+                        </option>
+
+                        <option value="COCINERO">
+                            Cocinero
+                        </option>
+
+                        <option value="AYUDANTE">
+                            Ayudante
+                        </option>
+
+                        <option value="LAVAPLATOS">
+                            Lavaplatos
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- CAJERO -->
+                <div
+                        id="datosCajero"
+                        class="form-group conditional-section">
+
+                    <label for="turno">
+                        Turno
+                    </label>
+
+                    <select
+                            id="turno"
+                            th:field="*{turno}">
+
+                        <option value="">
+                            Seleccionar...
+                        </option>
+
+                        <option value="MANANA">
+                            Mañana
+                        </option>
+
+                        <option value="NOCHE">
+                            Noche
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- 3. CREDENCIALES -->
+        <section class="card">
+
+            <h3>2. Credenciales de acceso</h3>
+
+            <p class="section-note">
+                Estas credenciales permitirán al empleado iniciar
+                sesión en Epicentro Gourmet.
+            </p>
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Usuario
+                    </label>
+
+                    <input
+                            type="text"
+                            id="username"
+                            th:field="*{username}"
+                            autocomplete="off">
+
+                    <span
+                            class="field-error"
+                            th:if="${#fields.hasErrors('username')}"
+                            th:errors="*{username}">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Contraseña
+                    </label>
+
+                    <input
+                            type="password"
+                            id="password"
+                            th:field="*{password}"
+                            autocomplete="new-password"
+                            placeholder="Mínimo 6 caracteres">
+
+                    <span
+                            class="field-error"
+                            th:if="${#fields.hasErrors('password')}"
+                            th:errors="*{password}">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <a
+                        th:href="@{/}"
+                        class="btn btn-secondary">
+                    Cancelar
+                </a>
+
+                <button
+                        type="submit"
+                        class="btn btn-primary">
+
+                    Registrar empleado
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </form>
+
+</main>
+
+
+
+<script>
+
+
+
+
+    function actualizarTipoEmpleado() {
+
+        const tipo =
+            document.getElementById("tipoEmpleado").value;
+
+        const cocinero =
+            document.getElementById("datosCocinero");
+
+        const cajero =
+            document.getElementById("datosCajero");
+
+
+        cocinero.style.display =
+            tipo === "COCINERO"
+                ? "flex"
+                : "none";
+
+
+        cajero.style.display =
+            tipo === "CAJERO"
+                ? "flex"
+                : "none";
+    }
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            actualizarTipoEmpleado();
+
+        }
+    );
+
+</script>
+
+
+</body>
+</html>
