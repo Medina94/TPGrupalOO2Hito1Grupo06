@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<!-- =====================================================
+     SIDEBAR ADMINISTRADOR
+     ===================================================== -->
+
+<aside th:fragment="adminSidebar" class="sidebar">
+
+    <div class="sidebar-title">
+        Administración
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a th:href="@{/}"
+           class="sidebar-link">
+            <span class="sidebar-icon">⌂</span>
+            Inicio
+        </a>
+
+
+        <div class="sidebar-section">
+            FESTIVALES
+        </div>
+
+        <a th:href="@{/#festivales}"
+           class="sidebar-link">
+            <span class="sidebar-icon">🎪</span>
+            Festivales
+        </a>
+
+        <a th:href="@{/admin/unidades/nueva}"
+           class="sidebar-link">
+            <span class="sidebar-icon">🏪</span>
+            Nueva Unidad
+        </a>
+
+        <a th:href="@{/admin/festivales/costos}"
+           class="sidebar-link">
+            <span class="sidebar-icon">💲</span>
+            Costos de Festivales
+        </a>
+
+
+        <div class="sidebar-section">
+            PERSONAL
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">👥</span>
+
+            <span class="sidebar-text">
+                Empleados
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+
+        <div class="sidebar-section">
+            REPORTES
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">📊</span>
+
+            <span class="sidebar-text">
+                Ranking de facturación
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">💰</span>
+
+            <span class="sidebar-text">
+                Mayores cánones
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+    </nav>
+
+</aside>
+
+
+<!-- =====================================================
+     SIDEBAR RESPONSABLE
+     ===================================================== -->
+
+<aside th:fragment="responsableSidebar"
+       class="sidebar">
+
+    <div class="sidebar-title">
+        Mi Unidad
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a th:href="@{/}"
+           class="sidebar-link">
+
+            <span class="sidebar-icon">⌂</span>
+            Inicio
+        </a>
+
+
+        <div class="sidebar-section">
+            UNIDAD DE VENTA
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">🏪</span>
+
+            <span class="sidebar-text">
+                Mi Unidad
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">💰</span>
+
+            <span class="sidebar-text">
+                Consultar Canon
+                <small>En desarrollo</small>
+            </span>
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">🍽️</span>
+
+            <span class="sidebar-text">
+                Platos
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+
+        <div class="sidebar-section">
+            EMPLEADOS
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">👥</span>
+
+            <span class="sidebar-text">
+                Gestión de empleados
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">💵</span>
+
+            <span class="sidebar-text">
+                Liquidar sueldos
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+
+        <div class="sidebar-section">
+            GESTIÓN
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">🧾</span>
+
+            <span class="sidebar-text">
+                Ventas
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">📈</span>
+
+            <span class="sidebar-text">
+                Rentabilidad
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+    </nav>
+
+</aside>
+
+
+<!-- =====================================================
+     SIDEBAR EMPLEADO
+     ===================================================== -->
+
+<aside th:fragment="empleadoSidebar"
+       class="sidebar">
+
+    <div class="sidebar-title">
+        Mi información
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a th:href="@{/}"
+           class="sidebar-link">
+
+            <span class="sidebar-icon">⌂</span>
+            Inicio
+        </a>
+
+
+        <div class="sidebar-section">
+            TRABAJO
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">🏪</span>
+
+            <span class="sidebar-text">
+                Festival y Unidad actual
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">📅</span>
+
+            <span class="sidebar-text">
+                Historial laboral
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+
+        <div class="sidebar-section">
+            HABERES
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">💵</span>
+
+            <span class="sidebar-text">
+                Mis sueldos
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">📄</span>
+
+            <span class="sidebar-text">
+                Recibos PDF
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">💰</span>
+
+            <span class="sidebar-text">
+                Cierre de caja
+                <small>Solo Cajeros</small>
+            </span>
+        </div>
+
+    </nav>
+
+</aside>
+
+</body>
+</html>

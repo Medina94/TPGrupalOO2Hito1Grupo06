@@ -1,212 +1,30 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Festivales - Epicentro Gourmet</title>
+    <title>Epicentro Gourmet</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f6fa;
-            color: #222;
-        }
-
-        .navbar {
-            background: #17258f;
-            color: white;
-            padding: 18px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar h1 {
-            font-size: 22px;
-        }
-
-        .user-area {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .user-area span {
-            font-size: 14px;
-        }
-
-        .logout-button {
-            background: white;
-            color: #17258f;
-            border: none;
-            padding: 9px 15px;
-            border-radius: 7px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .logout-button:hover {
-            background: #ededed;
-        }
-
-        .container {
-            max-width: 1150px;
-            margin: 40px auto;
-            padding: 0 25px 50px;
-        }
-
-        .header {
-            margin-bottom: 28px;
-        }
-
-        .header-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .header h2 {
-            font-size: 30px;
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            color: #6d6d6d;
-        }
-
-        .btn-nueva-unidad {
-            background: #17258f;
-            color: white;
-            text-decoration: none;
-            padding: 12px 18px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: bold;
-            white-space: nowrap;
-            transition: 0.2s;
-        }
-
-        .btn-nueva-unidad:hover {
-            background: #243bff;
-            transform: translateY(-1px);
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .card-header h3 {
-            font-size: 20px;
-        }
-
-        .cantidad {
-            background: #eef0ff;
-            color: #17258f;
-            padding: 7px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            text-align: left;
-            padding: 13px;
-            background: #f1f2f7;
-            color: #444;
-            font-size: 14px;
-        }
-
-        td {
-            padding: 15px 13px;
-            border-bottom: 1px solid #e7e7e7;
-            font-size: 14px;
-        }
-
-        tbody tr:hover {
-            background: #fafaff;
-        }
-
-        .empty-message {
-            padding: 35px;
-            text-align: center;
-            color: #777;
-        }
-
-        .btn-ver {
-            display: inline-block;
-            background: #eef0ff;
-            color: #17258f;
-            text-decoration: none;
-            padding: 8px 13px;
-            border-radius: 7px;
-            font-size: 13px;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-
-        .btn-ver:hover {
-            background: #17258f;
-            color: white;
-        }
-
-        @media (max-width: 750px) {
-
-            .navbar {
-                padding: 15px 20px;
-            }
-
-            .container {
-                margin-top: 25px;
-            }
-
-            .header-actions {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            table {
-                font-size: 12px;
-            }
-
-            th,
-            td {
-                padding: 10px 7px;
-            }
-        }
-    </style>
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
 </head>
 
 <body>
 
-<nav class="navbar">
+<!-- =========================
+     BARRA SUPERIOR
+     ========================= -->
 
-    <h1>Epicentro Gourmet</h1>
+<header class="topbar">
 
-    <div class="user-area">
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
 
         <span>
             Usuario:
@@ -215,134 +33,397 @@
             </strong>
         </span>
 
-        <form th:action="@{/logout}" method="post">
+        <form th:action="@{/logout}"
+              method="post">
 
-            <button
-                type="submit"
-                class="logout-button">
-
+            <button type="submit"
+                    class="logout-button">
                 Cerrar sesión
-
             </button>
 
         </form>
 
     </div>
 
-</nav>
+</header>
 
 
-<main class="container">
+<!-- =========================
+     LAYOUT PRINCIPAL
+     ========================= -->
 
-    <div class="header header-actions">
+<div class="app-layout">
 
-        <div>
-
-            <h2>Festivales</h2>
-
-            <p>
-                Consultá los festivales registrados
-                en Epicentro Gourmet.
-            </p>
-
-        </div>
-
-        <a
-            th:if="${esAdmin}"
-            th:href="@{/admin/unidades/nueva}"
-            class="btn-nueva-unidad">
-
-            + Nueva Unidad de Venta
-
-        </a>
-
+    <!-- MENÚ ADMINISTRADOR -->
+    <div th:if="${esAdmin}"
+         th:replace="~{fragments/sidebar :: adminSidebar}">
     </div>
 
 
-    <section class="card">
+    <!-- =========================
+         CONTENIDO
+         ========================= -->
 
-        <div class="card-header">
+    <main class="main-content"
+          th:classappend="${!esAdmin} ? ' no-sidebar' : ''">
 
-            <h3>Listado de festivales</h3>
 
-            <span
-                class="cantidad"
-                th:text="${#lists.size(festivales)} + ' festivales'">
+        <!-- =========================
+             PANEL ADMIN
+             ========================= -->
 
-                0 festivales
+        <div th:if="${esAdmin}">
 
-            </span>
+            <div class="page-header">
+
+                <div class="page-title">
+
+                    <h1>Panel de Administración</h1>
+
+                    <p>
+                        Gestioná los festivales, unidades de venta
+                        y reportes de Epicentro Gourmet.
+                    </p>
+
+                </div>
+
+                <a th:href="@{/admin/unidades/nueva}"
+                   class="btn btn-primary">
+
+                    + Nueva Unidad de Venta
+
+                </a>
+
+            </div>
+
+
+            <!-- =========================
+                 TARJETAS RESUMEN
+                 ========================= -->
+
+            <section class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Festivales registrados
+                    </div>
+
+                    <div class="stat-value"
+                         th:text="${#lists.size(festivales)}">
+                        0
+                    </div>
+
+                    <div class="stat-description">
+                        Festivales disponibles en el sistema
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Gestión de unidades
+                    </div>
+
+                    <div class="stat-value">
+                        🏪
+                    </div>
+
+                    <div class="stat-description">
+                        Registro y consulta por Festival
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Reportes
+                    </div>
+
+                    <div class="stat-value">
+                        📊
+                    </div>
+
+                    <div class="stat-description">
+                        Ranking y cánones próximamente
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 ACCESOS RÁPIDOS
+                 ========================= -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <h2>Accesos rápidos</h2>
+
+                    <span class="badge">
+                        Administración
+                    </span>
+
+                </div>
+
+                <div style="
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                ">
+
+                    <a th:href="@{/admin/unidades/nueva}"
+                       class="btn btn-primary">
+                        + Registrar Unidad
+                    </a>
+
+                    <a href="#festivales"
+                       class="btn btn-secondary">
+                        Ver Festivales
+                    </a>
+
+                    <button type="button"
+                            class="btn btn-outline"
+                            disabled
+                            title="Funcionalidad en desarrollo">
+                        Ranking de facturación
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-outline"
+                            disabled
+                            title="Funcionalidad en desarrollo">
+                        Mayores cánones
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 FESTIVALES
+                 ========================= -->
+
+            <section class="panel"
+                     id="festivales">
+
+                <div class="panel-header">
+
+                    <h2>Festivales</h2>
+
+                    <span class="badge"
+                          th:text="${#lists.size(festivales) + ' festivales'}">
+                        0 festivales
+                    </span>
+
+                </div>
+
+
+                <div class="table-responsive"
+                     th:if="${!#lists.isEmpty(festivales)}">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Temporada</th>
+                            <th>Fecha de inicio</th>
+                            <th>Fecha de fin</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="festival : ${festivales}">
+
+                            <td>
+                                <strong th:text="${festival.nombre}">
+                                    Festival
+                                </strong>
+                            </td>
+
+                            <td th:text="${festival.temporada}">
+                                Temporada
+                            </td>
+
+                            <td th:text="${festival.fechaInicio}">
+                                Fecha inicio
+                            </td>
+
+                            <td th:text="${festival.fechaFin}">
+                                Fecha fin
+                            </td>
+
+                            <td>
+
+                                <div class="actions">
+
+                                    <a th:href="@{/admin/festivales/{id}/unidades(id=${festival.idFestival})}"
+                                       class="btn btn-secondary">
+
+                                        Ver unidades
+
+                                    </a>
+
+                                    <a th:href="@{/admin/festivales/{id}/costos(id=${festival.idFestival})}"
+                                       class="btn btn-outline">
+
+                                        Configurar costos
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div class="empty-state"
+                     th:if="${#lists.isEmpty(festivales)}">
+
+                    Todavía no hay festivales registrados.
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 FUNCIONALIDADES FUTURAS
+                 ========================= -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <h2>Próximas funcionalidades</h2>
+
+                    <span class="badge">
+                        Hito 2
+                    </span>
+
+                </div>
+
+                <div style="
+                    display: grid;
+                    grid-template-columns:
+                        repeat(auto-fit, minmax(210px, 1fr));
+                    gap: 14px;
+                ">
+
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            👥 Empleados
+                        </div>
+
+                        <strong>
+                            Gestión de empleados
+                        </strong>
+
+                        <div class="stat-description">
+                            Alta, modificación, baja,
+                            reactivación y filtros.
+                        </div>
+                    </div>
+
+
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            💰 Cánones
+                        </div>
+
+                        <strong>
+                            Reporte de cánones
+                        </strong>
+
+                        <div class="stat-description">
+                            Consulta y comparación
+                            entre Unidades de Venta.
+                        </div>
+                    </div>
+
+
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            📊 Reportes
+                        </div>
+
+                        <strong>
+                            Ranking de facturación
+                        </strong>
+
+                        <div class="stat-description">
+                            Reportes administrativos
+                            del Festival.
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
 
         </div>
 
 
-        <div
-            class="empty-message"
-            th:if="${#lists.isEmpty(festivales)}">
+        <!-- =========================
+             USUARIO NO ADMIN
+             TEMPORALMENTE
+             ========================= -->
 
-            No hay festivales registrados actualmente.
+        <div th:unless="${esAdmin}">
+
+            <div class="page-header">
+
+                <div class="page-title">
+
+                    <h1>Epicentro Gourmet</h1>
+
+                    <p>
+                        Bienvenido al sistema.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <section class="panel">
+
+                <div class="panel-header">
+                    <h2>Panel de usuario</h2>
+                </div>
+
+                <p>
+                    Las funcionalidades correspondientes
+                    a tu rol se encuentran en desarrollo.
+                </p>
+
+            </section>
 
         </div>
 
+    </main>
 
-        <table th:if="${!#lists.isEmpty(festivales)}">
-
-            <thead>
-
-                <tr>
-                    <th>Nombre</th>
-                    <th>Temporada</th>
-                    <th>Fecha de inicio</th>
-                    <th>Fecha de fin</th>
-                    <th th:if="${esAdmin}">
-                        Acciones
-                    </th>
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                <tr th:each="festival : ${festivales}">
-
-                    <td th:text="${festival.nombre}">
-                        Festival
-                    </td>
-
-                    <td th:text="${festival.temporada}">
-                        Temporada
-                    </td>
-
-                    <td th:text="${festival.fechaInicio}">
-                        2026-01-01
-                    </td>
-
-                    <td th:text="${festival.fechaFin}">
-                        2026-01-10
-                    </td>
-
-                    <td th:if="${esAdmin}">
-
-                        <a
-                            th:href="@{/admin/festivales/{id}/unidades(id=${festival.idFestival})}"
-                            class="btn-ver">
-
-                            Ver unidades
-
-                        </a>
-
-                    </td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </section>
-
-</main>
+</div>
 
 </body>
-
 </html>
