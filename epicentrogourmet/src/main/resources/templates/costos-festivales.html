@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Costos de Festivales</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+
+
+<header class="topbar">
+
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+
+        <span>
+            Administración
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="logout-button">
+
+                Cerrar sesión
+
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<div class="app-layout">
+
+    <div th:replace="~{fragments/sidebar :: adminSidebar}">
+    </div>
+
+
+    <main class="main-content">
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>Costos de Festivales</h1>
+
+                <p>
+                    Seleccioná un Festival para consultar
+                    o configurar sus costos.
+                </p>
+
+            </div>
+
+            <a th:href="@{/}"
+               class="btn btn-outline">
+
+                Volver al inicio
+
+            </a>
+
+        </div>
+
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>Festivales registrados</h2>
+
+                <span class="badge"
+                      th:text="${#lists.size(festivales) + ' festivales'}">
+
+                    0 festivales
+
+                </span>
+
+            </div>
+
+
+            <div class="table-responsive"
+                 th:if="${!#lists.isEmpty(festivales)}">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+                        <th>Festival</th>
+                        <th>Temporada</th>
+                        <th>Fecha inicio</th>
+                        <th>Fecha fin</th>
+                        <th>Acción</th>
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="festival : ${festivales}">
+
+                        <td>
+                            <strong
+                                th:text="${festival.nombre}">
+                                Festival
+                            </strong>
+                        </td>
+
+                        <td
+                            th:text="${festival.temporada}">
+                            Temporada
+                        </td>
+
+                        <td
+                            th:text="${festival.fechaInicio}">
+                            Fecha inicio
+                        </td>
+
+                        <td
+                            th:text="${festival.fechaFin}">
+                            Fecha fin
+                        </td>
+
+                        <td>
+
+                            <a
+                                th:href="@{/admin/festivales/{id}/costos(id=${festival.idFestival})}"
+                                class="btn btn-primary">
+
+                                Configurar costos
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="empty-state"
+                 th:if="${#lists.isEmpty(festivales)}">
+
+                No existen Festivales registrados.
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

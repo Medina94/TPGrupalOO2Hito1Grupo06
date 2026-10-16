@@ -1,5 +1,6 @@
 package com.grupo06.epicentrogourmet.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import com.grupo06.epicentrogourmet.dto.RegistroUnidadResponsableDTO;
 import com.grupo06.epicentrogourmet.entity.AsignacionEmpleado;
 import com.grupo06.epicentrogourmet.entity.Cajero;
 import com.grupo06.epicentrogourmet.entity.Cocinero;
+import com.grupo06.epicentrogourmet.entity.CostosFestival;
 import com.grupo06.epicentrogourmet.entity.Empleado;
 import com.grupo06.epicentrogourmet.entity.Festival;
 import com.grupo06.epicentrogourmet.entity.FoodTruck;
@@ -65,6 +67,53 @@ public class UnidadVentaService {
     }
 
 
+    // BUSCAR UNIDAD POR ID
+
+    @Transactional(readOnly = true)
+    public UnidadVenta buscarPorId(Long idUnidadVenta) {
+
+        return unidadVentaRepository
+                .findById(idUnidadVenta)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "La Unidad de Venta seleccionada no existe."
+                        )
+                );
+    }
+
+
+    // CALCULAR CANON
+
+    @Transactional(readOnly = true)
+    public BigDecimal calcularCanon(Long idUnidadVenta) {
+
+        UnidadVenta unidadVenta =
+                buscarPorId(idUnidadVenta);
+
+        Festival festival =
+                unidadVenta.getFestival();
+
+        if (festival == null) {
+
+            throw new IllegalArgumentException(
+                    "La Unidad de Venta no tiene un Festival asociado."
+            );
+        }
+
+        CostosFestival costos =
+                festival.getCostos();
+
+        if (costos == null) {
+
+            throw new IllegalArgumentException(
+                    "El Festival no tiene configurados sus costos."
+            );
+        }
+
+        return unidadVenta.calcularCanon(costos);
+    }
+
+
     // REGISTRO DE UNIDAD + RESPONSABLE
 
     @Transactional
@@ -81,7 +130,8 @@ public class UnidadVentaService {
                         )
                 );
 
-        Empleado responsable = crearResponsable(dto);
+        Empleado responsable =
+                crearResponsable(dto);
 
         responsable =
                 empleadoRepository.save(responsable);

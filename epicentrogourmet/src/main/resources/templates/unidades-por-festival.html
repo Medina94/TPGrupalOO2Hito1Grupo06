@@ -1,287 +1,459 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>Unidades de Venta - Epicentro Gourmet</title>
+    <title>Unidades de Venta</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f6fa;
-            color: #222;
-        }
-
-        .navbar {
-            background: #17258f;
-            color: white;
-            padding: 18px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar h1 {
-            font-size: 22px;
-        }
-
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .container {
-            max-width: 1150px;
-            margin: 40px auto;
-            padding: 0 25px 50px;
-        }
-
-        .header {
-            margin-bottom: 28px;
-        }
-
-        .header h2 {
-            font-size: 30px;
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            color: #6d6d6d;
-        }
-
-        .festival-info {
-            background: #eef0ff;
-            color: #17258f;
-            padding: 14px 16px;
-            border-radius: 10px;
-            margin-top: 15px;
-            display: inline-block;
-            font-weight: bold;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .card-header h3 {
-            font-size: 20px;
-        }
-
-        .cantidad {
-            background: #eef0ff;
-            color: #17258f;
-            padding: 7px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            text-align: left;
-            padding: 13px;
-            background: #f1f2f7;
-            color: #444;
-            font-size: 14px;
-        }
-
-        td {
-            padding: 15px 13px;
-            border-bottom: 1px solid #e7e7e7;
-            font-size: 14px;
-        }
-
-        tbody tr:hover {
-            background: #fafaff;
-        }
-
-        .empty-message {
-            padding: 35px;
-            text-align: center;
-            color: #777;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .food-truck {
-            background: #e8f4ff;
-            color: #1769aa;
-        }
-
-        .puesto {
-            background: #fff3df;
-            color: #9b5d00;
-        }
-
-        @media (max-width: 800px) {
-
-            .navbar {
-                padding: 15px 20px;
-            }
-
-            .container {
-                margin-top: 25px;
-            }
-
-            table {
-                font-size: 12px;
-            }
-
-            th,
-            td {
-                padding: 10px 7px;
-            }
-        }
-    </style>
 </head>
 
 <body>
 
-<nav class="navbar">
 
-    <h1>Epicentro Gourmet</h1>
+<!-- =========================
+     BARRA SUPERIOR
+     ========================= -->
 
-    <a th:href="@{/}">
-        ← Volver a festivales
-    </a>
+<header class="topbar">
 
-</nav>
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
 
+    <div class="topbar-user">
 
-<main class="container">
+        <span>
+            Administración
+        </span>
 
-    <div class="header">
+        <form th:action="@{/logout}"
+              method="post">
 
-        <h2>Unidades de Venta</h2>
+            <button type="submit"
+                    class="logout-button">
+                Cerrar sesión
+            </button>
 
-        <p>
-            Consultá las unidades registradas para el festival seleccionado.
-        </p>
-
-        <div
-            class="festival-info"
-            th:text="${festival.nombre + ' - ' + festival.temporada}">
-            Festival
-        </div>
+        </form>
 
     </div>
 
+</header>
 
-    <section class="card">
 
-        <div class="card-header">
+<!-- =========================
+     LAYOUT
+     ========================= -->
 
-            <h3>Listado de unidades</h3>
+<div class="app-layout">
 
-            <span
-                class="cantidad"
-                th:text="${#lists.size(unidades)} + ' unidades'">
-                0 unidades
-            </span>
+    <div th:replace="~{fragments/sidebar :: adminSidebar}">
+    </div>
+
+
+    <main class="main-content">
+
+
+        <!-- =========================
+             ENCABEZADO
+             ========================= -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>Unidades de Venta</h1>
+
+                <p>
+                    Festival:
+                    <strong th:text="${festival.nombre}">
+                        Festival
+                    </strong>
+
+                    -
+
+                    <span th:text="${festival.temporada}">
+                        Temporada
+                    </span>
+                </p>
+
+            </div>
+
+
+            <div class="actions">
+
+                <a th:href="@{/admin/unidades/nueva}"
+                   class="btn btn-primary">
+
+                    + Nueva Unidad
+
+                </a>
+
+                <a th:href="@{/}"
+                   class="btn btn-outline">
+
+                    Volver al inicio
+
+                </a>
+
+            </div>
 
         </div>
 
 
-        <!-- SI NO HAY UNIDADES -->
-        <div
-            class="empty-message"
-            th:if="${#lists.isEmpty(unidades)}">
+        <!-- =========================
+             MENSAJES
+             ========================= -->
 
-            No hay unidades de venta registradas para este festival.
+        <div class="alert alert-error"
+             th:if="${error}"
+             th:text="${error}">
+
+            Ocurrió un error.
 
         </div>
 
 
-        <!-- SI HAY UNIDADES -->
-        <table th:if="${!#lists.isEmpty(unidades)}">
+        <div class="alert alert-success"
+             th:if="${success}"
+             th:text="${success}">
 
-            <thead>
+            Operación realizada correctamente.
 
-                <tr>
-                    <th>Nombre comercial</th>
-                    <th>Tipo</th>
-                    <th>Código</th>
-                    <th>Superficie</th>
-                    <th>Responsable</th>
-                </tr>
+        </div>
 
-            </thead>
 
-            <tbody>
+        <!-- =========================
+             INFORMACIÓN DEL FESTIVAL
+             ========================= -->
 
-                <tr th:each="unidad : ${unidades}">
+        <section class="stats-grid">
 
-                    <td th:text="${unidad.nombreComercial}">
-                        Unidad
-                    </td>
+            <div class="stat-card">
 
-                    <td>
+                <div class="stat-label">
+                    Festival
+                </div>
 
-                        <span
-                            th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.FoodTruck)}"
-                            class="badge food-truck">
-                            Food Truck
-                        </span>
+                <div style="
+                    font-size: 18px;
+                    font-weight: 700;
+                "
+                     th:text="${festival.nombre}">
 
-                        <span
-                            th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.PuestoDesarmable)}"
-                            class="badge puesto">
-                            Puesto Desarmable
-                        </span>
+                    Festival
 
-                    </td>
+                </div>
 
-                    <td th:text="${unidad.codigo}">
-                        CODIGO0000
-                    </td>
+                <div class="stat-description"
+                     th:text="${festival.temporada}">
 
-                    <td th:text="${unidad.superficie + ' m²'}">
-                        0 m²
-                    </td>
+                    Temporada
 
-                    <td th:text="${unidad.responsable.nombre + ' ' + unidad.responsable.apellido}">
-                        Responsable
-                    </td>
+                </div>
 
-                </tr>
+            </div>
 
-            </tbody>
 
-        </table>
+            <div class="stat-card">
 
-    </section>
+                <div class="stat-label">
+                    Fecha de inicio
+                </div>
 
-</main>
+                <div style="
+                    font-size: 18px;
+                    font-weight: 700;
+                "
+                     th:text="${festival.fechaInicio}">
+
+                    Fecha
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Unidades registradas
+                </div>
+
+                <div class="stat-value"
+                     th:text="${#lists.size(unidades)}">
+
+                    0
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             TABLA DE UNIDADES
+             ========================= -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>Unidades de Venta registradas</h2>
+
+                <span class="badge"
+                      th:text="${#lists.size(unidades) + ' unidades'}">
+
+                    0 unidades
+
+                </span>
+
+            </div>
+
+
+            <!-- HAY UNIDADES -->
+
+            <div class="table-responsive"
+                 th:if="${!#lists.isEmpty(unidades)}">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>Nombre comercial</th>
+
+                        <th>Tipo</th>
+
+                        <th>Código</th>
+
+                        <th>Superficie</th>
+
+                        <th>Responsable</th>
+
+                        <th>Acciones</th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="unidad : ${unidades}">
+
+
+                        <!-- NOMBRE -->
+
+                        <td>
+
+                            <strong
+                                th:text="${unidad.nombreComercial}">
+
+                                Unidad
+
+                            </strong>
+
+                        </td>
+
+
+                        <!-- TIPO -->
+
+                        <td>
+
+                            <span class="badge"
+                                  th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.FoodTruck)}">
+
+                                Food Truck
+
+                            </span>
+
+
+                            <span class="badge"
+                                  th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.PuestoDesarmable)}">
+
+                                Puesto Desarmable
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- CÓDIGO -->
+
+                        <td th:text="${unidad.codigo}">
+
+                            CODIGO
+
+                        </td>
+
+
+                        <!-- SUPERFICIE -->
+
+                        <td>
+
+                            <span th:text="${unidad.superficie}">
+                                0
+                            </span>
+
+                            m²
+
+                        </td>
+
+
+                        <!-- RESPONSABLE -->
+
+                        <td>
+
+                            <span th:if="${unidad.responsable != null}">
+
+                                <span
+                                    th:text="${unidad.responsable.nombre}">
+                                    Nombre
+                                </span>
+
+                                <span
+                                    th:text="${unidad.responsable.apellido}">
+                                    Apellido
+                                </span>
+
+                            </span>
+
+
+                            <span th:if="${unidad.responsable == null}">
+                                Sin responsable
+                            </span>
+
+                        </td>
+
+
+                        <!-- ACCIONES -->
+
+                        <td>
+
+                            <div class="actions">
+
+                                <a th:href="@{/admin/unidades/{id}/canon(id=${unidad.idUnidadVenta})}"
+                                   class="btn btn-primary">
+
+                                    Ver canon
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- NO HAY UNIDADES -->
+
+            <div class="empty-state"
+                 th:if="${#lists.isEmpty(unidades)}">
+
+                <strong>
+                    No hay Unidades de Venta registradas.
+                </strong>
+
+                Este Festival todavía no tiene
+                Unidades de Venta asociadas.
+
+                <div style="margin-top: 18px;">
+
+                    <a th:href="@{/admin/unidades/nueva}"
+                       class="btn btn-primary">
+
+                        + Registrar Unidad de Venta
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CONFIGURACIÓN DE COSTOS
+             ========================= -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>Configuración del Festival</h2>
+
+                <span class="badge"
+                      th:if="${festival.costos != null}">
+                    Costos configurados
+                </span>
+
+                <span class="badge"
+                      th:if="${festival.costos == null}">
+                    Sin configurar
+                </span>
+
+            </div>
+
+            <p style="
+                color: #6b7280;
+                font-size: 14px;
+                margin-bottom: 16px;
+            ">
+
+                Los costos configurados para este Festival
+                son utilizados para calcular los cánones
+                correspondientes a sus Unidades de Venta.
+
+            </p>
+
+
+            <div class="alert alert-info"
+                 th:if="${festival.costos == null}">
+
+                Este Festival todavía no posee costos configurados.
+                Debés configurarlos antes de calcular el canon.
+
+            </div>
+
+
+            <a th:href="@{/admin/festivales/{id}/costos(id=${festival.idFestival})}"
+               class="btn btn-outline">
+
+                <span th:if="${festival.costos == null}">
+                    Configurar costos
+                </span>
+
+                <span th:if="${festival.costos != null}">
+                    Modificar costos
+                </span>
+
+            </a>
+
+        </section>
+
+
+    </main>
+
+</div>
 
 </body>
 

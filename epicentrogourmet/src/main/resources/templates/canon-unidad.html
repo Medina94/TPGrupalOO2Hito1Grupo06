@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Canon de Unidad de Venta</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+
+
+<!-- =========================
+     BARRA SUPERIOR
+     ========================= -->
+
+<header class="topbar">
+
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+
+        <span>
+            Administración
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="logout-button">
+                Cerrar sesión
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     LAYOUT
+     ========================= -->
+
+<div class="app-layout">
+
+    <div th:replace="~{fragments/sidebar :: adminSidebar}">
+    </div>
+
+
+    <main class="main-content">
+
+
+        <!-- =========================
+             ENCABEZADO
+             ========================= -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>Canon de Unidad de Venta</h1>
+
+                <p>
+                    Detalle del canon correspondiente a la
+                    Unidad de Venta seleccionada.
+                </p>
+
+            </div>
+
+            <a th:href="@{/admin/festivales/{id}/unidades(id=${festival.idFestival})}"
+               class="btn btn-outline">
+
+                Volver a unidades
+
+            </a>
+
+        </div>
+
+
+        <!-- =========================
+             INFORMACIÓN DE LA UNIDAD
+             ========================= -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2 th:text="${unidad.nombreComercial}">
+                    Unidad de Venta
+                </h2>
+
+                <span class="badge"
+                      th:text="${unidad.codigo}">
+                    Código
+                </span>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+                <!-- FESTIVAL -->
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Festival
+                    </div>
+
+                    <div style="
+                        font-size: 18px;
+                        font-weight: 700;
+                    "
+                         th:text="${festival.nombre}">
+                        Festival
+                    </div>
+
+                    <div class="stat-description"
+                         th:text="${festival.temporada}">
+                        Temporada
+                    </div>
+
+                </div>
+
+
+                <!-- SUPERFICIE -->
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Superficie
+                    </div>
+
+                    <div class="stat-value"
+                         style="font-size: 22px;">
+
+                        <span th:text="${unidad.superficie}">
+                            0
+                        </span>
+
+                        <span style="font-size: 14px;">
+                            m²
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TIPO DE UNIDAD -->
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Tipo de Unidad
+                    </div>
+
+                    <div style="
+                        font-size: 18px;
+                        font-weight: 700;
+                    "
+                         th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.FoodTruck)}">
+
+                        Food Truck
+
+                    </div>
+
+
+                    <div style="
+                        font-size: 18px;
+                        font-weight: 700;
+                    "
+                         th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.PuestoDesarmable)}">
+
+                        Puesto Desarmable
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             COSTOS UTILIZADOS
+             ========================= -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>Costos utilizados</h2>
+
+                <span class="badge">
+                    Configuración del Festival
+                </span>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+
+                <!-- COSTO POR SUPERFICIE -->
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Costo por superficie
+                    </div>
+
+                    <div style="
+                        font-size: 20px;
+                        font-weight: 700;
+                    ">
+
+                        $
+
+                        <span th:text="${#numbers.formatDecimal(
+                                costos.costoPorSuperficie,
+                                1,
+                                'POINT',
+                                2,
+                                'COMMA'
+                        )}">
+                            0,00
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FOOD TRUCK -->
+
+                <div class="stat-card"
+                     th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.FoodTruck)}">
+
+                    <div class="stat-label">
+                        Plus por electricidad
+                    </div>
+
+                    <div style="
+                        font-size: 20px;
+                        font-weight: 700;
+                    ">
+
+                        $
+
+                        <span th:text="${#numbers.formatDecimal(
+                                costos.plusElectricidad,
+                                1,
+                                'POINT',
+                                2,
+                                'COMMA'
+                        )}">
+                            0,00
+                        </span>
+
+                    </div>
+
+                    <div class="stat-description">
+                        Se aplica únicamente si el Food Truck
+                        posee conexión eléctrica.
+                    </div>
+
+                </div>
+
+
+                <!-- PUESTO DESARMABLE -->
+
+                <div class="stat-card"
+                     th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.PuestoDesarmable)}">
+
+                    <div class="stat-label">
+                        Costo por montaje
+                    </div>
+
+                    <div style="
+                        font-size: 20px;
+                        font-weight: 700;
+                    ">
+
+                        $
+
+                        <span th:text="${#numbers.formatDecimal(
+                                costos.costoPorMontaje,
+                                1,
+                                'POINT',
+                                2,
+                                'COMMA'
+                        )}">
+                            0,00
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             RESULTADO DEL CANON
+             ========================= -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>Canon calculado</h2>
+
+            </div>
+
+
+            <div style="
+                background: #eef2ff;
+                border: 1px solid #c7d2fe;
+                border-radius: 12px;
+                padding: 30px;
+                text-align: center;
+            ">
+
+                <div style="
+                    color: #6b7280;
+                    font-size: 14px;
+                    margin-bottom: 8px;
+                ">
+
+                    Canon correspondiente a
+
+                </div>
+
+
+                <div style="
+                    font-size: 18px;
+                    font-weight: 700;
+                    margin-bottom: 18px;
+                "
+                     th:text="${unidad.nombreComercial}">
+
+                    Unidad
+
+                </div>
+
+
+                <div style="
+                    font-size: 42px;
+                    font-weight: 700;
+                    color: #172b8f;
+                ">
+
+                    $
+
+                    <span th:text="${#numbers.formatDecimal(
+                            canon,
+                            1,
+                            'POINT',
+                            2,
+                            'COMMA'
+                    )}">
+                        0,00
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             EXPLICACIÓN DEL CÁLCULO
+             ========================= -->
+
+        <section class="panel">
+
+            <div class="alert alert-info">
+
+                El canon se calcula utilizando los costos
+                configurados para el Festival y la fórmula
+                correspondiente al tipo de Unidad de Venta.
+
+            </div>
+
+
+            <!-- FOOD TRUCK -->
+
+            <p th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.FoodTruck)}">
+
+                <strong>Food Truck:</strong>
+
+                superficie × costo por superficie
+                + plus de electricidad cuando corresponde.
+
+            </p>
+
+
+            <!-- PUESTO DESARMABLE -->
+
+            <p th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.PuestoDesarmable)}">
+
+                <strong>Puesto Desarmable:</strong>
+
+                superficie × costo por superficie
+                − minutos de montaje × costo por montaje.
+
+            </p>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>
