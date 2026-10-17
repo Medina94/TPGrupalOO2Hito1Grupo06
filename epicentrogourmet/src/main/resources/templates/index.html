@@ -86,13 +86,25 @@
                     </p>
 
                 </div>
-
+                <div style="
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                ">
                 <a th:href="@{/admin/unidades/nueva}"
                    class="btn btn-primary">
 
                     + Nueva Unidad de Venta
 
                 </a>
+
+                <a th:href="@{/admin/empleados/nuevo}"
+                   class="btn btn-primary">
+
+                    + Nuevo Empleado
+
+                </a>
+                </div>
 
             </div>
 
@@ -276,7 +288,12 @@
                                         Ver unidades
 
                                     </a>
+                                    <a th:href="@{/admin/empleados}"
+                                       class="btn btn-secondary">
 
+                                        Ver empleados
+
+                                    </a>
                                     <a th:href="@{/admin/festivales/{id}/costos(id=${festival.idFestival})}"
                                        class="btn btn-outline">
 
@@ -307,11 +324,12 @@
             </section>
 
 
+
             <!-- =========================
                  FUNCIONALIDADES FUTURAS
                  ========================= -->
 
-            <section class="panel">
+            <section class="panel" >
 
                 <div class="panel-header">
 
@@ -323,14 +341,14 @@
 
                 </div>
 
-                <div style="
+                <div  style="
                     display: grid;
                     grid-template-columns:
                         repeat(auto-fit, minmax(210px, 1fr));
                     gap: 14px;
                 ">
 
-                    <div class="stat-card">
+                    <div class="stat-card"  >
                         <div class="stat-label">
                             👥 Empleados
                         </div>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Empleados - Epicentro Gourmet</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+
+
+<!-- =========================
+     BARRA SUPERIOR
+     ========================= -->
+
+<header class="topbar">
+
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+
+        <span>
+            Administración
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="logout-button">
+                Cerrar sesión
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     LAYOUT
+     ========================= -->
+
+<div class="app-layout">
+
+    <div th:replace="~{fragments/sidebar :: adminSidebar}">
+    </div>
+
+
+    <main class="main-content">
+
+
+        <!-- =========================
+             ENCABEZADO
+             ========================= -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+                <h1>Empleados</h1>
+                <p>Consultá los empleados registrados en Epicentro Gourmet.</p>
+            </div>
+            <div class="actions">
+
+                <a th:href="@{/admin/empleados/nuevo}"
+                   class="btn btn-primary">
+
+                    + Nuevo Empleado
+
+                </a>
+
+                <a th:href="@{/}"
+                   class="btn btn-outline">
+
+                    Volver al inicio
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             MENSAJES
+             ========================= -->
+
+        <div class="alert alert-error"
+             th:if="${error}"
+             th:text="${error}">
+
+            Ocurrió un error.
+
+        </div>
+
+
+        <div class="alert alert-success"
+             th:if="${success}"
+             th:text="${success}">
+
+            Operación realizada correctamente.
+
+        </div>
+
+
+        <!-- =========================
+             INFORMACIÓN DEL FESTIVAL
+             ========================= -->
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">
+                    Empleados registrados
+                </div>
+                <div class="stat-value"
+                     th:text="${#lists.size(empleados)}">
+                    0
+                </div>
+            </div>
+        </section>
+
+
+        <!-- =========================
+             TABLA DE UNIDADES
+             ========================= -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>Empleados registrados</h2>
+
+                <span class="badge"
+                      th:text="${#lists.size(empleados) + ' empleados'}">
+
+                    0 empleados
+
+                </span>
+
+            </div>
+
+
+            <!-- HAY EMPLEADOS -->
+
+            <div class="table-responsive"
+                 th:if="${!#lists.isEmpty(empleados)}">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>Nombre</th>
+
+                        <th>Puesto</th>
+
+                        <th>DNI</th>
+
+                        <th>Sueldo</th>
+
+                        <th>Ingreso</th>
+
+                        <th>Acciones</th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="empleado : ${empleados}">
+
+
+                        <!-- NOMBRE -->
+                        <td>
+                            <strong>
+                                <span th:text="${empleado.nombre}">Nombre</span>
+                                <span th:text="${empleado.apellido}">Apellido</span>
+                            </strong>
+                        </td>
+
+                        <!-- TIPO -->
+
+                        <td>
+
+                            <span class="badge"
+                                  th:if="${empleado instanceof T(com.grupo06.epicentrogourmet.entity.Cajero)}">
+
+                                Cajero
+
+                            </span>
+
+
+                            <span class="badge"
+                                  th:if="${empleado instanceof T(com.grupo06.epicentrogourmet.entity.Cocinero)}">
+
+                                Cocinero
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- DNI -->
+                        <td th:text="${empleado.dni}">DNI</td>
+
+                        <!-- EMAIL -->
+                        <td th:text="${empleado.email}">Email</td>
+
+                        <!-- INGRESO -->
+
+                        <td>
+
+                            <span th:if="${empleado.fechaIngreso != null}">
+
+                                <span
+                                        th:text="${empleado.fechaIngreso}">
+                                    Fecha Ingreso
+                                </span>
+
+
+
+                            </span>
+
+
+
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- NO HAY EMPLEADOS -->
+
+            <div class="empty-state"
+                 th:if="${#lists.isEmpty(empleados)}">
+
+                <strong>
+                    No hay Empleados registrados.
+                </strong>
+
+                Todavía no hay empleados cargados.
+
+                <div style="margin-top: 18px;">
+
+                    <a th:href="@{/admin/empleados/nuevo}"
+                       class="btn btn-primary">
+
+                        + Registrar Empleado
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CONFIGURACIÓN DE COSTOS
+             ========================= -->
+
+
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

@@ -7,7 +7,7 @@ Universidad Nacional de Lanús
 
 ## Integrantes
 
-- Alejandro Escalier - GitHub: `cocoQuemad0`
+- Alejandro Escalier - GitHub: `EscalierAlejandro`
 - Cristian Medina - GitHub: `Medina94`
 - Valentina Ponzo - GitHub: `valentinaponzo`
 - José Arratia - GitHub: `josearratia03`
@@ -403,8 +403,7 @@ La estructura se encuentra preparada para incorporar posteriormente paneles espe
 
 Entre las funcionalidades restantes se encuentran:
 
-- Alta de empleados.
-- Consulta/listado de empleados.
+
 - Modificación de empleados.
 - Baja lógica de empleados.
 - Reactivación de empleados.
@@ -454,3 +453,22 @@ Ejemplo:
 ```bash
 export DB_USER='usuario_mysql'
 export DB_PASSWORD='password_mysql'
+```
+
+
+| Alta y Listado de Empleados | Alejandro Escalier | Finalizado | `CU-Alta-Listado-Empleados` | [PR #11]([https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/N](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/11)) |
+
+### CU - Alta y Listado de Empleados
+
+Responsable: **Alejandro Escalier**
+
+Permite registrar empleados desde el panel de Administración y consultarlos.
+
+Funcionalidades:
+
+- Alta de `Cocinero` (con rol de cocina) y `Cajero` (con turno).
+- Creación del usuario con rol `EMPLEADO` y contraseña cifrada con BCrypt.
+- Validaciones: datos obligatorios, email válido, mayor de 18 años,
+  fecha de ingreso no futura, DNI, email y username únicos.
+- Listado de empleados y sección en el dashboard.
+- Acceso desde el menú lateral.
