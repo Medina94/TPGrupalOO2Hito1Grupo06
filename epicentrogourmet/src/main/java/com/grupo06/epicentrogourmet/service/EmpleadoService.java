@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import com.grupo06.epicentrogourmet.repository.EmpleadoRepository;
+import com.grupo06.epicentrogourmet.dto.ModificarEmpleadoDTO;
 import com.grupo06.epicentrogourmet.repository.UsuarioRepository;
 
 @Service
@@ -190,5 +191,58 @@ public class EmpleadoService {
         return empleadoRepository.findAllByOrderByDniAsc();
     }
 
+    @Transactional
+    public void eliminarEmpleado(Long idEmpleado) {
+        Empleado empleado = empleadoRepository.findById(idEmpleado)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontro el empleado"));
+        empleado.setActivo(false);
+
+        Usuario usuario = usuarioRepository.findAll().stream().filter(u -> u.getEmpleado() != null && u.getEmpleado().getIdEmpleado().equals(idEmpleado)).findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No se encontro el usuario asociado al empleado"));
+        usuario.setActivo(false);
+    }
+
+    @Transactional(readOnly = true)
+    public Empleado buscarEmpleadoPorId(Long idEmpleado) {
+        return empleadoRepository.findById(idEmpleado).orElseThrow(() -> new IllegalArgumentException("No se encontro el empleado"));
+    }
+
+    @Transactional
+    public Empleado modificarEmpleado(Long idEmpleado, ModificarEmpleadoDTO dto) {
+        Empleado empleado = empleadoRepository.findById(idEmpleado).orElseThrow(() -> new IllegalArgumentException("No se encontro el empleado"));
+
+        if (empleadoRepository.existsByDni(dto.getDni()) && empleado.getDni() != dto.getDni()) {
+            throw new IllegalArgumentException("Ya existe otro empleado con ese DNI");
+        }
+
+        String email = dto.getEmail().trim();
+
+        if (empleadoRepository.existsByEmail(email) && !empleado.getEmail().equalsIgnoreCase(email)) {
+            throw new IllegalArgumentException("Ya existe otro empleado con ese email");
+        }
+
+        empleado.setNombre(dto.getNombre().trim());
+        empleado.setApellido(dto.getApellido().trim());
+        empleado.setDni(dto.getDni());
+        empleado.setEmail(email);
+        empleado.setFechaNacimiento(dto.getFechaNacimiento());
+        empleado.setFechaIngreso(dto.getFechaIngreso());
+
+        if (empleado instanceof Cocinero cocinero) {
+            if (dto.getRolCocina() == null || dto.getRolCocina().isBlank()) {
+                throw new IllegalArgumentException("Debe seleccionar el rol de cocina");
+            }
+
+            cocinero.setRolCocina(RolCocina.valueOf(dto.getRolCocina().trim().toUpperCase()));
+
+        } else if (empleado instanceof Cajero cajero) {
+            if (dto.getTurno() == null || dto.getTurno().isBlank()) {
+                throw new IllegalArgumentException("Debe seleccionar el turno del cajero");
+            }
+            cajero.setTurno(Turno.valueOf(dto.getTurno().trim().toUpperCase()));
+        }
+
+        return empleadoRepository.save(empleado);
+    }
 
 }
