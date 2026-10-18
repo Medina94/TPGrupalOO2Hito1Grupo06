@@ -13,6 +13,8 @@ public interface UnidadVentaRepository
 
     boolean existsByCodigo(String codigo);
 
+    List<UnidadVenta> findByResponsable_IdEmpleado(Long idEmpleado);
+
     List<UnidadVenta>
             findByFestival_IdFestivalOrderByNombreComercialAsc(
                     Long idFestival
