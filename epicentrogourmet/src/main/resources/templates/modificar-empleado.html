@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Empleado - Epicentro Gourmet</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6fa;
+            color: #222;
+        }
+
+        .navbar {
+            background: #17258f;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            font-size: 22px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: 40px auto;
+            padding: 0 25px 50px;
+        }
+
+        .page-header {
+            margin-bottom: 28px;
+        }
+
+        .page-header h2 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #6d6d6d;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.07);
+        }
+
+        .card h3 {
+            font-size: 20px;
+            margin-bottom: 22px;
+            color: #17258f;
+        }
+
+        .section-note {
+            color: #777;
+            font-size: 13px;
+            margin-top: -12px;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 7px;
+            color: #333;
+        }
+
+        input,
+        select {
+            width: 100%;
+            height: 45px;
+            border: 1px solid #d7d9e0;
+            border-radius: 8px;
+            padding: 0 12px;
+            font-size: 14px;
+            background: #fafafa;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #243bff;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(36, 59, 255, 0.10);
+        }
+
+        .field-error {
+            color: #b42318;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .alert {
+            padding: 14px 16px;
+            border-radius: 9px;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .alert-error {
+            background: #fff0f0;
+            color: #b42318;
+            border: 1px solid #ffd0cc;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 22px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-secondary {
+            background: #e9eaf0;
+            color: #333;
+        }
+
+        .btn-primary {
+            background: #17258f;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #243bff;
+        }
+
+        @media (max-width: 750px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 16px 20px;
+            }
+
+            .container {
+                margin-top: 25px;
+            }
+
+            .card {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <h1>Epicentro Gourmet</h1>
+    <a th:href="@{/admin/empleados}">← Volver a empleados</a>
+</nav>
+
+<main class="container">
+
+    <div class="page-header">
+        <h2>Modificar Empleado</h2>
+        <p>Actualizá los datos del empleado seleccionado.</p>
+    </div>
+
+    <div th:if="${errorGeneral}"
+         class="alert alert-error"
+         th:text="${errorGeneral}">
+    </div>
+
+    <form th:action="@{/admin/empleados/{id}/modificar(id=${idEmpleado})}"
+          th:object="${registroEmpleado}"
+          method="post">
+
+        <section class="card">
+
+            <h3>Datos del empleado</h3>
+
+            <p class="section-note">
+                Modificá los datos personales y la información laboral.
+            </p>
+
+            <input type="hidden" th:field="*{tipoEmpleado}">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" th:field="*{nombre}" required>
+                    <span class="field-error"
+                          th:if="${#fields.hasErrors('nombre')}"
+                          th:errors="*{nombre}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" id="apellido" th:field="*{apellido}" required>
+                    <span class="field-error"
+                          th:if="${#fields.hasErrors('apellido')}"
+                          th:errors="*{apellido}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="dni">DNI</label>
+                    <input type="number" id="dni" th:field="*{dni}" required>
+                    <span class="field-error"
+                          th:if="${#fields.hasErrors('dni')}"
+                          th:errors="*{dni}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" th:field="*{email}" required>
+                    <span class="field-error"
+                          th:if="${#fields.hasErrors('email')}"
+                          th:errors="*{email}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="fechaNacimiento">Fecha de nacimiento</label>
+                    <input type="date" id="fechaNacimiento"
+                           th:field="*{fechaNacimiento}" required>
+                    <span class="field-error"
+                          th:if="${#fields.hasErrors('fechaNacimiento')}"
+                          th:errors="*{fechaNacimiento}"></span>
+                    <span class="field-error"
+                          th:if="${#fields.hasErrors('mayorDeEdad')}"
+                          th:errors="*{mayorDeEdad}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="fechaIngreso">Fecha de ingreso</label>
+                    <input type="date" id="fechaIngreso"
+                           th:field="*{fechaIngreso}" required>
+                    <span class="field-error"
+                          th:if="${#fields.hasErrors('fechaIngreso')}"
+                          th:errors="*{fechaIngreso}"></span>
+                </div>
+
+                <div th:if="${registroEmpleado.tipoEmpleado == 'COCINERO'}"
+                     class="form-group">
+                    <label for="rolCocina">Rol de cocina</label>
+                    <select id="rolCocina" th:field="*{rolCocina}" required>
+                        <option value="">Seleccionar...</option>
+                        <option th:each="rol : ${T(com.grupo06.epicentrogourmet.entity.RolCocina).values()}"
+                                th:value="${rol.name()}"
+                                th:text="${rol}"></option>
+                    </select>
+                </div>
+
+                <div th:if="${registroEmpleado.tipoEmpleado == 'CAJERO'}"
+                     class="form-group">
+                    <label for="turno">Turno</label>
+                    <select id="turno" th:field="*{turno}" required>
+                        <option value="">Seleccionar...</option>
+                        <option th:each="turno : ${T(com.grupo06.epicentrogourmet.entity.Turno).values()}"
+                                th:value="${turno.name()}"
+                                th:text="${turno}"></option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="actions">
+                <a th:href="@{/admin/empleados}"
+                   class="btn btn-secondary">Cancelar</a>
+
+                <button type="submit" class="btn btn-primary">
+                    Guardar cambios
+                </button>
+            </div>
+
+        </section>
+
+    </form>
+
+</main>
+
+</body>
+</html>
