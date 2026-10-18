@@ -255,7 +255,7 @@
                                       th:action="@{/admin/empleados/{id}/eliminar(id=${empleado.idEmpleado})}"
                                       method="post"
                                       style="margin: 0;"
-                                      onsubmit="return confirm('¿Seguro que queres dar de baja a este empleado?');">
+                                      onsubmit="return confirm('¿Estas seguro de dar de baja a este empleado? Esta accion desactivara su acceso al sistema');">
 
                                     <button type="submit" class="btn btn-outline">Dar de baja</button>
                                 </form>
