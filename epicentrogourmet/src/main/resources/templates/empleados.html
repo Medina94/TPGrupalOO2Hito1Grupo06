@@ -239,6 +239,32 @@
 
 
                         </td>
+
+                        <td>
+                            <span th:if="${empleado.activo}" class="badge">Activo
+                            </span><span th:unless="${empleado.activo}" class="badge">Inactivo</span>
+                        </td>
+
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <a th:href="@{/admin/empleados/{id}/modificar(id=${empleado.idEmpleado})}"
+                                   class="btn btn-outline">Modificar
+                                </a>
+
+                                <form th:if="${empleado.activo}"
+                                      th:action="@{/admin/empleados/{id}/eliminar(id=${empleado.idEmpleado})}"
+                                      method="post"
+                                      style="margin: 0;"
+                                      onsubmit="return confirm('¿Seguro que queres dar de baja a este empleado?');">
+
+                                    <button type="submit" class="btn btn-outline">Dar de baja</button>
+                                </form>
+
+                                <span th:unless="${empleado.activo}">Sin acciones disponibles</span>
+                            </div>
+                        </td>
+                    </tr>
+
                     </tr>
 
                     </tbody>
