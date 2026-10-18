@@ -28,7 +28,8 @@ public class Plato {
     @NotNull(message = "El precio de venta es obligatorio")
     @DecimalMin(
         value = "0.01",
-        message = "El precio de venta debe ser mayor a cero"
+        inclusive = true,
+        message = "El precio de venta no puede ser negativo"
     )
     private BigDecimal precioVenta;
 
