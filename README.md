@@ -163,6 +163,9 @@ Se implementaron además:
 | Registrar Unidad de Venta + Responsable | Valentina Ponzo | Finalizado | `CU-Registrar-Unidad-Responsable` | [PR #7](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/7) |
 | Consultar Unidades por Festival | Valentina Ponzo | Finalizado | `CU-Unidades-Por-Festival` | [PR #8](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/8) |
 | Calcular Canon de Unidad de Venta | Valentina Ponzo | Finalizado | `CU-Calcular-Canon` | [PR #10](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/10) |
+| Alta y Listado de Empleados | Alejandro Escalier | Finalizado | `CU-Alta-Listado-Empleados` | [PR #11](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/11) |
+| Modificación de Empleados | Alejandro Escalier | Finalizado | `COMPLETAR` | [PR #N](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/N) |
+| Baja lógica y Reactivación de Empleados | Alejandro Escalier | Finalizado | `COMPLETAR` | [PR #N](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/N) |
 
 > Cada nuevo Caso de Uso se desarrolla en una rama independiente y posteriormente se integra a `main` mediante Pull Request.
 
@@ -330,6 +333,95 @@ También se implementaron:
 
 ---
 
+### CU - Alta y Listado de Empleados
+
+Responsable: **Alejandro Escalier**
+
+Permite al Responsable registrar nuevos empleados y consultar los empleados cargados en el sistema.
+
+**Rutas:**
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| `GET` | `/responsable/empleados` | Listado de empleados |
+| `GET` | `/responsable/empleados/nuevo` | Formulario de alta |
+| `POST` | `/responsable/empleados/nuevo` | Registro del empleado |
+
+**Alta de empleado**
+
+Tipos de empleado soportados:
+
+- `Cocinero`, con rol de cocina: `COCINERO`, `AYUDANTE` o `LAVAPLATOS`.
+- `Cajero`, con turno: `MANANA` o `NOCHE`.
+
+Durante el registro, en una única operación transaccional, se crea:
+
+- El empleado (`Cocinero` o `Cajero`).
+- El usuario de acceso con rol `EMPLEADO`, vinculado al empleado.
+- La contraseña cifrada con BCrypt.
+
+Validaciones implementadas:
+
+- Nombre y apellido obligatorios.
+- DNI obligatorio, mayor a cero y no repetido.
+- Email obligatorio, con formato válido y no repetido.
+- Fecha de nacimiento obligatoria y anterior a la fecha actual.
+- Empleado mayor de 18 años.
+- Fecha de ingreso obligatoria y no futura.
+- Tipo de empleado obligatorio.
+- Rol de cocina obligatorio para `Cocinero` y turno obligatorio para `Cajero`.
+- Nombre de usuario obligatorio y único.
+- Contraseña obligatoria de al menos 6 caracteres.
+- Mensajes de error por campo y mensaje general ante datos duplicados.
+- Mensaje de confirmación al registrar correctamente.
+
+**Listado de empleados**
+
+- Tabla con todos los empleados registrados, ordenados por DNI.
+- Datos visibles: nombre y apellido, puesto (`Cajero` o `Cocinero`), DNI, email, fecha de ingreso y estado (`Activo` / `Inactivo`).
+- Contador de empleados registrados.
+- Botón de acceso rápido a "Nuevo Empleado".
+- Manejo del listado vacío.
+- Visualización de la Unidad de Venta del Responsable y acceso a su canon.
+
+---
+
+### CU - Reactivación de Empleados
+
+Responsable: **Alejandro Escalier**
+
+Permite volver a dar de alta a un empleado de la base de datos.
+
+**Rutas:**
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| `POST` | `/responsable/empleados/{id}/reactivar` | Reactivación |
+
+Funcionalidades:
+
+- **Reactivación:** el empleado y su usuario vuelven a quedar activos y se restablece el acceso.
+- En el listado, cada empleado muestra el botón que corresponde a su estado ("Dar de baja" si está activo, "Dar de alta" si está inactivo).
+- Ambas acciones piden confirmación antes de ejecutarse.
+- Mensajes de éxito o error luego de cada operación.
+- Operación transaccional: se actualizan el empleado y su usuario en conjunto.
+
+---
+
+### Navegación del Responsable
+
+Responsable: **Alejandro Escalier**
+
+Se incorporó el flujo de navegación para el rol `RESPONSABLE`:
+
+- Tras iniciar sesión, el Responsable es redirigido a `/responsable/empleados`; el resto de los roles va a la página de inicio.
+- Si un Responsable ingresa a `/`, también es redirigido a su panel.
+- Nuevo menú lateral para el Responsable ("Mi Unidad"), con acceso a Gestión de empleados y accesos futuros marcados como "Próximamente".
+- Se agregó el fragmento de menú lateral para el Empleado, con sus accesos futuros.
+- Reglas de seguridad: las rutas `/responsable/**` requieren el rol `RESPONSABLE`.
+
+---
+
 ## Roles del sistema
 
 La aplicación contempla tres tipos principales de usuario.
@@ -352,11 +444,13 @@ Funcionalidades actuales y previstas:
 
 Administra la Unidad de Venta que tiene asignada.
 
+Funcionalidades actuales:
+
+- Consultar su Unidad de Venta y su canon.
+- Gestionar empleados: alta, listado, modificación, baja lógica y reactivación.
+
 Funcionalidades previstas:
 
-- Consultar su Unidad de Venta.
-- Consultar canon.
-- Gestionar empleados.
 - Agregar platos.
 - Consultar Plato Estrella.
 - Liquidar haberes.
@@ -391,11 +485,11 @@ Se implementó una interfaz web administrativa con:
 - Diseño reutilizable mediante CSS.
 - Fragmentos Thymeleaf para los menús laterales.
 
-La estructura se encuentra preparada para incorporar posteriormente paneles específicos para:
+Los menús laterales se encuentran definidos para los tres roles:
 
 - Administrador.
-- Responsable.
-- Empleado.
+- Responsable (con acceso activo a la gestión de empleados).
+- Empleado (accesos previstos).
 
 ---
 
@@ -403,10 +497,6 @@ La estructura se encuentra preparada para incorporar posteriormente paneles espe
 
 Entre las funcionalidades restantes se encuentran:
 
-
-- Modificación de empleados.
-- Baja lógica de empleados.
-- Reactivación de empleados.
 - Filtros y búsqueda de empleados.
 - Consultar historial laboral del empleado.
 - Consultar Festival y Unidad actual del empleado.
@@ -422,7 +512,6 @@ Entre las funcionalidades restantes se encuentran:
 - Ranking de facturación.
 - Reporte de mayores cánones.
 - Cierre de caja del Cajero.
-- Navegación específica para Responsable.
 - Navegación específica para Empleado.
 
 ---
@@ -454,21 +543,3 @@ Ejemplo:
 export DB_USER='usuario_mysql'
 export DB_PASSWORD='password_mysql'
 ```
-
-
-| Alta y Listado de Empleados | Alejandro Escalier | Finalizado | `CU-Alta-Listado-Empleados` | [PR #11]([https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/N](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/11)) |
-
-### CU - Alta y Listado de Empleados
-
-Responsable: **Alejandro Escalier**
-
-Permite registrar empleados desde el panel de Administración y consultarlos.
-
-Funcionalidades:
-
-- Alta de `Cocinero` (con rol de cocina) y `Cajero` (con turno).
-- Creación del usuario con rol `EMPLEADO` y contraseña cifrada con BCrypt.
-- Validaciones: datos obligatorios, email válido, mayor de 18 años,
-  fecha de ingreso no futura, DNI, email y username únicos.
-- Listado de empleados y sección en el dashboard.
-- Acceso desde el menú lateral.
