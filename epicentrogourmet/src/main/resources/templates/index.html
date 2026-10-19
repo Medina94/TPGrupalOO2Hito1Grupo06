@@ -91,19 +91,13 @@
                     flex-wrap: wrap;
                     gap: 10px;
                 ">
-                <a th:href="@{/admin/unidades/nueva}"
-                   class="btn btn-primary">
+                    <a th:href="@{/admin/unidades/nueva}"
+                       class="btn btn-primary">
 
-                    + Nueva Unidad de Venta
+                        + Nueva Unidad de Venta
 
-                </a>
+                    </a>
 
-                <a th:href="@{/admin/empleados/nuevo}"
-                   class="btn btn-primary">
-
-                    + Nuevo Empleado
-
-                </a>
                 </div>
 
             </div>
@@ -286,12 +280,6 @@
                                        class="btn btn-secondary">
 
                                         Ver unidades
-
-                                    </a>
-                                    <a th:href="@{/admin/empleados}"
-                                       class="btn btn-secondary">
-
-                                        Ver empleados
 
                                     </a>
                                     <a th:href="@{/admin/festivales/{id}/costos(id=${festival.idFestival})}"

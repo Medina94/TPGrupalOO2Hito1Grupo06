@@ -191,7 +191,7 @@
 
 <nav class="navbar">
     <h1>Epicentro Gourmet</h1>
-    <a th:href="@{/admin/empleados}">← Volver a empleados</a>
+    <a th:href="@{/responsable/empleados}">← Volver a empleados</a>
 </nav>
 
 <main class="container">
@@ -206,7 +206,7 @@
          th:text="${errorGeneral}">
     </div>
 
-    <form th:action="@{/admin/empleados/{id}/modificar(id=${idEmpleado})}"
+    <form th:action="@{/responsable/empleados/{id}/modificar(id=${idEmpleado})}"
           th:object="${registroEmpleado}"
           method="post">
 
@@ -300,7 +300,7 @@
             </div>
 
             <div class="actions">
-                <a th:href="@{/admin/empleados}"
+                <a th:href="@{/responsable/empleados}"
                    class="btn btn-secondary">Cancelar</a>
 
                 <button type="submit" class="btn btn-primary">

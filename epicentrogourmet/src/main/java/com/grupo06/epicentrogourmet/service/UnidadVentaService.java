@@ -82,6 +82,29 @@ public class UnidadVentaService {
     }
 
 
+    // UNIDAD DE VENTA DEL RESPONSABLE LOGUEADO
+
+    @Transactional(readOnly = true)
+    public UnidadVenta buscarUnidadDelResponsable(String username) {
+
+        Usuario usuario = usuarioRepository
+                .findByUsername(username)
+                .orElse(null);
+
+        if (usuario == null || usuario.getEmpleado() == null) {
+            return null;
+        }
+
+        return unidadVentaRepository
+                .findByResponsable_IdEmpleado(
+                        usuario.getEmpleado().getIdEmpleado()
+                )
+                .stream()
+                .findFirst()
+                .orElse(null);
+    }
+
+
     // CALCULAR CANON
 
     @Transactional(readOnly = true)

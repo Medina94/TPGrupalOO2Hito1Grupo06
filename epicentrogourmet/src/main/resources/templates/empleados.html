@@ -8,7 +8,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Empleados - Epicentro Gourmet</title>
+    <title>Epicentro Gourmet</title>
 
     <link rel="stylesheet"
           th:href="@{/css/dashboard.css}">
@@ -55,7 +55,7 @@
 
 <div class="app-layout">
 
-    <div th:replace="~{fragments/sidebar :: adminSidebar}">
+    <div th:replace="~{fragments/sidebar :: responsableSidebar}">
     </div>
 
 
@@ -69,12 +69,13 @@
         <div class="page-header">
 
             <div class="page-title">
-                <h1>Empleados</h1>
-                <p>Consultá los empleados registrados en Epicentro Gourmet.</p>
+                <h1>Responsable</h1>
+                <p>Sistema de consultas para los responsables de Epicentro Gourmet.</p>
             </div>
             <div class="actions">
 
-                <a th:href="@{/admin/empleados/nuevo}"
+                <a th:if="${esResponsable}"
+                   th:href="@{/responsable/empleados/nuevo}"
                    class="btn btn-primary">
 
                     + Nuevo Empleado
@@ -116,24 +117,225 @@
 
 
         <!-- =========================
-             INFORMACIÓN DEL FESTIVAL
+             INFORMACIÓN
              ========================= -->
 
         <section class="stats-grid">
+
             <div class="stat-card">
+
                 <div class="stat-label">
-                    Empleados registrados
+                    Gestión de Empleados
                 </div>
-                <div class="stat-value"
-                     th:text="${#lists.size(empleados)}">
-                    0
+
+                <div class="stat-value">
+                    👥
                 </div>
+
+                <div class="stat-description">
+                    Registro y consulta de Empleados
+                </div>
+
             </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Gestión de Platos
+                </div>
+
+                <div class="stat-value">
+                    🍽️
+                </div>
+
+                <div class="stat-description">
+                    Registro y consulta de Platos
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Reportes
+                </div>
+
+                <div class="stat-value">
+                    📊
+                </div>
+
+                <div class="stat-description">
+                    Calculo de rentabilidad y reporte de recaudacion
+                </div>
+
+            </div>
+
         </section>
 
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>Unidad de venta</h2>
+
+
+            </div>
+            <!-- HAY UNIDADES -->
+
+            <div class="table-responsive"
+                 th:if="${unidad != null}">
+
+                <table>
+                    <thead>
+                    <tr>
+
+                        <th>Nombre comercial</th>
+
+                        <th>Tipo</th>
+
+                        <th>Código</th>
+
+                        <th>Superficie</th>
+
+                        <th>Responsable</th>
+
+                        <th>Acciones</th>
+
+                    </tr>
+                    </thead>
+
+
+
+                    <tbody>
+
+                    <tr th:if="unidad != null">
+
+
+                        <!-- NOMBRE -->
+
+                        <td>
+
+                            <strong>
+                                <span th:text="${unidad.nombreComercial}">Unidad</span>
+
+                            </strong>
+
+                        </td>
+
+
+                        <!-- TIPO -->
+
+                        <td>
+
+                            <span class="badge"
+                                  th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.FoodTruck)}">
+
+                                Food Truck
+
+                            </span>
+
+
+                            <span class="badge"
+                                  th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.PuestoDesarmable)}">
+
+                                Puesto Desarmable
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- CÓDIGO -->
+
+                        <td th:text="${unidad.codigo}">
+
+                            CODIGO
+
+                        </td>
+
+
+                        <!-- SUPERFICIE -->
+
+                        <td>
+
+                            <span th:text="${unidad.superficie}">
+                                0
+                            </span>
+
+                            m²
+
+                        </td>
+
+
+                        <!-- RESPONSABLE -->
+
+                        <td>
+
+                            <span th:if="${unidad.responsable != null}">
+
+                                <span
+                                        th:text="${unidad.responsable.nombre}">
+                                    Nombre
+                                </span>
+
+                                <span
+                                        th:text="${unidad.responsable.apellido}">
+                                    Apellido
+                                </span>
+
+                            </span>
+
+
+                            <span th:if="${unidad.responsable == null}">
+                                Sin responsable
+                            </span>
+
+                        </td>
+
+
+                        <!-- ACCIONES -->
+
+                        <td>
+
+                            <div class="actions">
+
+                                <a th:href="@{/responsable/mi-unidad/canon}"
+                                   class="btn btn-primary">
+
+                                    Ver canon
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+
+            </div>
+
+
+            <!-- NO HAY UNIDADES -->
+
+            <div th:if="${unidad == null}" style="color: #6b7280; font-size: 14px;">
+
+                <strong>
+                    No hay Unidades de Venta registradas.
+                </strong>
+
+            </div>
+
+        </section>
 
         <!-- =========================
-             TABLA DE UNIDADES
+             TABLA DE EMPLEADOS
              ========================= -->
 
         <section class="panel">
@@ -169,11 +371,13 @@
 
                         <th>DNI</th>
 
-                        <th>Sueldo</th>
+                        <th>Email</th>
 
                         <th>Ingreso</th>
 
-                        <th>Acciones</th>
+                        <th>Estado</th>
+
+                        <th th:if="${esResponsable}">Acciones</th>
 
                     </tr>
 
@@ -241,18 +445,18 @@
                         </td>
 
                         <td>
-                            <span th:if="${empleado.activo}" class="badge">Activo
-                            </span><span th:unless="${empleado.activo}" class="badge">Inactivo</span>
+                            <span th:if="${empleado.activo}" class="badge">Activo</span>
+                            <span th:unless="${empleado.activo}" class="badge">Inactivo</span>
                         </td>
 
-                        <td>
+                        <td th:if="${esResponsable}">
                             <div style="display: flex; align-items: center; gap: 10px;">
-                                <a th:href="@{/admin/empleados/{id}/modificar(id=${empleado.idEmpleado})}"
+                                <a th:href="@{/responsable/empleados/{id}/modificar(id=${empleado.idEmpleado})}"
                                    class="btn btn-outline">Modificar
                                 </a>
 
                                 <form th:if="${empleado.activo}"
-                                      th:action="@{/admin/empleados/{id}/eliminar(id=${empleado.idEmpleado})}"
+                                      th:action="@{/responsable/empleados/{id}/eliminar(id=${empleado.idEmpleado})}"
                                       method="post"
                                       style="margin: 0;"
                                       onsubmit="return confirm('¿Estas seguro de dar de baja a este empleado? Esta accion desactivara su acceso al sistema');">
@@ -260,7 +464,14 @@
                                     <button type="submit" class="btn btn-outline">Dar de baja</button>
                                 </form>
 
-                                <span th:unless="${empleado.activo}">Sin acciones disponibles</span>
+                                <form th:unless="${empleado.activo}"
+                                      th:action="@{/responsable/empleados/{id}/reactivar(id=${empleado.idEmpleado})}"
+                                      method="post"
+                                      style="margin: 0;"
+                                      onsubmit="return confirm('¿Estas seguro de dar de alta nuevamente a este empleado? Se restablecera su acceso al sistema');">
+
+                                    <button type="submit" class="btn btn-primary">Dar de alta</button>
+                                </form>
                             </div>
                         </td>
                     </tr>
@@ -285,9 +496,9 @@
 
                 Todavía no hay empleados cargados.
 
-                <div style="margin-top: 18px;">
+                <div style="margin-top: 18px;" th:if="${esResponsable}">
 
-                    <a th:href="@{/admin/empleados/nuevo}"
+                    <a th:href="@{/responsable/empleados/nuevo}"
                        class="btn btn-primary">
 
                         + Registrar Empleado

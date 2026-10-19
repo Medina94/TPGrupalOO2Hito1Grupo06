@@ -24,6 +24,25 @@ public class HomeController {
             Model model,
             Authentication authentication) {
 
+        if (authentication != null) {
+
+            boolean esResponsable =
+                    authentication
+                            .getAuthorities()
+                            .stream()
+                            .anyMatch(authority ->
+                                    authority
+                                            .getAuthority()
+                                            .equals(
+                                                    "ROLE_RESPONSABLE"
+                                            )
+                            );
+
+            if (esResponsable) {
+                return "redirect:/responsable/empleados";
+            }
+        }
+
         List<Festival> festivales =
                 festivalService.listarFestivales();
 
