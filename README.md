@@ -164,8 +164,8 @@ Se implementaron además:
 | Consultar Unidades por Festival | Valentina Ponzo | Finalizado | `CU-Unidades-Por-Festival` | [PR #8](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/8) |
 | Calcular Canon de Unidad de Venta | Valentina Ponzo | Finalizado | `CU-Calcular-Canon` | [PR #10](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/10) |
 | Alta y Listado de Empleados | Alejandro Escalier | Finalizado | `CU-Alta-Listado-Empleados` | [PR #11](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/11) |
-| Modificación de Empleados | Alejandro Escalier | Finalizado | `COMPLETAR` | [PR #N](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/N) |
-| Baja lógica y Reactivación de Empleados | Alejandro Escalier | Finalizado | `COMPLETAR` | [PR #N](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/N) |
+
+| Reactivación de Empleados | Alejandro Escalier | Finalizado | `CU-Reactivacion-Empleados` | [PR #N](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/18) |
 
 > Cada nuevo Caso de Uso se desarrolla en una rama independiente y posteriormente se integra a `main` mediante Pull Request.
 
