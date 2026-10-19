@@ -202,6 +202,17 @@ public class EmpleadoService {
         usuario.setActivo(false);
     }
 
+    @Transactional
+    public void reactivarEmpleado(Long idEmpleado) {
+        Empleado empleado = empleadoRepository.findById(idEmpleado)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontro el empleado"));
+        empleado.setActivo(true);
+
+        Usuario usuario = usuarioRepository.findAll().stream().filter(u -> u.getEmpleado() != null && u.getEmpleado().getIdEmpleado().equals(idEmpleado)).findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No se encontro el usuario asociado al empleado"));
+        usuario.setActivo(true);
+    }
+
     @Transactional(readOnly = true)
     public Empleado buscarEmpleadoPorId(Long idEmpleado) {
         return empleadoRepository.findById(idEmpleado).orElseThrow(() -> new IllegalArgumentException("No se encontro el empleado"));

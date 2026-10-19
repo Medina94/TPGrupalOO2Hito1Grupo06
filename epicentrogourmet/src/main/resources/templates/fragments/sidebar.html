@@ -47,19 +47,6 @@
 
 
         <div class="sidebar-section">
-            PERSONAL
-        </div>
-
-        <div >
-            <a th:href="@{/admin/empleados}"
-               class="sidebar-link">
-            <span class="sidebar-icon">👥</span>
-                Empleados
-            </a>
-        </div>
-
-
-        <div class="sidebar-section">
             REPORTES
         </div>
 
@@ -143,14 +130,11 @@
             EMPLEADOS
         </div>
 
-        <div class="sidebar-link disabled">
+        <a th:href="@{/responsable/empleados}"
+           class="sidebar-link">
             <span class="sidebar-icon">👥</span>
-
-            <span class="sidebar-text">
-                Gestión de empleados
-                <small>Próximamente</small>
-            </span>
-        </div>
+            Gestión de empleados
+        </a>
 
         <div class="sidebar-link disabled">
             <span class="sidebar-icon">💵</span>

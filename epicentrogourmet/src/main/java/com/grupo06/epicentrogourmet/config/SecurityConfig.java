@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 public class SecurityConfig {
@@ -16,7 +17,23 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+    public AuthenticationSuccessHandler loginSuccessHandler() {
+        return (request, response, authentication) -> {
+
+            boolean esResponsable = authentication
+                    .getAuthorities()
+                    .stream()
+                    .anyMatch(authority ->
+                            authority.getAuthority().equals("ROLE_RESPONSABLE"));
+
+            String destino = esResponsable ? "/responsable/empleados" : "/";
+
+            response.sendRedirect(request.getContextPath() + destino);
+        };
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationSuccessHandler loginSuccessHandler)
             throws Exception {
 
         http
@@ -45,7 +62,7 @@ public class SecurityConfig {
             .formLogin(form -> form
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/", true)
+                    .successHandler(loginSuccessHandler)
                 .failureUrl("/login?error")
                 .permitAll()
             )
