@@ -269,8 +269,6 @@
     <nav class="sidebar-nav">
 
 
-        <!-- INICIO -->
-
         <a th:href="@{/empleado}"
            class="sidebar-link">
 
@@ -283,14 +281,10 @@
         </a>
 
 
-        <!-- TRABAJO -->
-
         <div class="sidebar-section">
             TRABAJO
         </div>
 
-
-        <!-- FESTIVAL Y UNIDAD ACTUAL -->
 
         <a th:href="@{/empleado/actual}"
            class="sidebar-link">
@@ -304,26 +298,17 @@
         </a>
 
 
-        <!-- HISTORIAL -->
-
-        <div class="sidebar-link disabled">
+        <a th:href="@{/empleado/historial}"
+           class="sidebar-link">
 
             <span class="sidebar-icon">📅</span>
 
             <span class="sidebar-text">
-
                 Historial laboral
-
-                <small>
-                    Próximamente
-                </small>
-
             </span>
 
-        </div>
+        </a>
 
-
-        <!-- HABERES -->
 
         <div class="sidebar-section">
             HABERES
@@ -358,8 +343,6 @@
 
         </div>
 
-
-        <!-- CAJERO -->
 
         <div class="sidebar-section">
             CAJERO

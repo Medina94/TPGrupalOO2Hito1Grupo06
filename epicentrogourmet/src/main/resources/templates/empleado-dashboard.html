@@ -9,7 +9,9 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Panel del Empleado - Epicentro Gourmet</title>
+    <title>
+        Panel del Empleado - Epicentro Gourmet
+    </title>
 
     <link rel="stylesheet"
           th:href="@{/css/dashboard.css}">
@@ -19,24 +21,25 @@
 <body>
 
 
-<!-- =====================================================
-     BARRA SUPERIOR
-     ===================================================== -->
-
 <header class="topbar">
 
     <div class="brand">
         Epicentro Gourmet
     </div>
 
+
     <div class="topbar-user">
 
         <span>
+
             Usuario:
+
             <strong th:text="${username}">
                 empleado
             </strong>
+
         </span>
+
 
         <form th:action="@{/logout}"
               method="post">
@@ -55,27 +58,17 @@
 </header>
 
 
-<!-- =====================================================
-     LAYOUT
-     ===================================================== -->
-
 <div class="app-layout">
 
-
-    <!-- SIDEBAR -->
 
     <div th:replace="~{fragments/sidebar :: empleadoSidebar}">
     </div>
 
 
-    <!-- CONTENIDO -->
-
     <main class="main-content">
 
 
-        <!-- =================================================
-             ENCABEZADO
-             ================================================= -->
+        <!-- ENCABEZADO -->
 
         <div class="page-header">
 
@@ -95,14 +88,10 @@
         </div>
 
 
-        <!-- =================================================
-             DATOS GENERALES
-             ================================================= -->
+        <!-- DATOS GENERALES -->
 
         <section class="stats-grid">
 
-
-            <!-- UNIDAD -->
 
             <div class="stat-card">
 
@@ -120,9 +109,7 @@
 
                 <div class="stat-value"
                      th:if="${unidad == null}">
-
                     -
-
                 </div>
 
                 <div class="stat-description"
@@ -146,8 +133,6 @@
             </div>
 
 
-            <!-- FESTIVAL -->
-
             <div class="stat-card">
 
                 <div class="stat-label">
@@ -164,9 +149,7 @@
 
                 <div class="stat-value"
                      th:if="${festival == null}">
-
                     -
-
                 </div>
 
                 <div class="stat-description"
@@ -187,8 +170,6 @@
             </div>
 
 
-            <!-- PUESTO -->
-
             <div class="stat-card">
 
                 <div class="stat-label">
@@ -198,6 +179,7 @@
                 <div class="stat-value">
                     👤
                 </div>
+
 
                 <div class="stat-description"
                      th:if="${empleado instanceof T(com.grupo06.epicentrogourmet.entity.Cocinero)}">
@@ -222,22 +204,12 @@
 
                 </div>
 
-
-                <div class="stat-description"
-                     th:if="${empleado == null}">
-
-                    Sin datos de empleado.
-
-                </div>
-
             </div>
 
         </section>
 
 
-        <!-- =================================================
-             MIS DATOS
-             ================================================= -->
+        <!-- MIS DATOS -->
 
         <section class="panel"
                  th:if="${empleado != null}">
@@ -296,16 +268,13 @@
 
                         </td>
 
-
                         <td th:text="${empleado.dni}">
                             DNI
                         </td>
 
-
                         <td th:text="${empleado.email}">
                             Email
                         </td>
-
 
                         <td th:text="${#temporals.format(
                                 empleado.fechaIngreso,
@@ -327,9 +296,7 @@
         </section>
 
 
-        <!-- =================================================
-             MI UNIDAD
-             ================================================= -->
+        <!-- MI UNIDAD -->
 
         <section class="panel"
                  th:if="${unidad != null}">
@@ -370,9 +337,6 @@
 
                     <tr>
 
-
-                        <!-- NOMBRE -->
-
                         <td>
 
                             <strong th:text="${unidad.nombreComercial}">
@@ -381,8 +345,6 @@
 
                         </td>
 
-
-                        <!-- TIPO -->
 
                         <td>
 
@@ -404,14 +366,10 @@
                         </td>
 
 
-                        <!-- CÓDIGO -->
-
                         <td th:text="${unidad.codigo}">
                             CODIGO
                         </td>
 
-
-                        <!-- FESTIVAL -->
 
                         <td>
 
@@ -422,17 +380,8 @@
 
                             </span>
 
-
-                            <span th:if="${unidad.festival == null}">
-
-                                Sin Festival
-
-                            </span>
-
                         </td>
 
-
-                        <!-- RESPONSABLE -->
 
                         <td>
 
@@ -445,13 +394,6 @@
                                 <span th:text="${unidad.responsable.apellido}">
                                     Apellido
                                 </span>
-
-                            </span>
-
-
-                            <span th:if="${unidad.responsable == null}">
-
-                                Sin responsable
 
                             </span>
 
@@ -468,30 +410,7 @@
         </section>
 
 
-        <!-- =================================================
-             SIN UNIDAD
-             ================================================= -->
-
-        <section class="panel"
-                 th:if="${unidad == null}">
-
-            <div class="empty-state">
-
-                <strong>
-                    No tenés una Unidad de Venta asignada.
-                </strong>
-
-                Consultá con el Responsable de tu Unidad
-                para revisar tu asignación.
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             ACCESOS RÁPIDOS
-             ================================================= -->
+        <!-- ACTIVIDAD -->
 
         <section class="panel">
 
@@ -511,7 +430,40 @@
             <div class="stats-grid">
 
 
-                <!-- HISTORIAL LABORAL -->
+                <!-- FESTIVAL Y UNIDAD ACTUAL -->
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Festival y Unidad actual
+                    </div>
+
+                    <div class="stat-value">
+                        🏪
+                    </div>
+
+                    <div class="stat-description">
+
+                        Consultá tu Festival y
+                        Unidad de Venta actual.
+
+                    </div>
+
+                    <div style="margin-top: 18px;">
+
+                        <a th:href="@{/empleado/actual}"
+                           class="btn btn-primary">
+
+                            Ver información actual
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- HISTORIAL -->
 
                 <div class="stat-card">
 
@@ -532,22 +484,19 @@
 
                     <div style="margin-top: 18px;">
 
-                        <button type="button"
-                                class="btn btn-outline"
-                                disabled>
+                        <a th:href="@{/empleado/historial}"
+                           class="btn btn-primary">
 
-                            Próximamente
+                            Ver historial
 
-                        </button>
+                        </a>
 
                     </div>
 
                 </div>
 
 
-                <!-- =================================================
-                     MIS SUELDOS - IMPLEMENTADO
-                     ================================================= -->
+                <!-- SUELDOS -->
 
                 <div class="stat-card">
 
@@ -613,9 +562,7 @@
                 </div>
 
 
-                <!-- =================================================
-                     CIERRE DE CAJA - SOLO CAJEROS
-                     ================================================= -->
+                <!-- CIERRE DE CAJA -->
 
                 <div class="stat-card"
                      th:if="${empleado instanceof T(com.grupo06.epicentrogourmet.entity.Cajero)}">
@@ -630,8 +577,8 @@
 
                     <div class="stat-description">
 
-                        Realizá el cierre diario de caja
-                        de tu Unidad de Venta.
+                        Realizá el cierre diario
+                        de caja de tu Unidad.
 
                     </div>
 
@@ -648,6 +595,7 @@
                     </div>
 
                 </div>
+
 
             </div>
 
