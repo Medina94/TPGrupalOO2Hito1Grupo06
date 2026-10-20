@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -104,6 +105,28 @@ public class UnidadVentaService {
                 .orElse(null);
     }
 
+    @Transactional(readOnly = true)
+    public UnidadVenta buscarUnidadDelEmpleado(String username) {
+
+        Usuario usuario = usuarioRepository
+                .findByUsername(username)
+                .orElse(null);
+
+        if (usuario == null || usuario.getEmpleado() == null) {
+            return null;
+        }
+
+        return asignacionEmpleadoRepository
+                .findByEmpleado_IdEmpleadoAndFechaHastaIsNullOrderByFechaDesdeDesc(
+                        usuario.getEmpleado().getIdEmpleado()
+                )
+                .stream()
+                .findFirst()
+                .map(asignacion ->
+                        (UnidadVenta) Hibernate.unproxy(asignacion.getUnidadVenta())
+                )
+                .orElse(null);
+    }
 
     // CALCULAR CANON
 
@@ -416,4 +439,6 @@ public class UnidadVentaService {
 
         return hoy;
     }
+
+
 }

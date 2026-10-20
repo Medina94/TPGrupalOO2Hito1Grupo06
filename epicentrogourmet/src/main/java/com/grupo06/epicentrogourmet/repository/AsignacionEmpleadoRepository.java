@@ -16,4 +16,6 @@ public interface AsignacionEmpleadoRepository
     List<AsignacionEmpleado> findByEmpleado(Empleado empleado);
 
     List<AsignacionEmpleado> findByUnidadVenta(UnidadVenta unidadVenta);
+
+    List<AsignacionEmpleado> findByEmpleado_IdEmpleadoAndFechaHastaIsNullOrderByFechaDesdeDesc(Long idEmpleado);
 }
