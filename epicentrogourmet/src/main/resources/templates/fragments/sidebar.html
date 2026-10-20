@@ -6,7 +6,7 @@
 
 
 <!-- =====================================================
-     SIDEBAR ADMINISTRADOR
+     ADMINISTRADOR
      ===================================================== -->
 
 <aside th:fragment="adminSidebar"
@@ -22,10 +22,7 @@
            class="sidebar-link">
 
             <span class="sidebar-icon">⌂</span>
-
-            <span class="sidebar-text">
-                Inicio
-            </span>
+            <span class="sidebar-text">Inicio</span>
 
         </a>
 
@@ -39,10 +36,7 @@
            class="sidebar-link">
 
             <span class="sidebar-icon">🎪</span>
-
-            <span class="sidebar-text">
-                Festivales
-            </span>
+            <span class="sidebar-text">Festivales</span>
 
         </a>
 
@@ -51,10 +45,7 @@
            class="sidebar-link">
 
             <span class="sidebar-icon">🏪</span>
-
-            <span class="sidebar-text">
-                Nueva Unidad
-            </span>
+            <span class="sidebar-text">Nueva Unidad</span>
 
         </a>
 
@@ -63,10 +54,7 @@
            class="sidebar-link">
 
             <span class="sidebar-icon">💲</span>
-
-            <span class="sidebar-text">
-                Costos de Festivales
-            </span>
+            <span class="sidebar-text">Costos de Festivales</span>
 
         </a>
 
@@ -133,7 +121,7 @@
 
 
 <!-- =====================================================
-     SIDEBAR RESPONSABLE
+     RESPONSABLE
      ===================================================== -->
 
 <aside th:fragment="responsableSidebar"
@@ -149,10 +137,7 @@
            class="sidebar-link">
 
             <span class="sidebar-icon">⌂</span>
-
-            <span class="sidebar-text">
-                Inicio
-            </span>
+            <span class="sidebar-text">Inicio</span>
 
         </a>
 
@@ -166,10 +151,7 @@
            class="sidebar-link">
 
             <span class="sidebar-icon">🏪</span>
-
-            <span class="sidebar-text">
-                Mi Unidad
-            </span>
+            <span class="sidebar-text">Mi Unidad</span>
 
         </a>
 
@@ -178,10 +160,7 @@
            class="sidebar-link">
 
             <span class="sidebar-icon">💰</span>
-
-            <span class="sidebar-text">
-                Consultar Canon
-            </span>
+            <span class="sidebar-text">Consultar Canon</span>
 
         </a>
 
@@ -277,7 +256,7 @@
 
 
 <!-- =====================================================
-     SIDEBAR EMPLEADO
+     EMPLEADO
      ===================================================== -->
 
 <aside th:fragment="empleadoSidebar"
@@ -304,31 +283,28 @@
         </a>
 
 
-        <!-- =================================================
-             TRABAJO
-             ================================================= -->
+        <!-- TRABAJO -->
 
         <div class="sidebar-section">
             TRABAJO
         </div>
 
 
-        <div class="sidebar-link disabled">
+        <!-- FESTIVAL Y UNIDAD ACTUAL -->
+
+        <a th:href="@{/empleado/actual}"
+           class="sidebar-link">
 
             <span class="sidebar-icon">🏪</span>
 
             <span class="sidebar-text">
-
                 Festival y Unidad actual
-
-                <small>
-                    Próximamente
-                </small>
-
             </span>
 
-        </div>
+        </a>
 
+
+        <!-- HISTORIAL -->
 
         <div class="sidebar-link disabled">
 
@@ -347,9 +323,7 @@
         </div>
 
 
-        <!-- =================================================
-             HABERES
-             ================================================= -->
+        <!-- HABERES -->
 
         <div class="sidebar-section">
             HABERES
@@ -385,9 +359,7 @@
         </div>
 
 
-        <!-- =================================================
-             CAJERO
-             ================================================= -->
+        <!-- CAJERO -->
 
         <div class="sidebar-section">
             CAJERO
