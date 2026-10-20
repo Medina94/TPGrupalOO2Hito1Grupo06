@@ -171,6 +171,7 @@ Se implementaron además:
 | Consultar sueldo por Festival | Valentina Ponzo | Finalizado | `CU-Consultar-Sueldo-Festival` | [PR #21](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/21) |
 | Consultar Festival y Unidad actual | Valentina Ponzo | Finalizado | `CU-Festival-Unidad-Actual-Empleado` | [PR #22](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/22) |
 | Consultar historial laboral | Valentina Ponzo | Finalizado | `CU-Historial-Laboral-Empleado` | [PR #23](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/23) |
+| Consulta de Empleados con filtros | Alejandro Escalier | Finalizado | `CU-Consulta-Empleados` | [PR #26] (https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/26)|
 
 > Cada nuevo Caso de Uso se desarrolla en una rama independiente y posteriormente se integra a `main` mediante Pull Request.
 
@@ -655,10 +656,55 @@ Para `Lucía Fernández` se visualizó correctamente:
 
 ---
 
-### Navegación y redirección según rol
+### CU - Consulta de Empleados con filtros
+ 
+Responsable: **Alejandro Escalier**
+ 
+Permite al Responsable buscar empleados de su Unidad de Venta por nombre, DNI o fecha de ingreso. El panel de filtros reemplaza al panel de Unidad de Venta en la vista `empleados.html`.
+ 
+**Rutas:**
+ 
+| Método | Ruta | Descripción |
+|---|---|---|
+| `GET` | `/responsable/empleados` | Listado de empleados, con filtros opcionales por parámetros |
+ 
+**Parámetros (todos opcionales y combinables):**
+ 
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `nombre` | Texto | Nombre o apellido, búsqueda parcial |
+| `dni` | Texto numérico | DNI, búsqueda parcial |
+| `fechaDesde` | Fecha (`yyyy-MM-dd`) | Fecha de ingreso desde, inclusive |
+| `fechaHasta` | Fecha (`yyyy-MM-dd`) | Fecha de ingreso hasta, inclusive |
+ 
+Funcionalidades:
+ 
+- Panel "Consultar empleados" con campos de nombre o apellido, DNI e ingreso desde/hasta.
+- Botón **Buscar** y botón **Limpiar filtros**.
+- Los filtros se combinan entre sí (se aplican todos los que estén completos).
+- Búsqueda de nombre sin distinguir mayúsculas ni tildes (`perez` encuentra `Pérez`).
+- Búsqueda de nombre sobre nombre y apellido juntos (`juan perez`).
+- Búsqueda de DNI por coincidencia parcial (`4012` encuentra `40123456`).
+- Filtro por rango de fecha de ingreso; se puede completar solo una de las dos fechas.
+- Los valores ingresados se mantienen cargados luego de buscar.
+- La consulta se hace por `GET`, por lo que puede recargarse o guardarse como favorito.
+- El título de la tabla cambia a "Resultados de la búsqueda" cuando hay filtros aplicados.
+- Mensaje específico cuando ningún empleado coincide con los filtros.
+- Con filtros activos se oculta el botón "Registrar Empleado" del estado vacío.
+- Los resultados mantienen las acciones de Modificar, Dar de baja y Dar de alta.
+Validaciones:
+ 
+- Si la fecha "desde" es posterior a la fecha "hasta", se informa el error y se ignoran ambas fechas.
+- El filtrado se realiza solo sobre empleados de la Unidad de Venta del Responsable autenticado; no se pueden consultar empleados de otras Unidades.
+- El Responsable no aparece en los resultados.
+Implementación:
+ 
+- `EmpleadoController.empleadoInicio`: recibe los parámetros con `@RequestParam` y `@DateTimeFormat`, y devuelve a la vista los valores del filtro (`filtroNombre`, `filtroDni`, `filtroDesde`, `filtroHasta`) y el indicador `hayFiltros`.
+- `EmpleadoService.buscarEmpleados`: filtra sobre `listarEmpleados()`, que ya limita los empleados a la Unidad del Responsable.
+- `EmpleadoService.normalizar`: normaliza el texto (sin tildes y en minúsculas) para comparar nombres.
+- `empleados.html`: se reemplazó el panel de Unidad de Venta por el formulario de consulta.
 
-Implementación base: **Alejandro Escalier**.  
-Integraciones posteriores de Responsable y Empleado: **Valentina Ponzo**.
+### Navegación y redirección según rol
 
 Flujo actual:
 
