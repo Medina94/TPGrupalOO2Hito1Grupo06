@@ -115,222 +115,56 @@
 
         </div>
 
-
         <!-- =========================
-             INFORMACIÓN
+             CONSULTA DE EMPLEADOS
              ========================= -->
-
-        <section class="stats-grid">
-
-            <div class="stat-card">
-
-                <div class="stat-label">
-                    Gestión de Empleados
-                </div>
-
-                <div class="stat-value">
-                    👥
-                </div>
-
-                <div class="stat-description">
-                    Registro y consulta de Empleados
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-label">
-                    Gestión de Platos
-                </div>
-
-                <div class="stat-value">
-                    🍽️
-                </div>
-
-                <div class="stat-description">
-                    Registro y consulta de Platos
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-label">
-                    Reportes
-                </div>
-
-                <div class="stat-value">
-                    📊
-                </div>
-
-                <div class="stat-description">
-                    Calculo de rentabilidad y reporte de recaudacion
-                </div>
-
-            </div>
-
-        </section>
 
         <section class="panel">
 
             <div class="panel-header">
-
-                <h2>Unidad de venta</h2>
-
-
-            </div>
-            <!-- HAY UNIDADES -->
-
-            <div class="table-responsive"
-                 th:if="${unidad != null}">
-
-                <table>
-                    <thead>
-                    <tr>
-
-                        <th>Nombre comercial</th>
-
-                        <th>Tipo</th>
-
-                        <th>Código</th>
-
-                        <th>Superficie</th>
-
-                        <th>Responsable</th>
-
-                        <th>Acciones</th>
-
-                    </tr>
-                    </thead>
-
-
-
-                    <tbody>
-
-                    <tr th:if="unidad != null">
-
-
-                        <!-- NOMBRE -->
-
-                        <td>
-
-                            <strong>
-                                <span th:text="${unidad.nombreComercial}">Unidad</span>
-
-                            </strong>
-
-                        </td>
-
-
-                        <!-- TIPO -->
-
-                        <td>
-
-                            <span class="badge"
-                                  th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.FoodTruck)}">
-
-                                Food Truck
-
-                            </span>
-
-
-                            <span class="badge"
-                                  th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.PuestoDesarmable)}">
-
-                                Puesto Desarmable
-
-                            </span>
-
-                        </td>
-
-
-                        <!-- CÓDIGO -->
-
-                        <td th:text="${unidad.codigo}">
-
-                            CODIGO
-
-                        </td>
-
-
-                        <!-- SUPERFICIE -->
-
-                        <td>
-
-                            <span th:text="${unidad.superficie}">
-                                0
-                            </span>
-
-                            m²
-
-                        </td>
-
-
-                        <!-- RESPONSABLE -->
-
-                        <td>
-
-                            <span th:if="${unidad.responsable != null}">
-
-                                <span
-                                        th:text="${unidad.responsable.nombre}">
-                                    Nombre
-                                </span>
-
-                                <span
-                                        th:text="${unidad.responsable.apellido}">
-                                    Apellido
-                                </span>
-
-                            </span>
-
-
-                            <span th:if="${unidad.responsable == null}">
-                                Sin responsable
-                            </span>
-
-                        </td>
-
-
-                        <!-- ACCIONES -->
-
-                        <td>
-
-                            <div class="actions">
-
-                                <a th:href="@{/responsable/mi-unidad/canon}"
-                                   class="btn btn-primary">
-
-                                    Ver canon
-
-                                </a>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
-                    </tbody>
-
-                </table>
-
-
+                <h2>Consultar empleados</h2>
             </div>
 
+            <form th:action="@{/responsable/empleados}" method="get">
 
-            <!-- NO HAY UNIDADES -->
+                <div class="form-grid">
 
-            <div th:if="${unidad == null}" style="color: #6b7280; font-size: 14px;">
+                    <div class="form-field">
+                        <label for="nombre">Nombre o apellido</label>
+                        <input type="text" id="nombre" name="nombre"
+                               placeholder="Ej: Juan Pérez"
+                               th:value="${filtroNombre}">
+                    </div>
 
-                <strong>
-                    No hay Unidades de Venta registradas.
-                </strong>
+                    <div class="form-field">
+                        <label for="dni">DNI</label>
+                        <input type="text" id="dni" name="dni"
+                               inputmode="numeric" pattern="[0-9]*"
+                               placeholder="Ej: 40123456"
+                               th:value="${filtroDni}">
+                    </div>
 
-            </div>
+                    <div class="form-field">
+                        <label for="fechaDesde">Ingreso desde</label>
+                        <input type="date" id="fechaDesde" name="fechaDesde"
+                               th:value="${filtroDesde}">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="fechaHasta">Ingreso hasta</label>
+                        <input type="date" id="fechaHasta" name="fechaHasta"
+                               th:value="${filtroHasta}">
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <a th:href="@{/responsable/empleados}"
+                       class="btn btn-outline">Limpiar filtros</a>
+                </div>
+
+            </form>
 
         </section>
 
@@ -342,7 +176,7 @@
 
             <div class="panel-header">
 
-                <h2>Empleados registrados</h2>
+                <h2 th:text="${hayFiltros} ? 'Resultados de la búsqueda' : 'Empleados registrados'">Empleados registrados</h2>
 
                 <span class="badge"
                       th:text="${#lists.size(empleados) + ' empleados'}">
@@ -490,13 +324,13 @@
             <div class="empty-state"
                  th:if="${#lists.isEmpty(empleados)}">
 
-                <strong>
+                <strong th:text="${hayFiltros} ? 'No se encontraron empleados con esos filtros.' : 'No hay Empleados registrados.'">
                     No hay Empleados registrados.
                 </strong>
 
-                Todavía no hay empleados cargados.
+                <span th:unless="${hayFiltros}">Todavía no hay empleados cargados.</span>
 
-                <div style="margin-top: 18px;" th:if="${esResponsable}">
+                <div style="margin-top: 18px;" th:if="${esResponsable and !hayFiltros}">
 
                     <a th:href="@{/responsable/empleados/nuevo}"
                        class="btn btn-primary">

@@ -1,6 +1,7 @@
 package com.grupo06.epicentrogourmet.service;
 
 import java.time.LocalDate;
+import java.text.Normalizer;
 import java.util.List;
 
 import com.grupo06.epicentrogourmet.dto.ModificarEmpleadoDTO;
@@ -264,6 +265,48 @@ public class EmpleadoService {
                                 )
                 )
                 .toList();
+    }
+
+    // =====================================================
+    // CONSULTA / FILTRO DE EMPLEADOS
+    // =====================================================
+
+    @Transactional(readOnly = true)
+    public List<Empleado> buscarEmpleados(
+            String nombre,
+            String dni,
+            LocalDate fechaDesde,
+            LocalDate fechaHasta) {
+
+        String nombreNormalizado = normalizar(nombre);
+        String dniFiltro = dni == null ? "" : dni.trim();
+
+        return listarEmpleados()
+                .stream()
+                .filter(e -> nombreNormalizado.isEmpty()
+                        || normalizar(e.getNombre() + " " + e.getApellido())
+                        .contains(nombreNormalizado))
+                .filter(e -> dniFiltro.isEmpty()
+                        || String.valueOf(e.getDni()).contains(dniFiltro))
+                .filter(e -> fechaDesde == null
+                        || (e.getFechaIngreso() != null
+                        && !e.getFechaIngreso().isBefore(fechaDesde)))
+                .filter(e -> fechaHasta == null
+                        || (e.getFechaIngreso() != null
+                        && !e.getFechaIngreso().isAfter(fechaHasta)))
+                .toList();
+    }
+
+    private String normalizar(String texto) {
+
+        if (texto == null) {
+            return "";
+        }
+
+        return Normalizer
+                .normalize(texto.trim(), Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "")
+                .toLowerCase();
     }
 
     // =====================================================
@@ -545,11 +588,11 @@ public class EmpleadoService {
                 .filter(
                         usuario ->
                                 usuario.getEmpleado()
-                                != null
-                                && usuario
-                                .getEmpleado()
-                                .getIdEmpleado()
-                                .equals(idEmpleado)
+                                        != null
+                                        && usuario
+                                        .getEmpleado()
+                                        .getIdEmpleado()
+                                        .equals(idEmpleado)
                 )
                 .findFirst()
                 .orElseThrow(() ->
