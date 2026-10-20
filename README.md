@@ -166,7 +166,7 @@ Se implementaron además:
 | Alta y Listado de Empleados | Alejandro Escalier | Finalizado | `CU-Alta-Listado-Empleados` | [PR #11](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/11) |
 | Reactivación de Empleados | Alejandro Escalier | Finalizado | `CU-Reactivacion-Empleados` | [PR #15](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/15) |
 | Reporte de Mayores Cánones | Valentina Ponzo | Finalizado | `CU-Reporte-Mayores-Canones` | [PR #16](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/16) |
-
+| Liquidación de Sueldos | Valentina Ponzo | Finalizado | `CU-Liquidacion-Sueldos` | PR #18 |
 > Cada nuevo Caso de Uso se desarrolla en una rama independiente y posteriormente se integra a `main` mediante Pull Request.
 
 ---
@@ -567,7 +567,37 @@ Actualmente existen estructuras de navegación para:
 - Empleado.
 
 ---
+### CU - Liquidación de Sueldos
 
+Responsable: **Valentina Ponzo**
+
+Permite al Responsable liquidar los haberes de los empleados asignados a su Unidad de Venta.
+
+Funcionalidades implementadas:
+
+- Obtención de la Unidad de Venta del Responsable autenticado.
+- Consulta únicamente de empleados pertenecientes a esa Unidad.
+- Asignación automática de nuevos empleados a la Unidad del Responsable.
+- Exclusión del propio Responsable de la liquidación.
+- Cálculo de haberes mediante polimorfismo para `Cocinero` y `Cajero`.
+- Uso de los costos configurados para el Festival.
+- Persistencia del sueldo en `AsignacionEmpleado.sueldoLiquidado`.
+- Uso de `LiquidacionSueldoDTO` para mostrar los resultados.
+- Validación de Festival y costos configurados.
+- Protección para impedir que un Responsable gestione empleados de otras Unidades.
+- Incorporación de un Panel principal para el rol Responsable.
+
+#### Prueba realizada
+
+Se registró y asignó un empleado a `Puesto Centro`:
+
+- Empleado: `Lucía Fernández`
+- Tipo: `Cocinero`
+- Categoría: `AYUDANTE`
+- Festival: `Primavera Gourmet`
+- Sueldo liquidado: `$440.000,00`
+
+El importe fue calculado correctamente y persistido en MySQL.
 ## Casos de Uso en desarrollo / pendientes
 
 Entre las funcionalidades restantes se encuentran:
