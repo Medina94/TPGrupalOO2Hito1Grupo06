@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Reporte de Mayores Cánones</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+
+
+<!-- =========================
+     BARRA SUPERIOR
+     ========================= -->
+
+<header class="topbar">
+
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+
+        <span>
+            Administración
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="logout-button">
+
+                Cerrar sesión
+
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     LAYOUT
+     ========================= -->
+
+<div class="app-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <div th:replace="~{fragments/sidebar :: adminSidebar}">
+    </div>
+
+
+    <!-- CONTENIDO -->
+
+    <main class="main-content">
+
+
+        <!-- =========================
+             ENCABEZADO
+             ========================= -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>
+                    Reporte de Mayores Cánones
+                </h1>
+
+                <p>
+                    Seleccioná un Festival para consultar
+                    las Unidades de Venta ordenadas por
+                    el valor de su canon.
+                </p>
+
+            </div>
+
+
+            <a th:href="@{/}"
+               class="btn btn-outline">
+
+                Volver al inicio
+
+            </a>
+
+        </div>
+
+
+        <!-- =========================
+             MENSAJES
+             ========================= -->
+
+        <div class="alert alert-error"
+             th:if="${error}"
+             th:text="${error}">
+
+            Ocurrió un error.
+
+        </div>
+
+
+        <!-- =========================
+             INFORMACIÓN
+             ========================= -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>
+                    ¿Qué muestra este reporte?
+                </h2>
+
+                <span class="badge">
+                    Administración
+                </span>
+
+            </div>
+
+
+            <p style="
+                color: #6b7280;
+                font-size: 14px;
+                line-height: 1.6;
+            ">
+
+                El reporte calcula el canon de cada Unidad de Venta
+                perteneciente al Festival seleccionado y las ordena
+                desde el canon más alto hasta el más bajo.
+
+            </p>
+
+        </section>
+
+
+        <!-- =========================
+             LISTADO DE FESTIVALES
+             ========================= -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>
+                    Seleccionar Festival
+                </h2>
+
+                <span class="badge"
+                      th:text="${#lists.size(festivales) + ' festivales'}">
+
+                    0 festivales
+
+                </span>
+
+            </div>
+
+
+            <!-- HAY FESTIVALES -->
+
+            <div class="table-responsive"
+                 th:if="${!#lists.isEmpty(festivales)}">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>
+                            Festival
+                        </th>
+
+                        <th>
+                            Temporada
+                        </th>
+
+                        <th>
+                            Fecha de inicio
+                        </th>
+
+                        <th>
+                            Fecha de fin
+                        </th>
+
+                        <th>
+                            Estado de costos
+                        </th>
+
+                        <th>
+                            Acciones
+                        </th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="festival : ${festivales}">
+
+
+                        <!-- =====================
+                             FESTIVAL
+                             ===================== -->
+
+                        <td>
+
+                            <strong
+                                th:text="${festival.nombre}">
+
+                                Festival
+
+                            </strong>
+
+                        </td>
+
+
+                        <!-- =====================
+                             TEMPORADA
+                             ===================== -->
+
+                        <td th:text="${festival.temporada}">
+
+                            Temporada
+
+                        </td>
+
+
+                        <!-- =====================
+                             FECHA INICIO
+                             ===================== -->
+
+                        <td th:text="${festival.fechaInicio}">
+
+                            Fecha inicio
+
+                        </td>
+
+
+                        <!-- =====================
+                             FECHA FIN
+                             ===================== -->
+
+                        <td th:text="${festival.fechaFin}">
+
+                            Fecha fin
+
+                        </td>
+
+
+                        <!-- =====================
+                             ESTADO DE COSTOS
+                             ===================== -->
+
+                        <td>
+
+
+                            <!-- COSTOS CONFIGURADOS -->
+
+                            <span class="badge"
+                                  th:if="${festival.costos != null}">
+
+                                Configurados
+
+                            </span>
+
+
+                            <!-- SIN COSTOS -->
+
+                            <span class="badge"
+                                  th:if="${festival.costos == null}">
+
+                                Sin configurar
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- =====================
+                             ACCIONES
+                             ===================== -->
+
+                        <td>
+
+                            <div class="actions">
+
+
+                                <!-- =================================
+                                     FESTIVAL SIN COSTOS
+                                     ================================= -->
+
+                                <a th:if="${festival.costos == null}"
+                                   th:href="@{/admin/festivales/{id}/costos(id=${festival.idFestival})}"
+                                   class="btn btn-outline">
+
+                                    Configurar costos
+
+                                </a>
+
+
+                                <!-- =================================
+                                     FESTIVAL CON COSTOS
+                                     ================================= -->
+
+
+                                <!-- MODIFICAR COSTOS -->
+
+                                <a th:if="${festival.costos != null}"
+                                   th:href="@{/admin/festivales/{id}/costos(id=${festival.idFestival})}"
+                                   class="btn btn-outline">
+
+                                    Modificar costos
+
+                                </a>
+
+
+                                <!-- VER REPORTE -->
+
+                                <a th:if="${festival.costos != null}"
+                                   th:href="@{/admin/reportes/mayores-canones/{id}(id=${festival.idFestival})}"
+                                   class="btn btn-primary">
+
+                                    Ver reporte
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- =========================
+                 NO HAY FESTIVALES
+                 ========================= -->
+
+            <div class="empty-state"
+                 th:if="${#lists.isEmpty(festivales)}">
+
+                <strong>
+                    No hay Festivales registrados.
+                </strong>
+
+                No se puede generar el reporte hasta
+                que exista al menos un Festival.
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             ACLARACIÓN
+             ========================= -->
+
+        <section class="panel">
+
+            <div class="alert alert-info">
+
+                Para generar el reporte, el Festival debe tener
+                configurados sus costos.
+
+                Si ya existen costos, podés modificarlos
+                o consultar directamente el reporte de cánones.
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

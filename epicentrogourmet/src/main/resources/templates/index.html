@@ -4,7 +4,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Epicentro Gourmet</title>
 
@@ -38,7 +39,9 @@
 
             <button type="submit"
                     class="logout-button">
+
                 Cerrar sesión
+
             </button>
 
         </form>
@@ -54,60 +57,69 @@
 
 <div class="app-layout">
 
-    <!-- MENÚ ADMINISTRADOR -->
+
+    <!-- =========================
+         SIDEBAR ADMINISTRADOR
+         ========================= -->
+
     <div th:if="${esAdmin}"
          th:replace="~{fragments/sidebar :: adminSidebar}">
     </div>
 
 
     <!-- =========================
-         CONTENIDO
+         CONTENIDO PRINCIPAL
          ========================= -->
 
     <main class="main-content"
           th:classappend="${!esAdmin} ? ' no-sidebar' : ''">
 
 
-        <!-- =========================
-             PANEL ADMIN
-             ========================= -->
+        <!-- =====================================================
+             PANEL ADMINISTRADOR
+             ===================================================== -->
 
         <div th:if="${esAdmin}">
+
+
+            <!-- =========================
+                 ENCABEZADO
+                 ========================= -->
 
             <div class="page-header">
 
                 <div class="page-title">
 
-                    <h1>Panel de Administración</h1>
+                    <h1>
+                        Panel de Administración
+                    </h1>
 
                     <p>
-                        Gestioná los festivales, unidades de venta
-                        y reportes de Epicentro Gourmet.
+                        Gestioná los festivales, unidades de venta,
+                        costos y reportes de Epicentro Gourmet.
                     </p>
 
                 </div>
-                <div style="
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 10px;
-                ">
-                    <a th:href="@{/admin/unidades/nueva}"
-                       class="btn btn-primary">
 
-                        + Nueva Unidad de Venta
 
-                    </a>
+                <a th:href="@{/admin/unidades/nueva}"
+                   class="btn btn-primary">
 
-                </div>
+                    + Nueva Unidad de Venta
+
+                </a>
 
             </div>
 
 
             <!-- =========================
-                 TARJETAS RESUMEN
+                 TARJETAS DE RESUMEN
                  ========================= -->
 
             <section class="stats-grid">
+
+
+                <!-- FESTIVALES -->
 
                 <div class="stat-card">
 
@@ -117,7 +129,9 @@
 
                     <div class="stat-value"
                          th:text="${#lists.size(festivales)}">
+
                         0
+
                     </div>
 
                     <div class="stat-description">
@@ -126,6 +140,8 @@
 
                 </div>
 
+
+                <!-- UNIDADES -->
 
                 <div class="stat-card">
 
@@ -144,6 +160,8 @@
                 </div>
 
 
+                <!-- REPORTES -->
+
                 <div class="stat-card">
 
                     <div class="stat-label">
@@ -155,7 +173,7 @@
                     </div>
 
                     <div class="stat-description">
-                        Ranking y cánones próximamente
+                        Cánones y reportes administrativos
                     </div>
 
                 </div>
@@ -171,7 +189,9 @@
 
                 <div class="panel-header">
 
-                    <h2>Accesos rápidos</h2>
+                    <h2>
+                        Accesos rápidos
+                    </h2>
 
                     <span class="badge">
                         Administración
@@ -179,35 +199,64 @@
 
                 </div>
 
+
                 <div style="
                     display: flex;
                     flex-wrap: wrap;
                     gap: 10px;
                 ">
 
+
+                    <!-- REGISTRAR UNIDAD -->
+
                     <a th:href="@{/admin/unidades/nueva}"
                        class="btn btn-primary">
+
                         + Registrar Unidad
+
                     </a>
+
+
+                    <!-- FESTIVALES -->
 
                     <a href="#festivales"
                        class="btn btn-secondary">
+
                         Ver Festivales
+
                     </a>
 
-                    <button type="button"
-                            class="btn btn-outline"
-                            disabled
-                            title="Funcionalidad en desarrollo">
-                        Ranking de facturación
-                    </button>
+
+                    <!-- COSTOS -->
+
+                    <a th:href="@{/admin/festivales/costos}"
+                       class="btn btn-outline">
+
+                        Costos de Festivales
+
+                    </a>
+
+
+                    <!-- RANKING FACTURACIÓN -->
 
                     <button type="button"
                             class="btn btn-outline"
                             disabled
                             title="Funcionalidad en desarrollo">
-                        Mayores cánones
+
+                        Ranking de facturación
+
                     </button>
+
+
+                    <!-- MAYORES CÁNONES -->
+
+                    <a th:href="@{/admin/reportes/mayores-canones}"
+                       class="btn btn-outline">
+
+                        Mayores cánones
+
+                    </a>
 
                 </div>
 
@@ -223,15 +272,21 @@
 
                 <div class="panel-header">
 
-                    <h2>Festivales</h2>
+                    <h2>
+                        Festivales
+                    </h2>
 
                     <span class="badge"
                           th:text="${#lists.size(festivales) + ' festivales'}">
+
                         0 festivales
+
                     </span>
 
                 </div>
 
+
+                <!-- HAY FESTIVALES -->
 
                 <div class="table-responsive"
                      th:if="${!#lists.isEmpty(festivales)}">
@@ -241,40 +296,86 @@
                         <thead>
 
                         <tr>
-                            <th>Nombre</th>
-                            <th>Temporada</th>
-                            <th>Fecha de inicio</th>
-                            <th>Fecha de fin</th>
-                            <th>Acciones</th>
+
+                            <th>
+                                Nombre
+                            </th>
+
+                            <th>
+                                Temporada
+                            </th>
+
+                            <th>
+                                Fecha de inicio
+                            </th>
+
+                            <th>
+                                Fecha de fin
+                            </th>
+
+                            <th>
+                                Acciones
+                            </th>
+
                         </tr>
 
                         </thead>
+
 
                         <tbody>
 
                         <tr th:each="festival : ${festivales}">
 
+
+                            <!-- NOMBRE -->
+
                             <td>
-                                <strong th:text="${festival.nombre}">
+
+                                <strong
+                                    th:text="${festival.nombre}">
+
                                     Festival
+
                                 </strong>
+
                             </td>
+
+
+                            <!-- TEMPORADA -->
 
                             <td th:text="${festival.temporada}">
+
                                 Temporada
+
                             </td>
+
+
+                            <!-- FECHA INICIO -->
 
                             <td th:text="${festival.fechaInicio}">
+
                                 Fecha inicio
+
                             </td>
 
+
+                            <!-- FECHA FIN -->
+
                             <td th:text="${festival.fechaFin}">
+
                                 Fecha fin
+
                             </td>
+
+
+                            <!-- ACCIONES -->
 
                             <td>
 
                                 <div class="actions">
+
+
+                                    <!-- VER UNIDADES -->
 
                                     <a th:href="@{/admin/festivales/{id}/unidades(id=${festival.idFestival})}"
                                        class="btn btn-secondary">
@@ -282,6 +383,10 @@
                                         Ver unidades
 
                                     </a>
+
+
+                                    <!-- CONFIGURAR COSTOS -->
+
                                     <a th:href="@{/admin/festivales/{id}/costos(id=${festival.idFestival})}"
                                        class="btn btn-outline">
 
@@ -302,41 +407,54 @@
                 </div>
 
 
+                <!-- SIN FESTIVALES -->
+
                 <div class="empty-state"
                      th:if="${#lists.isEmpty(festivales)}">
 
-                    Todavía no hay festivales registrados.
+                    <strong>
+                        No hay Festivales registrados.
+                    </strong>
+
+                    Todavía no existen Festivales disponibles
+                    en el sistema.
 
                 </div>
 
             </section>
 
 
-
             <!-- =========================
-                 FUNCIONALIDADES FUTURAS
+                 FUNCIONALIDADES
                  ========================= -->
 
-            <section class="panel" >
+            <section class="panel">
 
                 <div class="panel-header">
 
-                    <h2>Próximas funcionalidades</h2>
+                    <h2>
+                        Funcionalidades del Hito 2
+                    </h2>
 
                     <span class="badge">
-                        Hito 2
+                        Administración
                     </span>
 
                 </div>
 
-                <div  style="
+
+                <div style="
                     display: grid;
                     grid-template-columns:
                         repeat(auto-fit, minmax(210px, 1fr));
                     gap: 14px;
                 ">
 
-                    <div class="stat-card"  >
+
+                    <!-- EMPLEADOS -->
+
+                    <div class="stat-card">
+
                         <div class="stat-label">
                             👥 Empleados
                         </div>
@@ -349,28 +467,47 @@
                             Alta, modificación, baja,
                             reactivación y filtros.
                         </div>
+
                     </div>
 
 
+                    <!-- CÁNONES -->
+
                     <div class="stat-card">
+
                         <div class="stat-label">
                             💰 Cánones
                         </div>
 
                         <strong>
-                            Reporte de cánones
+                            Reporte de mayores cánones
                         </strong>
 
                         <div class="stat-description">
-                            Consulta y comparación
-                            entre Unidades de Venta.
+                            Consulta las Unidades ordenadas
+                            por el valor de su canon.
                         </div>
+
+                        <div style="margin-top: 14px;">
+
+                            <a th:href="@{/admin/reportes/mayores-canones}"
+                               class="btn btn-secondary">
+
+                                Ver reporte
+
+                            </a>
+
+                        </div>
+
                     </div>
 
 
+                    <!-- RANKING -->
+
                     <div class="stat-card">
+
                         <div class="stat-label">
-                            📊 Reportes
+                            📊 Facturación
                         </div>
 
                         <strong>
@@ -378,9 +515,22 @@
                         </strong>
 
                         <div class="stat-description">
-                            Reportes administrativos
-                            del Festival.
+                            Reporte administrativo de
+                            recaudación por Unidad de Venta.
                         </div>
+
+                        <div style="margin-top: 14px;">
+
+                            <button type="button"
+                                    class="btn btn-outline"
+                                    disabled>
+
+                                Próximamente
+
+                            </button>
+
+                        </div>
+
                     </div>
 
                 </div>
@@ -390,10 +540,10 @@
         </div>
 
 
-        <!-- =========================
+        <!-- =====================================================
              USUARIO NO ADMIN
-             TEMPORALMENTE
-             ========================= -->
+             TEMPORAL
+             ===================================================== -->
 
         <div th:unless="${esAdmin}">
 
@@ -401,7 +551,9 @@
 
                 <div class="page-title">
 
-                    <h1>Epicentro Gourmet</h1>
+                    <h1>
+                        Epicentro Gourmet
+                    </h1>
 
                     <p>
                         Bienvenido al sistema.
@@ -415,7 +567,11 @@
             <section class="panel">
 
                 <div class="panel-header">
-                    <h2>Panel de usuario</h2>
+
+                    <h2>
+                        Panel de usuario
+                    </h2>
+
                 </div>
 
                 <p>
