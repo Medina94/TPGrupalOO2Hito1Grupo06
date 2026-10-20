@@ -167,6 +167,7 @@ Se implementaron además:
 | Reactivación de Empleados | Alejandro Escalier | Finalizado | `CU-Reactivacion-Empleados` | [PR #15](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/15) |
 | Reporte de Mayores Cánones | Valentina Ponzo | Finalizado | `CU-Reporte-Mayores-Canones` | [PR #16](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/16) |
 | Liquidación de Sueldos | Valentina Ponzo | Finalizado | `CU-Liquidacion-Sueldos` | PR #18 |
+| Panel de inicio del Empleado | Alejandro Escalier | Finalizado | `CU-Dashboard-Empleado` | [PR #20](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/20) |
 > Cada nuevo Caso de Uso se desarrolla en una rama independiente y posteriormente se integra a `main` mediante Pull Request.
 
 ---
@@ -400,7 +401,7 @@ El reporte se encuentra integrado con:
 
 Responsable: **Alejandro Escalier**
 
-Permite al Responsable registrar nuevos empleados y consultar los empleados cargados en el sistema.
+Permite al Responsable registrar nuevos empleados y consultar los empleados de su Unidad de Venta.
 
 **Rutas:**
 
@@ -422,6 +423,7 @@ Durante el registro, en una única operación transaccional, se crea:
 - El empleado (`Cocinero` o `Cajero`).
 - El usuario de acceso con rol `EMPLEADO`, vinculado al empleado.
 - La contraseña cifrada con BCrypt.
+- La asignación (`AsignacionEmpleado`) del empleado a la Unidad de Venta del Responsable que lo registra.
 
 Validaciones implementadas:
 
@@ -436,12 +438,15 @@ Validaciones implementadas:
 - Turno obligatorio para `Cajero`.
 - Nombre de usuario obligatorio y único.
 - Contraseña obligatoria de al menos 6 caracteres.
+- El Responsable debe tener una Unidad de Venta con Festival asociado.
 - Mensajes de error por campo y mensaje general ante datos duplicados.
 - Mensaje de confirmación al registrar correctamente.
 
 #### Listado de empleados
 
-- Tabla con los empleados registrados.
+- Tabla con los empleados asignados a la Unidad de Venta del Responsable autenticado.
+- El Responsable no aparece en su propio listado.
+- Empleados ordenados por DNI.
 - Datos visibles: nombre y apellido, puesto, DNI, email, fecha de ingreso y estado.
 - Contador de empleados registrados.
 - Botón de acceso rápido a Nuevo Empleado.
@@ -471,102 +476,11 @@ Funcionalidades:
 - Los botones disponibles dependen del estado del empleado.
 - Se solicita confirmación antes de realizar la acción.
 - Se muestran mensajes de éxito o error.
+- Solo se pueden reactivar empleados de la Unidad de Venta del Responsable.
 - La operación se realiza de forma transaccional.
 
 ---
 
-### Navegación del Responsable
-
-Responsable: **Alejandro Escalier**
-
-Se incorporó el flujo de navegación para el rol `RESPONSABLE`:
-
-- Tras iniciar sesión, el Responsable es redirigido a `/responsable/empleados`.
-- Si un Responsable ingresa a `/`, también es redirigido a su panel.
-- Se incorporó un menú lateral específico para el Responsable.
-- Se agregó el fragmento de navegación para el Empleado.
-- Las rutas `/responsable/**` requieren rol `RESPONSABLE`.
-
----
-
-## Roles del sistema
-
-La aplicación contempla tres tipos principales de usuario.
-
-### Administrador
-
-Puede gestionar información general del sistema.
-
-Funcionalidades actuales:
-
-- Consultar Festivales.
-- Consultar Unidades de Venta.
-- Registrar Unidad de Venta y Responsable.
-- Configurar costos de Festivales.
-- Consultar cánones.
-- Consultar reporte de mayores cánones.
-
-Funcionalidades previstas:
-
-- Consultar ranking de facturación.
-
-### Responsable
-
-Administra la Unidad de Venta que tiene asignada.
-
-Funcionalidades actuales:
-
-- Consultar su Unidad de Venta y su canon.
-- Alta y listado de empleados.
-- Reactivación de empleados.
-
-Funcionalidades previstas:
-
-- Modificación de empleados.
-- Baja lógica de empleados.
-- Filtros y búsqueda.
-- Agregar platos.
-- Consultar Plato Estrella.
-- Liquidar haberes.
-- Consultar reportes de ventas.
-- Consultar rentabilidad.
-- Enviar credenciales a empleados.
-
-### Empleado
-
-Consulta información relacionada con su actividad laboral.
-
-Funcionalidades previstas:
-
-- Consultar Festival y Unidad actual.
-- Consultar historial laboral.
-- Consultar sueldo recibido por Festival.
-- Descargar recibo de sueldo en PDF.
-
-Los empleados de tipo `Cajero` podrán además realizar el cierre diario de caja.
-
----
-
-## Interfaz y navegación
-
-Se implementó una interfaz web administrativa con:
-
-- Barra superior.
-- Menú lateral.
-- Dashboard de Administración.
-- Accesos rápidos.
-- Navegación entre Festivales, Unidades, Costos y Canon.
-- Acceso al Reporte de Mayores Cánones.
-- Diseño reutilizable mediante CSS.
-- Fragmentos Thymeleaf para los menús laterales.
-
-Actualmente existen estructuras de navegación para:
-
-- Administrador.
-- Responsable.
-- Empleado.
-
----
 ### CU - Liquidación de Sueldos
 
 Responsable: **Valentina Ponzo**
@@ -598,15 +512,78 @@ Se registró y asignó un empleado a `Puesto Centro`:
 - Sueldo liquidado: `$440.000,00`
 
 El importe fue calculado correctamente y persistido en MySQL.
+
+---
+
+---
+
+### CU - Panel de inicio del Empleado
+
+Responsable: **Alejandro Escalier**
+
+Pantalla principal que ve el Empleado al iniciar sesión, con la misma estructura que el Panel del Responsable (barra superior, menú lateral, tarjetas y tablas).
+
+**Ruta:**
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| `GET` | `/empleado` | Panel de inicio del Empleado (`empleado-dashboard.html`) |
+
+Información que se muestra:
+
+- **Tarjetas de resumen:** Unidad de Venta (nombre comercial y código), Festival (nombre y temporada) y puesto (`Cocinero` con su rol de cocina, o `Cajero` con su turno).
+- **Mis datos:** nombre y apellido, DNI, email, fecha de ingreso y estado (activo o inactivo).
+- **Mi Unidad de Venta:** nombre comercial, tipo (`FoodTruck` o `PuestoDesarmable`), código, Festival y Responsable.
+- **Mi actividad:** accesos a Historial laboral, Mis sueldos y Recibos de sueldo (marcados como "Próximamente"), y Cierre de caja visible únicamente para `Cajero`.
+- Si el empleado no tiene una Unidad de Venta asignada, se muestra un aviso en lugar de las tablas.
+
+Implementación:
+
+- `HomeController.empleadoInicio`: arma el modelo del panel con el usuario autenticado, su empleado, su Unidad y su Festival.
+- `UnidadVentaService.buscarUnidadDelEmpleado`: obtiene la Unidad vigente del empleado a partir de su asignación.
+- `AsignacionEmpleadoRepository`: consulta de asignaciones vigentes del empleado (sin fecha de fin), ordenadas por fecha de inicio descendente.
+
+- Seguridad: las rutas `/empleado/**` requieren rol `EMPLEADO` o `RESPONSABLE`.
+
+---
+
+### Navegación y redirección según rol
+
+Responsable: **Alejandro Escalier**
+
+Se incorporó el flujo de navegación según el rol del usuario:
+
+- Tras iniciar sesión, el `RESPONSABLE` es redirigido a `/responsable` (Panel del Responsable).
+- Tras iniciar sesión, el `EMPLEADO` es redirigido a `/empleado` (Panel del Empleado).
+- Los demás roles continúan en `/`.
+- Si un Responsable o un Empleado ingresa a `/`, también es redirigido a su panel.
+- Se incorporó un menú lateral específico para el Responsable.
+- Se incorporó el fragmento de navegación para el Empleado.
+- Las rutas `/responsable/**` requieren rol `RESPONSABLE`.
+
+---
+
+## Interfaz y navegación
+
+Se implementó una interfaz web administrativa con:
+
+- Barra superior.
+- Menú lateral.
+- Dashboard de Administración.
+- Accesos rápidos.
+- Navegación entre Festivales, Unidades, Costos y Canon.
+- Acceso al Reporte de Mayores Cánones.
+- Diseño reutilizable mediante CSS.
+- Fragmentos Thymeleaf para los menús laterales.
+
+---
+
 ## Casos de Uso en desarrollo / pendientes
 
 Entre las funcionalidades restantes se encuentran:
 
-- Modificación de empleados.
-- Baja lógica de empleados.
 - Filtros y búsqueda de empleados.
 - Consultar historial laboral del empleado.
-- Consultar Festival y Unidad actual del empleado.
 - Agregar platos a una Unidad de Venta.
 - Consultar Plato Estrella.
 - Enviar credenciales mediante email.
@@ -618,7 +595,6 @@ Entre las funcionalidades restantes se encuentran:
 - Calcular rentabilidad entre fechas.
 - Ranking de facturación.
 - Cierre de caja del Cajero.
-- Navegación específica para Empleado.
 
 > Esta sección deberá continuar actualizándose a medida que se integren nuevos Pull Requests a `main`.
 
@@ -738,7 +714,9 @@ Actualmente el proyecto cuenta con:
 - Cálculo de canon.
 - Reporte de Mayores Cánones mediante `ReporteMayoresCanonDTO`.
 - Ranking de cánones de mayor a menor.
-- Alta y listado de empleados.
-- Reactivación de empleados.
-- Estructura de navegación del Responsable.
+- Alta y listado de empleados por Unidad de Venta.
+- Modificación, baja lógica y reactivación de empleados.
+- Panel de inicio del Empleado.
+- Redirección al panel correspondiente según el rol.
+- Estructura de navegación del Responsable y del Empleado.
 - Flujo de desarrollo mediante ramas y Pull Requests.
