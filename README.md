@@ -165,6 +165,7 @@ Se implementaron además:
 | Calcular Canon de Unidad de Venta | Valentina Ponzo | Finalizado | `CU-Calcular-Canon` | [PR #10](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/10) |
 | Alta y Listado de Empleados | Alejandro Escalier | Finalizado | `CU-Alta-Listado-Empleados` | [PR #11](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/11) |
 | Reactivación de Empleados | Alejandro Escalier | Finalizado | `CU-Reactivacion-Empleados` | [PR #15](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/15) |
+| Reporte de Mayores Cánones | Valentina Ponzo | Finalizado | `CU-Reporte-Mayores-Canones` | [PR #16](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/16) |
 
 > Cada nuevo Caso de Uso se desarrolla en una rama independiente y posteriormente se integra a `main` mediante Pull Request.
 
@@ -245,10 +246,10 @@ Validaciones implementadas:
 - Responsable mayor de 18 años.
 - Fecha de nacimiento válida.
 - Fecha de ingreso no futura.
-- Validaciones específicas para FoodTruck.
-- Validaciones específicas para PuestoDesarmable.
-- Validaciones específicas para Cocinero.
-- Validaciones específicas para Cajero.
+- Validaciones específicas para `FoodTruck`.
+- Validaciones específicas para `PuestoDesarmable`.
+- Validaciones específicas para `Cocinero`.
+- Validaciones específicas para `Cajero`.
 
 La operación se ejecuta de forma transaccional para evitar registros incompletos.
 
@@ -332,6 +333,69 @@ También se implementaron:
 
 ---
 
+### CU - Reporte de Mayores Cánones
+
+Responsable: **Valentina Ponzo**
+
+Permite al Administrador consultar las Unidades de Venta de un Festival ordenadas según el valor de su canon, desde el canon más alto hasta el más bajo.
+
+Para generar el reporte se utiliza:
+
+- `ReporteMayoresCanonDTO`
+- `ReporteCanonService`
+- La lógica de cálculo de canon ya implementada para cada tipo de Unidad de Venta.
+
+El reporte muestra:
+
+- Posición dentro del ranking.
+- Nombre de la Unidad de Venta.
+- Código.
+- Tipo de Unidad.
+- Canon calculado.
+- Acceso al detalle individual del canon.
+
+El Administrador selecciona el Festival sobre el cual desea generar el reporte.
+
+#### Festival sin costos configurados
+
+Si el Festival no posee costos configurados:
+
+- No se intenta calcular el reporte.
+- Se informa que los costos todavía no están configurados.
+- Se ofrece acceso directo a la configuración de costos.
+
+#### Festival con costos configurados
+
+Si el Festival ya posee costos:
+
+- Se permite modificarlos.
+- Se habilita la generación del reporte.
+- Se calcula el canon de cada Unidad de Venta.
+- Los resultados se ordenan de mayor a menor.
+
+#### Prueba realizada
+
+Festival: `Primavera Gourmet`
+
+Resultado obtenido:
+
+1. `Puesto Centro` - Puesto Desarmable - `$148.000,00`
+2. `Burger Point` - Food Truck - `$140.000,00`
+
+El resultado obtenido corresponde al orden esperado de mayor a menor.
+
+El reporte se encuentra integrado con:
+
+- Dashboard del Administrador.
+- Menú lateral del Administrador.
+- Accesos rápidos.
+- Selección de Festival.
+- Configuración y modificación de costos.
+- Pantalla de detalle del ranking.
+- Detalle individual del canon.
+
+---
+
 ### CU - Alta y Listado de Empleados
 
 Responsable: **Alejandro Escalier**
@@ -346,7 +410,7 @@ Permite al Responsable registrar nuevos empleados y consultar los empleados carg
 | `GET` | `/responsable/empleados/nuevo` | Formulario de alta |
 | `POST` | `/responsable/empleados/nuevo` | Registro del empleado |
 
-**Alta de empleado**
+#### Alta de empleado
 
 Tipos de empleado soportados:
 
@@ -368,20 +432,22 @@ Validaciones implementadas:
 - Empleado mayor de 18 años.
 - Fecha de ingreso obligatoria y no futura.
 - Tipo de empleado obligatorio.
-- Rol de cocina obligatorio para `Cocinero` y turno obligatorio para `Cajero`.
+- Rol de cocina obligatorio para `Cocinero`.
+- Turno obligatorio para `Cajero`.
 - Nombre de usuario obligatorio y único.
 - Contraseña obligatoria de al menos 6 caracteres.
 - Mensajes de error por campo y mensaje general ante datos duplicados.
 - Mensaje de confirmación al registrar correctamente.
 
-**Listado de empleados**
+#### Listado de empleados
 
-- Tabla con todos los empleados registrados, ordenados por DNI.
-- Datos visibles: nombre y apellido, puesto (`Cajero` o `Cocinero`), DNI, email, fecha de ingreso y estado (`Activo` / `Inactivo`).
+- Tabla con los empleados registrados.
+- Datos visibles: nombre y apellido, puesto, DNI, email, fecha de ingreso y estado.
 - Contador de empleados registrados.
-- Botón de acceso rápido a "Nuevo Empleado".
+- Botón de acceso rápido a Nuevo Empleado.
 - Manejo del listado vacío.
-- Visualización de la Unidad de Venta del Responsable y acceso a su canon.
+- Visualización de la Unidad de Venta del Responsable.
+- Acceso al canon de su Unidad de Venta.
 
 ---
 
@@ -399,11 +465,13 @@ Permite volver a dar de alta a un empleado de la base de datos.
 
 Funcionalidades:
 
-- **Reactivación:** el empleado y su usuario vuelven a quedar activos y se restablece el acceso.
-- En el listado, cada empleado muestra el botón que corresponde a su estado ("Dar de baja" si está activo, "Dar de alta" si está inactivo).
-- Ambas acciones piden confirmación antes de ejecutarse.
-- Mensajes de éxito o error luego de cada operación.
-- Operación transaccional: se actualizan el empleado y su usuario en conjunto.
+- El empleado vuelve a quedar activo.
+- Su usuario vuelve a quedar activo.
+- Se restablece el acceso al sistema.
+- Los botones disponibles dependen del estado del empleado.
+- Se solicita confirmación antes de realizar la acción.
+- Se muestran mensajes de éxito o error.
+- La operación se realiza de forma transaccional.
 
 ---
 
@@ -413,11 +481,11 @@ Responsable: **Alejandro Escalier**
 
 Se incorporó el flujo de navegación para el rol `RESPONSABLE`:
 
-- Tras iniciar sesión, el Responsable es redirigido a `/responsable/empleados`; el resto de los roles va a la página de inicio.
+- Tras iniciar sesión, el Responsable es redirigido a `/responsable/empleados`.
 - Si un Responsable ingresa a `/`, también es redirigido a su panel.
-- Nuevo menú lateral para el Responsable ("Mi Unidad"), con acceso a Gestión de empleados y accesos futuros marcados como "Próximamente".
-- Se agregó el fragmento de menú lateral para el Empleado, con sus accesos futuros.
-- Reglas de seguridad: las rutas `/responsable/**` requieren el rol `RESPONSABLE`.
+- Se incorporó un menú lateral específico para el Responsable.
+- Se agregó el fragmento de navegación para el Empleado.
+- Las rutas `/responsable/**` requieren rol `RESPONSABLE`.
 
 ---
 
@@ -429,15 +497,18 @@ La aplicación contempla tres tipos principales de usuario.
 
 Puede gestionar información general del sistema.
 
-Funcionalidades actuales y previstas:
+Funcionalidades actuales:
 
 - Consultar Festivales.
 - Consultar Unidades de Venta.
 - Registrar Unidad de Venta y Responsable.
 - Configurar costos de Festivales.
 - Consultar cánones.
-- Consultar ranking de facturación.
 - Consultar reporte de mayores cánones.
+
+Funcionalidades previstas:
+
+- Consultar ranking de facturación.
 
 ### Responsable
 
@@ -446,10 +517,14 @@ Administra la Unidad de Venta que tiene asignada.
 Funcionalidades actuales:
 
 - Consultar su Unidad de Venta y su canon.
-- Gestionar empleados: alta, listado, modificación, baja lógica y reactivación.
+- Alta y listado de empleados.
+- Reactivación de empleados.
 
 Funcionalidades previstas:
 
+- Modificación de empleados.
+- Baja lógica de empleados.
+- Filtros y búsqueda.
 - Agregar platos.
 - Consultar Plato Estrella.
 - Liquidar haberes.
@@ -481,14 +556,15 @@ Se implementó una interfaz web administrativa con:
 - Dashboard de Administración.
 - Accesos rápidos.
 - Navegación entre Festivales, Unidades, Costos y Canon.
+- Acceso al Reporte de Mayores Cánones.
 - Diseño reutilizable mediante CSS.
 - Fragmentos Thymeleaf para los menús laterales.
 
-Los menús laterales se encuentran definidos para los tres roles:
+Actualmente existen estructuras de navegación para:
 
 - Administrador.
-- Responsable (con acceso activo a la gestión de empleados).
-- Empleado (accesos previstos).
+- Responsable.
+- Empleado.
 
 ---
 
@@ -496,6 +572,8 @@ Los menús laterales se encuentran definidos para los tres roles:
 
 Entre las funcionalidades restantes se encuentran:
 
+- Modificación de empleados.
+- Baja lógica de empleados.
 - Filtros y búsqueda de empleados.
 - Consultar historial laboral del empleado.
 - Consultar Festival y Unidad actual del empleado.
@@ -509,9 +587,28 @@ Entre las funcionalidades restantes se encuentran:
 - Calcular rentabilidad neta.
 - Calcular rentabilidad entre fechas.
 - Ranking de facturación.
-- Reporte de mayores cánones.
 - Cierre de caja del Cajero.
 - Navegación específica para Empleado.
+
+> Esta sección deberá continuar actualizándose a medida que se integren nuevos Pull Requests a `main`.
+
+---
+
+## Requisitos generales pendientes de integración
+
+El trabajo debe contemplar además:
+
+- Al menos un envío de email.
+- Al menos un reporte implementado mediante DTO.
+- Al menos una generación de archivo PDF.
+- Dos Casos de Uso por integrante.
+- Dos validaciones por integrante.
+- Script final con datos suficientes para realizar la demostración.
+- Pruebas integrales de los distintos roles.
+
+Actualmente el proyecto ya incorpora el reporte mediante DTO:
+
+- `ReporteMayoresCanonDTO`
 
 ---
 
@@ -542,3 +639,76 @@ Ejemplo:
 export DB_USER='usuario_mysql'
 export DB_PASSWORD='password_mysql'
 ```
+
+También puede configurarse la URL completa de conexión:
+
+```bash
+export DB_URL='jdbc:mysql://localhost:3308/epicentrogourmet?createDatabaseIfNotExist=true&serverTimezone=America/Argentina/Buenos_Aires'
+```
+
+El puerto puede variar según la configuración local de cada integrante.
+
+Para el usuario administrador inicial:
+
+```bash
+export ADMIN_PASSWORD='password_admin'
+```
+
+Opcionalmente puede definirse:
+
+```bash
+export ADMIN_USERNAME='admin'
+```
+
+---
+
+## Ejecución del proyecto
+
+Ingresar a la carpeta de la aplicación:
+
+```bash
+cd epicentrogourmet
+```
+
+Compilar:
+
+```bash
+./mvnw -DskipTests compile
+```
+
+Ejecutar:
+
+```bash
+./mvnw spring-boot:run
+```
+
+Luego acceder desde el navegador a:
+
+```text
+http://localhost:8080/
+```
+
+---
+
+## Estado actual
+
+Actualmente el proyecto cuenta con:
+
+- Modelo de dominio persistido mediante JPA/Hibernate.
+- Conexión con MySQL.
+- Login con Spring Security.
+- Roles `ADMINISTRADOR`, `RESPONSABLE` y `EMPLEADO`.
+- Contraseñas cifradas mediante BCrypt.
+- Dashboard de Administración.
+- Navegación mediante Thymeleaf.
+- Listado de Festivales.
+- Registro de Unidad de Venta + Responsable.
+- Consulta de Unidades por Festival.
+- Configuración y modificación de costos.
+- Cálculo de canon.
+- Reporte de Mayores Cánones mediante `ReporteMayoresCanonDTO`.
+- Ranking de cánones de mayor a menor.
+- Alta y listado de empleados.
+- Reactivación de empleados.
+- Estructura de navegación del Responsable.
+- Flujo de desarrollo mediante ramas y Pull Requests.
