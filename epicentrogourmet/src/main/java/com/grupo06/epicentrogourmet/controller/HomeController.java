@@ -8,16 +8,27 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.grupo06.epicentrogourmet.entity.Festival;
+import com.grupo06.epicentrogourmet.entity.UnidadVenta;
 import com.grupo06.epicentrogourmet.service.FestivalService;
+import com.grupo06.epicentrogourmet.service.UnidadVentaService;
 
 @Controller
 public class HomeController {
 
     private final FestivalService festivalService;
+    private final UnidadVentaService unidadVentaService;
 
-    public HomeController(FestivalService festivalService) {
+    public HomeController(
+            FestivalService festivalService,
+            UnidadVentaService unidadVentaService) {
+
         this.festivalService = festivalService;
+        this.unidadVentaService = unidadVentaService;
     }
+
+    // =====================================================
+    // INICIO GENERAL
+    // =====================================================
 
     @GetMapping("/")
     public String inicio(
@@ -39,7 +50,7 @@ public class HomeController {
                             );
 
             if (esResponsable) {
-                return "redirect:/responsable/empleados";
+                return "redirect:/responsable";
             }
         }
 
@@ -77,5 +88,46 @@ public class HomeController {
         }
 
         return "index";
+    }
+
+
+    // =====================================================
+    // PANEL DEL RESPONSABLE
+    // =====================================================
+
+    @GetMapping("/responsable")
+    public String responsableInicio(
+            Model model,
+            Authentication authentication) {
+
+        if (authentication == null) {
+            return "redirect:/login";
+        }
+
+        UnidadVenta unidad =
+                unidadVentaService
+                        .buscarUnidadDelResponsable(
+                                authentication.getName()
+                        );
+
+        model.addAttribute(
+                "username",
+                authentication.getName()
+        );
+
+        model.addAttribute(
+                "unidad",
+                unidad
+        );
+
+        if (unidad != null) {
+
+            model.addAttribute(
+                    "festival",
+                    unidad.getFestival()
+            );
+        }
+
+        return "responsable-dashboard";
     }
 }
