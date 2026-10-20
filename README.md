@@ -171,7 +171,7 @@ Se implementaron además:
 | Consultar sueldo por Festival | Valentina Ponzo | Finalizado | `CU-Consultar-Sueldo-Festival` | [PR #21](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/21) |
 | Consultar Festival y Unidad actual | Valentina Ponzo | Finalizado | `CU-Festival-Unidad-Actual-Empleado` | [PR #22](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/22) |
 | Consultar historial laboral | Valentina Ponzo | Finalizado | `CU-Historial-Laboral-Empleado` | [PR #23](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/23) |
-| Consulta de Empleados con filtros | Alejandro Escalier | Finalizado | `CU-Consulta-Empleados` | [PR #26] (https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/26)|
+| Consulta de Empleados con filtros | Alejandro Escalier | Finalizado | `CU-Consulta-Empleados` | [PR #26](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/26) |
 
 > Cada nuevo Caso de Uso se desarrolla en una rama independiente y posteriormente se integra a `main` mediante Pull Request.
 
