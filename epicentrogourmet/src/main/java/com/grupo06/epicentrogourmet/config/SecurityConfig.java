@@ -20,13 +20,18 @@ public class SecurityConfig {
     public AuthenticationSuccessHandler loginSuccessHandler() {
         return (request, response, authentication) -> {
 
-            boolean esResponsable = authentication
-                    .getAuthorities()
-                    .stream()
-                    .anyMatch(authority ->
-                            authority.getAuthority().equals("ROLE_RESPONSABLE"));
+            boolean esResponsable = authentication.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_RESPONSABLE"));
 
-            String destino = esResponsable ? "/responsable/empleados" : "/";
+            boolean esEmpleado = authentication.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_EMPLEADO"));
+
+            String destino = "/";
+            if (esResponsable) {
+                destino = "/responsable";
+            } else if (esEmpleado) {
+                destino = "/empleado";
+            }
 
             response.sendRedirect(request.getContextPath() + destino);
         };
@@ -37,40 +42,40 @@ public class SecurityConfig {
             throws Exception {
 
         http
-            .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests(auth -> auth
 
-                .requestMatchers(
-                    "/login",
-                    "/css/**",
-                    "/js/**",
-                    "/images/**"
-                ).permitAll()
+                        .requestMatchers(
+                                "/login",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**"
+                        ).permitAll()
 
-                .requestMatchers("/admin/**")
-                    .hasRole("ADMINISTRADOR")
+                        .requestMatchers("/admin/**")
+                        .hasRole("ADMINISTRADOR")
 
-                .requestMatchers("/responsable/**")
-                    .hasRole("RESPONSABLE")
+                        .requestMatchers("/responsable/**")
+                        .hasRole("RESPONSABLE")
 
-                .requestMatchers("/empleado/**")
-                    .hasAnyRole("EMPLEADO", "RESPONSABLE")
+                        .requestMatchers("/empleado/**")
+                        .hasAnyRole("EMPLEADO", "RESPONSABLE")
 
-                .anyRequest()
-                    .authenticated()
-            )
+                        .anyRequest()
+                        .authenticated()
+                )
 
-            .formLogin(form -> form
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                    .successHandler(loginSuccessHandler)
-                .failureUrl("/login?error")
-                .permitAll()
-            )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .successHandler(loginSuccessHandler)
+                        .failureUrl("/login?error")
+                        .permitAll()
+                )
 
-            .logout(logout -> logout
-                .logoutSuccessUrl("/login?logout")
-                .permitAll()
-            );
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                );
 
         return http.build();
     }

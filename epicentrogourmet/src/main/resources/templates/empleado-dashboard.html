@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>Panel del Empleado - Epicentro Gourmet</title>
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+</head>
+<body>
+
+<!-- =====================================================
+     BARRA SUPERIOR
+     ===================================================== -->
+<header class="topbar">
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+        <span>
+            Usuario:
+            <strong th:text="${username}">
+                empleado
+            </strong>
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+            <button type="submit"
+                    class="logout-button">
+                Cerrar sesión
+            </button>
+        </form>
+    </div>
+</header>
+
+<!-- =====================================================
+     LAYOUT
+     ===================================================== -->
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <div th:replace="~{fragments/sidebar :: empleadoSidebar}">
+    </div>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- =================================================
+             ENCABEZADO
+             ================================================= -->
+        <div class="page-header">
+            <div class="page-title">
+                <h1>Panel del Empleado</h1>
+                <p>
+                    Consultá tu Unidad de Venta, tu Festival actual
+                    y tu información laboral en Epicentro Gourmet.
+                </p>
+            </div>
+        </div>
+
+        <!-- =================================================
+             DATOS GENERALES
+             ================================================= -->
+        <section class="stats-grid">
+
+            <!-- UNIDAD -->
+            <div class="stat-card">
+                <div class="stat-label">
+                    Mi Unidad
+                </div>
+
+                <div class="stat-value"
+                     th:if="${unidad != null}"
+                     th:text="${unidad.nombreComercial}">
+                    Unidad
+                </div>
+
+                <div class="stat-value"
+                     th:if="${unidad == null}">
+                    -
+                </div>
+
+                <div class="stat-description"
+                     th:if="${unidad != null}">
+                    Código:
+                    <span th:text="${unidad.codigo}">
+                        CODIGO
+                    </span>
+                </div>
+
+                <div class="stat-description"
+                     th:if="${unidad == null}">
+                    No tenés una Unidad asignada.
+                </div>
+            </div>
+
+            <!-- FESTIVAL -->
+            <div class="stat-card">
+                <div class="stat-label">
+                    Festival
+                </div>
+
+                <div class="stat-value"
+                     th:if="${festival != null}"
+                     th:text="${festival.nombre}">
+                    Festival
+                </div>
+
+                <div class="stat-value"
+                     th:if="${festival == null}">
+                    -
+                </div>
+
+                <div class="stat-description"
+                     th:if="${festival != null}"
+                     th:text="${festival.temporada}">
+                    Temporada
+                </div>
+
+                <div class="stat-description"
+                     th:if="${festival == null}">
+                    Sin Festival asociado.
+                </div>
+            </div>
+
+            <!-- PUESTO -->
+            <div class="stat-card">
+                <div class="stat-label">
+                    Puesto
+                </div>
+
+                <div class="stat-value">
+                    👤
+                </div>
+
+                <div class="stat-description"
+                     th:if="${empleado instanceof T(com.grupo06.epicentrogourmet.entity.Cocinero)}">
+                    Cocinero ·
+                    <span th:text="${#strings.capitalize(#strings.toLowerCase(empleado.rolCocina))}">
+                        Rol
+                    </span>
+                </div>
+
+                <div class="stat-description"
+                     th:if="${empleado instanceof T(com.grupo06.epicentrogourmet.entity.Cajero)}">
+                    Cajero · Turno
+                    <span th:text="${empleado.turno.name() == 'MANANA' ? 'mañana' : 'noche'}">
+                        turno
+                    </span>
+                </div>
+
+                <div class="stat-description"
+                     th:if="${empleado == null}">
+                    Sin datos de empleado.
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================
+             MIS DATOS
+             ================================================= -->
+        <section class="panel"
+                 th:if="${empleado != null}">
+
+            <div class="panel-header">
+                <h2>Mis datos</h2>
+
+                <span class="badge"
+                      th:text="${empleado.activo ? 'Activo' : 'Inactivo'}">
+                    Activo
+                </span>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>DNI</th>
+                        <th>Email</th>
+                        <th>Fecha de ingreso</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>
+                            <strong>
+                                <span th:text="${empleado.nombre}">Nombre</span>
+                                <span th:text="${empleado.apellido}">Apellido</span>
+                            </strong>
+                        </td>
+
+                        <td th:text="${empleado.dni}">DNI</td>
+
+                        <td th:text="${empleado.email}">Email</td>
+
+                        <td th:text="${#temporals.format(empleado.fechaIngreso, 'dd/MM/yyyy')}">
+                            Fecha
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- =================================================
+             MI UNIDAD
+             ================================================= -->
+        <section class="panel"
+                 th:if="${unidad != null}">
+
+            <div class="panel-header">
+                <h2>Mi Unidad de Venta</h2>
+
+                <span class="badge">
+                    Asignada
+                </span>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Nombre comercial</th>
+                        <th>Tipo</th>
+                        <th>Código</th>
+                        <th>Festival</th>
+                        <th>Responsable</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <!-- NOMBRE -->
+                        <td>
+                            <strong th:text="${unidad.nombreComercial}">
+                                Unidad
+                            </strong>
+                        </td>
+
+                        <!-- TIPO -->
+                        <td>
+                            <span class="badge"
+                                  th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.FoodTruck)}">
+                                Food Truck
+                            </span>
+
+                            <span class="badge"
+                                  th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.PuestoDesarmable)}">
+                                Puesto Desarmable
+                            </span>
+                        </td>
+
+                        <!-- CÓDIGO -->
+                        <td th:text="${unidad.codigo}">
+                            CODIGO
+                        </td>
+
+                        <!-- FESTIVAL -->
+                        <td>
+                            <span th:if="${unidad.festival != null}"
+                                  th:text="${unidad.festival.nombre}">
+                                Festival
+                            </span>
+
+                            <span th:if="${unidad.festival == null}">
+                                Sin Festival
+                            </span>
+                        </td>
+
+                        <!-- RESPONSABLE -->
+                        <td>
+                            <span th:if="${unidad.responsable != null}">
+                                <span th:text="${unidad.responsable.nombre}">Nombre</span>
+                                <span th:text="${unidad.responsable.apellido}">Apellido</span>
+                            </span>
+
+                            <span th:if="${unidad.responsable == null}">
+                                Sin responsable
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SIN UNIDAD -->
+        <section class="panel"
+                 th:if="${unidad == null}">
+
+            <div class="empty-state">
+                <strong>
+                    No tenés una Unidad de Venta asignada.
+                </strong>
+                Consultá con el Responsable de tu Unidad
+                para revisar tu asignación.
+            </div>
+        </section>
+
+        <!-- =================================================
+             ACCESOS RÁPIDOS
+             ================================================= -->
+        <section class="panel">
+
+            <div class="panel-header">
+                <h2>Mi actividad</h2>
+
+                <span class="badge">
+                    Empleado
+                </span>
+            </div>
+
+            <div class="stats-grid">
+
+                <!-- HISTORIAL LABORAL -->
+                <div class="stat-card">
+                    <div class="stat-label">
+                        Historial laboral
+                    </div>
+
+                    <div class="stat-value">
+                        📅
+                    </div>
+
+                    <div class="stat-description">
+                        Consultá los Festivales y Unidades
+                        en los que trabajaste.
+                    </div>
+
+                    <div style="margin-top: 18px;">
+                        <button type="button"
+                                class="btn btn-outline"
+                                disabled>
+                            Próximamente
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SUELDOS -->
+                <div class="stat-card">
+                    <div class="stat-label">
+                        Mis sueldos
+                    </div>
+
+                    <div class="stat-value">
+                        💵
+                    </div>
+
+                    <div class="stat-description">
+                        Consultá el sueldo recibido
+                        en cada Festival.
+                    </div>
+
+                    <div style="margin-top: 18px;">
+                        <button type="button"
+                                class="btn btn-outline"
+                                disabled>
+                            Próximamente
+                        </button>
+                    </div>
+                </div>
+
+                <!-- RECIBOS -->
+                <div class="stat-card">
+                    <div class="stat-label">
+                        Recibos de sueldo
+                    </div>
+
+                    <div class="stat-value">
+                        📄
+                    </div>
+
+                    <div class="stat-description">
+                        Descargá tus recibos de sueldo en PDF.
+                    </div>
+
+                    <div style="margin-top: 18px;">
+                        <button type="button"
+                                class="btn btn-outline"
+                                disabled>
+                            Próximamente
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CIERRE DE CAJA (solo Cajeros) -->
+                <div class="stat-card"
+                     th:if="${empleado instanceof T(com.grupo06.epicentrogourmet.entity.Cajero)}">
+                    <div class="stat-label">
+                        Cierre de caja
+                    </div>
+
+                    <div class="stat-value">
+                        💰
+                    </div>
+
+                    <div class="stat-description">
+                        Realizá el cierre diario de caja
+                        de tu Unidad de Venta.
+                    </div>
+
+                    <div style="margin-top: 18px;">
+                        <button type="button"
+                                class="btn btn-outline"
+                                disabled>
+                            Próximamente
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+</body>
+</html>
