@@ -19,6 +19,13 @@ public interface IPlatoService {
     void agregarPlato(PlatoDTO platoDTO);
 
     /**
+     * Actualiza un plato perteneciente a la unidad de venta del usuario actual.
+     * @param idPlato identificador del plato
+     * @param platoDTO datos actualizados
+     */
+    void actualizarPlato(Long idPlato, PlatoDTO platoDTO);
+
+    /**
      * Metodo para eliminar un plato de la BD.
      * @param idPlato
      */
