@@ -62,6 +62,11 @@
              th:text="${errorGeneral}">
         </div>
 
+        <div class="alert alert-success"
+             th:if="${mensajeExito}"
+             th:text="${mensajeExito}">
+        </div>
+
         <section class="panel">
             <div class="panel-header">
                 <h2>Platos registrados</h2>
@@ -85,13 +90,29 @@
                         <th>Nombre</th>
                         <th>Precio de venta</th>
                         <th>Costo de producción</th>
+                        <th scope="col">Modificar</th>
+                        <th scope="col">Eliminar</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="plato : ${platos}">
                         <td th:text="${plato.nombre}"></td>
-                        <td th:text="${plato.precioVenta}"></td>
-                        <td th:text="${plato.costoProduccion}"></td>
+                        <td th:text="'$ ' + ${plato.precioVenta}"></td>
+                        <td th:text="'$ ' + ${plato.costoProduccion}"></td>
+                        <td>
+                            <a th:href="@{/plato/{idPlato}/editar(idPlato=${plato.idPlato})}"
+                               th:aria-label="'Modificar ' + ${plato.nombre}"
+                               title="Modificar plato">✏️</a>
+                        </td>
+                        <td>
+                            <form th:action="@{/plato/{idPlato}/eliminar(idPlato=${plato.idPlato})}"
+                                  method="post"
+                                  onsubmit="return confirm('¿Querés eliminar este plato?');">
+                                <button type="submit"
+                                        th:aria-label="'Eliminar ' + ${plato.nombre}"
+                                        title="Eliminar plato">🗑️</button>
+                            </form>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
