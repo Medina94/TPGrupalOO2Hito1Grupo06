@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cierres de Caja - Epicentro Gourmet</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, Helvetica, sans-serif; background: #f5f6fa; color: #222; }
+        .navbar { background: #17258f; color: white; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h1 { font-size: 22px; }
+        .navbar a { color: white; text-decoration: none; font-size: 14px; font-weight: bold; }
+        .container { max-width: 1050px; margin: 40px auto; padding: 0 25px 50px; }
+        .page-header { margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .page-header h2 { font-size: 30px; margin-bottom: 8px; }
+        .page-header p { color: #6d6d6d; }
+        .card { background: white; border-radius: 14px; padding: 30px; margin-bottom: 25px; box-shadow: 0 3px 14px rgba(0, 0, 0, 0.07); overflow-x: auto; }
+        .alert { padding: 14px 16px; border-radius: 9px; margin-bottom: 25px; font-size: 14px; }
+        .alert-error { background: #fff0f0; color: #b42318; border: 1px solid #ffd0cc; }
+        .btn { padding: 12px 22px; border-radius: 8px; border: none; font-size: 14px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block;}
+        .btn-primary { background: #17258f; color: white; }
+        .btn-primary:hover { background: #243bff; }
+        
+        /* Estilos específicos para la tabla adaptados a tu theme */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 15px 12px; text-align: left; border-bottom: 1px solid #e9eaf0; font-size: 14px; }
+        th { background-color: #f8f9fc; color: #17258f; font-weight: bold; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
+        tr:hover { background-color: #fdfdfd; }
+        .empty-state { text-align: center; padding: 30px; color: #777; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <h1>Epicentro Gourmet</h1>
+    <a th:href="@{/}">← Volver al inicio</a>
+</nav>
+
+<main class="container">
+    <div class="page-header">
+        <div>
+            <h2>Listado de Cierres de Caja</h2>
+            <p>Historial completo de las recaudaciones diarias registradas en el sistema.</p>
+        </div>
+        <a th:href="@{/cierre-caja/agregar}" class="btn btn-primary">+ Nuevo Cierre</a>
+    </div>
+
+    <!-- ERROR GENERAL -->
+    <div th:if="${errorGeneral}" class="alert alert-error" th:text="${errorGeneral}"></div>
+
+    <section class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nº Cierre</th>
+                    <th>Fecha</th>
+                    <th>Monto Total</th>
+                    <th>ID Cajero</th>
+                    <th>ID Unidad Venta</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="cierre : ${cierres}">
+                    <td th:text="${'#' + cierre.idCierreCaja}"></td>
+                    <td th:text="${#temporals.format(cierre.fecha, 'dd/MM/yyyy')}"></td>
+                    <td style="font-weight: bold;" th:text="${'$ ' + cierre.montoTotal}"></td>
+                    <td th:text="${cierre.idCajero}"></td>
+                    <td th:text="${cierre.idUnidadVenta}"></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(cierres)}">
+                    <td colspan="5" class="empty-state">No hay cierres de caja registrados aún en el sistema.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+</body>
+</html>

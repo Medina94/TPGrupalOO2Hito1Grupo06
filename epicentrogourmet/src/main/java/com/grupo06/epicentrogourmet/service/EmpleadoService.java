@@ -11,15 +11,12 @@ import com.grupo06.epicentrogourmet.repository.AsignacionEmpleadoRepository;
 import com.grupo06.epicentrogourmet.repository.EmpleadoRepository;
 import com.grupo06.epicentrogourmet.repository.UsuarioRepository;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EmpleadoService {
-    private static final Logger logger = LoggerFactory.getLogger(EmpleadoService.class);
 
     private final EmpleadoRepository empleadoRepository;
     private final UsuarioRepository usuarioRepository;
@@ -27,7 +24,6 @@ public class EmpleadoService {
     private final AsignacionEmpleadoRepository asignacionEmpleadoRepository;
     private final UnidadVentaService unidadVentaService;
     private final IUsuarioActualService usuarioActualService;
-    private final IMailService mailService;
 
     public EmpleadoService(
             EmpleadoRepository empleadoRepository,
@@ -35,8 +31,7 @@ public class EmpleadoService {
             PasswordEncoder passwordEncoder,
             AsignacionEmpleadoRepository asignacionEmpleadoRepository,
             UnidadVentaService unidadVentaService,
-            IUsuarioActualService usuarioActualService,
-            IMailService mailService) {
+            IUsuarioActualService usuarioActualService) {
 
         this.empleadoRepository = empleadoRepository;
         this.usuarioRepository = usuarioRepository;
@@ -44,7 +39,6 @@ public class EmpleadoService {
         this.asignacionEmpleadoRepository = asignacionEmpleadoRepository;
         this.unidadVentaService = unidadVentaService;
         this.usuarioActualService = usuarioActualService;
-        this.mailService = mailService;
     }
 
     // =====================================================
@@ -102,9 +96,6 @@ public class EmpleadoService {
                 asignacion
         );
 
-        // 5. Enviar correo de alta al empleado
-        logger.info("Enviando correo de alta al empleado: {}", empleado.getEmail());
-        mailService.enviarMailAlta(dto, usuario.getUsername());
         return empleado;
     }
 

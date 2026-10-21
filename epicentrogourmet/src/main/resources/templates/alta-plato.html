@@ -226,14 +226,10 @@
 
     <div class="page-header">
 
-        <h2 th:text="${edicion} ? 'Modificar Plato' : 'Registrar Platos'">
-            Registrar Platos
-        </h2>
+        <h2>Registrar Platos</h2>
 
         <p>
-            <span th:text="${edicion} ? 'Actualizá los datos del plato.' : 'Registrá un nuevo plato y sus características.'">
-                Registrá un nuevo plato y sus características.
-            </span>
+            Registrá un nuevo plato y sus características.
         </p>
 
     </div>
@@ -256,13 +252,9 @@
 
 
     <form
-            th:action="${edicion} ? @{/plato/{idPlato}/editar(idPlato=${registroPlato.idPlato})} : @{/plato/agregar}"
+            th:action="@{/plato/agregar}"
             th:object="${registroPlato}"
             method="post">
-
-        <input type="hidden"
-               th:if="${edicion}"
-               th:field="*{idPlato}">
 
         <section class="card">
 
@@ -348,7 +340,7 @@
             <div class="actions">
 
                 <a
-                        th:href="${edicion} ? @{/plato/listar} : @{/}"
+                        th:href="@{/}"
                         class="btn btn-secondary">
                     Cancelar
                 </a>
@@ -357,9 +349,7 @@
                         type="submit"
                         class="btn btn-primary">
 
-                    <span th:text="${edicion} ? 'Guardar cambios' : 'Registrar plato'">
-                        Registrar plato
-                    </span>
+                    Registrar plato
 
                 </button>
 
