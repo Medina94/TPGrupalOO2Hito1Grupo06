@@ -38,6 +38,7 @@ public class UnidadVentaService {
     private final UsuarioRepository usuarioRepository;
     private final AsignacionEmpleadoRepository asignacionEmpleadoRepository;
     private final PasswordEncoder passwordEncoder;
+    private final IMailService mailService;
 
     public UnidadVentaService(
             UnidadVentaRepository unidadVentaRepository,
@@ -45,7 +46,8 @@ public class UnidadVentaService {
             FestivalRepository festivalRepository,
             UsuarioRepository usuarioRepository,
             AsignacionEmpleadoRepository asignacionEmpleadoRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder,
+            IMailService mailService) {
 
         this.unidadVentaRepository = unidadVentaRepository;
         this.empleadoRepository = empleadoRepository;
@@ -53,6 +55,7 @@ public class UnidadVentaService {
         this.usuarioRepository = usuarioRepository;
         this.asignacionEmpleadoRepository = asignacionEmpleadoRepository;
         this.passwordEncoder = passwordEncoder;
+        this.mailService = mailService;
     }
 
 
@@ -209,6 +212,10 @@ public class UnidadVentaService {
                 );
 
         asignacionEmpleadoRepository.save(asignacion);
+        mailService.enviarMailAltaResponsable(
+                dto,
+                dto.getPassword()
+        );
 
         return unidadVenta;
     }

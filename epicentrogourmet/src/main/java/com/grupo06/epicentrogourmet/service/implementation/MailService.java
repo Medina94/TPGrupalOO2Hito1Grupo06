@@ -1,6 +1,7 @@
 package com.grupo06.epicentrogourmet.service.implementation;
 
 import com.grupo06.epicentrogourmet.dto.RegistroEmpleadoDTO;
+import com.grupo06.epicentrogourmet.dto.RegistroUnidadResponsableDTO;
 import com.grupo06.epicentrogourmet.service.IMailService;
 
 import jakarta.mail.MessagingException;
@@ -35,29 +36,51 @@ public class MailService implements IMailService {
     @Override
     @Async
     public void enviarMailAlta(RegistroEmpleadoDTO dto, String username) {
+        enviarMail(
+                dto.getNombre() + " " + dto.getApellido(),
+                dto.getEmail(),
+                username,
+                dto.getPassword(),
+                "Alta de empleado en Epicentro Gourmet"
+        );
+    }
+
+    @Override
+    public void enviarMailAltaResponsable(RegistroUnidadResponsableDTO registroUnidadResponsableDTO, String username) {
+        enviarMail(
+                registroUnidadResponsableDTO.getNombreResponsable() + " "
+                        + registroUnidadResponsableDTO.getApellidoResponsable(),
+                registroUnidadResponsableDTO.getEmailResponsable(),
+                username,
+                registroUnidadResponsableDTO.getPassword(),
+                "Alta de responsable de unidad en Epicentro Gourmet"
+        );
+    }
+
+    private void enviarMail(
+            String nombre,
+            String email,
+            String username,
+            String password,
+            String asunto) {
         try {
-            // 1- Levanto el contenido del template HTML
-            String htmlContent = new String(template.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-
-            // 2- Reemplazar las variables por los valores del usuario
-            htmlContent = htmlContent.replace("{{NOMBRE}}", dto.getNombre() + " " + dto.getApellido())
+            String htmlContent = new String(
+                    template.getInputStream().readAllBytes(),
+                    StandardCharsets.UTF_8
+            );
+            htmlContent = htmlContent.replace("{{NOMBRE}}", nombre)
                     .replace("{{USERNAME}}", username)
-                    .replace("{{PASSWORD}}", dto.getPassword());
+                    .replace("{{PASSWORD}}", password);
 
-            // 3- Creo el mensaje del mail y seteo los valores necesarios
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-
-            helper.setTo(dto.getEmail());
-            helper.setSubject("Alta de empleado en Epicentro Gourmet");
+            helper.setTo(email);
+            helper.setSubject(asunto);
             helper.setText(htmlContent, true);
 
-            // 4- Adjuntar la imagen para que se muestre en el correo
             ClassPathResource imageResource = new ClassPathResource("static/images/logo.jpg");
             helper.addInline("epicentrogourmetLogo", imageResource);
-
             mailSender.send(mimeMessage);
-
         } catch (IOException | MessagingException e) {
             logger.error("Error en el envío de mail: {}", e.getMessage());
             throw new RuntimeException("Error al leer la plantilla o enviar el correo", e);
