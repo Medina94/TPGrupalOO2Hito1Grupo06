@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PlatoService implements IPlatoService {
@@ -56,8 +57,34 @@ public class PlatoService implements IPlatoService {
 
     @Override
     @Transactional
+    public void actualizarPlato(Long idPlato, PlatoDTO platoDTO) {
+        Plato plato = buscarPlatoDeUnidad(idPlato);
+        plato.setNombre(platoDTO.getNombre());
+        plato.setPrecioVenta(platoDTO.getPrecioVenta());
+        plato.setCostoProduccion(platoDTO.getCostoProduccion());
+        platoRepository.save(plato);
+    }
+
+    @Override
+    @Transactional
     public void eliminarPlato(Long idPlato) {
-        platoRepository.deleteById(idPlato);
+        platoRepository.delete(buscarPlatoDeUnidad(idPlato));
+    }
+
+    private Plato buscarPlatoDeUnidad(Long idPlato) {
+        UnidadVenta unidadVenta = buscarUnidadUnicaDelUsuario();
+        Plato plato = platoRepository.findById(idPlato)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "No se encontró el plato seleccionado."
+                ));
+        if (!Objects.equals(
+                plato.getUnidadVenta().getIdUnidadVenta(),
+                unidadVenta.getIdUnidadVenta())) {
+            throw new IllegalArgumentException(
+                    "El plato seleccionado no pertenece a tu unidad de venta."
+            );
+        }
+        return plato;
     }
 
     private UnidadVenta buscarUnidadUnicaDelUsuario() {
