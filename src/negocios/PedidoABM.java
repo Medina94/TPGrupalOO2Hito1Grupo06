@@ -1,0 +1,74 @@
+package negocios;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import dao.FestivalDao;
+import dao.PedidoDao;
+import datos.Pedido;
+import datos.UnidadVenta;
+
+public class PedidoABM {
+	private static PedidoABM instancia = null;
+	
+	protected PedidoABM() {}
+	
+	public static PedidoABM getInstance() {
+		if(instancia==null)
+		   instancia=new PedidoABM();
+		return instancia;
+	}
+	
+    public int agregar(Pedido p) throws Exception {
+    	p.setFecha(LocalDate.now());
+        return PedidoDao.getInstance().agregar(p);
+    }
+
+    public void modificar(Pedido p) throws Exception {
+        if (traer(p.getIdPedido()) == null) {
+            throw new Exception("ERROR: No existe el pedido con ID " + p.getIdPedido());
+        }
+        PedidoDao.getInstance().actualizar(p);
+    }
+
+    public void eliminar(long idPedido) throws Exception {
+        Pedido p = PedidoDao.getInstance().traer(idPedido);
+        if (p == null) {
+            throw new Exception("ERROR: El pedido no existe");
+        }
+        PedidoDao.getInstance().eliminar(p);
+    }
+
+    public Pedido traer(long idPedido) {
+        return PedidoDao.getInstance().traer(idPedido);
+    }
+    
+    public List<Pedido> traer() {
+        return PedidoDao.getInstance().traer();
+    }
+    
+    public List<Pedido> traer(UnidadVenta u){
+    	return PedidoDao.getInstance().traer(u);
+    }
+    
+    public Pedido traerPedidoYVentas(long idPedido) {
+    	return PedidoDao.getInstance().traerPedidoYVentas(idPedido);
+    }
+    
+    public List<Pedido> traerByFestival(long idFestival){
+    	return PedidoDao.getInstance().traerPedidosFestival(idFestival);
+    }
+    
+    public List<Pedido> traerByFestival(long idFestival, String fecha) throws Exception{
+    	if(FestivalDao.getInstance().traer(idFestival) == null) {
+    		throw new Exception("ERROR: No existe un festival con id=" + idFestival);
+    	}
+    	try {    		
+    		LocalDate fechaFormat = LocalDate.parse(fecha, DateTimeFormatter.ISO_LOCAL_DATE);
+    		return PedidoDao.getInstance().traerPedidosFestival(idFestival, fechaFormat);
+    	}catch (Exception e) {
+    		throw new Exception("ERROR: Fecha invalida");
+    	}
+    }
+}

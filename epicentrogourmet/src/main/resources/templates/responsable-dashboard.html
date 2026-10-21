@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Panel del Responsable - Epicentro Gourmet</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     BARRA SUPERIOR
+     ===================================================== -->
+
+<header class="topbar">
+
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+
+        <span>
+            Usuario:
+            <strong th:text="${username}">
+                responsable
+            </strong>
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="logout-button">
+
+                Cerrar sesión
+
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     LAYOUT
+     ===================================================== -->
+
+<div class="app-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <div th:replace="~{fragments/sidebar :: responsableSidebar}">
+    </div>
+
+
+    <!-- CONTENIDO -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             ENCABEZADO
+             ================================================= -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>Panel del Responsable</h1>
+
+                <p>
+                    Administrá tu Unidad de Venta, empleados,
+                    sueldos y operaciones de Epicentro Gourmet.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             DATOS GENERALES
+             ================================================= -->
+
+        <section class="stats-grid">
+
+
+            <!-- UNIDAD -->
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Mi Unidad
+                </div>
+
+                <div class="stat-value"
+                     th:if="${unidad != null}"
+                     th:text="${unidad.nombreComercial}">
+                    Unidad
+                </div>
+
+                <div class="stat-value"
+                     th:if="${unidad == null}">
+                    -
+                </div>
+
+                <div class="stat-description"
+                     th:if="${unidad != null}">
+
+                    Código:
+                    <span th:text="${unidad.codigo}">
+                        CODIGO
+                    </span>
+
+                </div>
+
+                <div class="stat-description"
+                     th:if="${unidad == null}">
+
+                    No existe una Unidad asignada.
+
+                </div>
+
+            </div>
+
+
+            <!-- FESTIVAL -->
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Festival
+                </div>
+
+                <div class="stat-value"
+                     th:if="${festival != null}"
+                     th:text="${festival.nombre}">
+                    Festival
+                </div>
+
+                <div class="stat-value"
+                     th:if="${festival == null}">
+                    -
+                </div>
+
+                <div class="stat-description"
+                     th:if="${festival != null}"
+                     th:text="${festival.temporada}">
+                    Temporada
+                </div>
+
+                <div class="stat-description"
+                     th:if="${festival == null}">
+
+                    Sin Festival asociado.
+
+                </div>
+
+            </div>
+
+
+            <!-- ROL -->
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Perfil
+                </div>
+
+                <div class="stat-value">
+                    👤
+                </div>
+
+                <div class="stat-description">
+                    Responsable de Unidad de Venta
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             MI UNIDAD
+             ================================================= -->
+
+        <section class="panel"
+                 th:if="${unidad != null}">
+
+            <div class="panel-header">
+
+                <h2>Mi Unidad de Venta</h2>
+
+                <span class="badge">
+                    Activa
+                </span>
+
+            </div>
+
+
+            <div class="table-responsive">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>Nombre comercial</th>
+
+                        <th>Tipo</th>
+
+                        <th>Código</th>
+
+                        <th>Superficie</th>
+
+                        <th>Festival</th>
+
+                        <th>Acciones</th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr>
+
+
+                        <!-- NOMBRE -->
+
+                        <td>
+
+                            <strong th:text="${unidad.nombreComercial}">
+                                Unidad
+                            </strong>
+
+                        </td>
+
+
+                        <!-- TIPO -->
+
+                        <td>
+
+                            <span class="badge"
+                                  th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.FoodTruck)}">
+
+                                Food Truck
+
+                            </span>
+
+
+                            <span class="badge"
+                                  th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.PuestoDesarmable)}">
+
+                                Puesto Desarmable
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- CÓDIGO -->
+
+                        <td th:text="${unidad.codigo}">
+                            CODIGO
+                        </td>
+
+
+                        <!-- SUPERFICIE -->
+
+                        <td>
+
+                            <span th:text="${unidad.superficie}">
+                                0
+                            </span>
+
+                            m²
+
+                        </td>
+
+
+                        <!-- FESTIVAL -->
+
+                        <td>
+
+                            <span th:if="${unidad.festival != null}"
+                                  th:text="${unidad.festival.nombre}">
+                                Festival
+                            </span>
+
+                            <span th:if="${unidad.festival == null}">
+                                Sin Festival
+                            </span>
+
+                        </td>
+
+
+                        <!-- ACCIONES -->
+
+                        <td>
+
+                            <a th:href="@{/responsable/mi-unidad/canon}"
+                               class="btn btn-primary">
+
+                                Ver canon
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- SIN UNIDAD -->
+
+        <section class="panel"
+                 th:if="${unidad == null}">
+
+            <div class="empty-state">
+
+                <strong>
+                    No tenés una Unidad de Venta asignada.
+                </strong>
+
+                Contactá al Administrador para revisar
+                la asignación de tu usuario.
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ACCESOS RÁPIDOS
+             ================================================= -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>Gestión de la Unidad</h2>
+
+                <span class="badge">
+                    Responsable
+                </span>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+
+                <!-- EMPLEADOS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Empleados
+                    </div>
+
+                    <div class="stat-value">
+                        👥
+                    </div>
+
+                    <div class="stat-description">
+                        Alta, modificación, baja y consulta
+                        de empleados de tu Unidad.
+                    </div>
+
+                    <div style="margin-top: 18px;">
+
+                        <a th:href="@{/responsable/empleados}"
+                           class="btn btn-primary">
+
+                            Gestionar empleados
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SUELDOS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Liquidación de Sueldos
+                    </div>
+
+                    <div class="stat-value">
+                        💵
+                    </div>
+
+                    <div class="stat-description">
+                        Calculá los haberes de los empleados
+                        asignados a tu Unidad.
+                    </div>
+
+                    <div style="margin-top: 18px;">
+
+                        <a th:href="@{/responsable/sueldos}"
+                           class="btn btn-primary">
+
+                            Liquidar sueldos
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CANON -->
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Canon
+                    </div>
+
+                    <div class="stat-value">
+                        💰
+                    </div>
+
+                    <div class="stat-description">
+                        Consultá el canon correspondiente
+                        a tu Unidad de Venta.
+                    </div>
+
+                    <div style="margin-top: 18px;">
+
+                        <a th:href="@{/responsable/mi-unidad/canon}"
+                           class="btn btn-outline">
+
+                            Consultar canon
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PLATOS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Platos
+                    </div>
+
+                    <div class="stat-value">
+                        🍽️
+                    </div>
+
+                    <div class="stat-description">
+                        Gestión de platos de la Unidad de Venta.
+                    </div>
+
+                    <div style="margin-top: 18px;">
+
+                        <button type="button"
+                                class="btn btn-outline"
+                                disabled>
+
+                            Próximamente
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VENTAS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Ventas
+                    </div>
+
+                    <div class="stat-value">
+                        🧾
+                    </div>
+
+                    <div class="stat-description">
+                        Reportes de ventas y recaudación
+                        de la Unidad.
+                    </div>
+
+                    <div style="margin-top: 18px;">
+
+                        <button type="button"
+                                class="btn btn-outline"
+                                disabled>
+
+                            Próximamente
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RENTABILIDAD -->
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Rentabilidad
+                    </div>
+
+                    <div class="stat-value">
+                        📈
+                    </div>
+
+                    <div class="stat-description">
+                        Consulta de rentabilidad neta
+                        de la Unidad.
+                    </div>
+
+                    <div style="margin-top: 18px;">
+
+                        <button type="button"
+                                class="btn btn-outline"
+                                disabled>
+
+                            Próximamente
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

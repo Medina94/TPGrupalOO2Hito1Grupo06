@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<!-- =====================================================
+     ADMINISTRADOR
+     ===================================================== -->
+
+<aside th:fragment="adminSidebar"
+       class="sidebar">
+
+    <div class="sidebar-title">
+        Administración
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a th:href="@{/}"
+           class="sidebar-link">
+            <span class="sidebar-icon">🏠</span>
+            <span class="sidebar-text">Inicio</span>
+        </a>
+
+        <div class="sidebar-section">
+            FESTIVALES
+        </div>
+
+        <a th:href="@{/#festivales}"
+           class="sidebar-link">
+            <span class="sidebar-icon">🎪</span>
+            <span class="sidebar-text">Festivales</span>
+        </a>
+
+        <a th:href="@{/admin/unidades/nueva}"
+           class="sidebar-link">
+            <span class="sidebar-icon">🏪</span>
+            <span class="sidebar-text">Nueva Unidad</span>
+        </a>
+
+        <a th:href="@{/admin/festivales/costos}"
+           class="sidebar-link">
+            <span class="sidebar-icon">💲</span>
+            <span class="sidebar-text">Costos de Festivales</span>
+        </a>
+
+        <div class="sidebar-section">
+            PERSONAL
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">👥</span>
+            <span class="sidebar-text">
+                Empleados
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+        <div class="sidebar-section">
+            OPERACIONES Y REPORTES
+        </div>
+
+        <a th:href="@{/cierre-caja/listar}"
+           class="sidebar-link">
+            <span class="sidebar-icon">💵</span>
+            <span class="sidebar-text">
+                Cierres de Caja
+            </span>
+        </a>
+
+        <!-- ACÁ ESTÁ EL BOTÓN DE RENTABILIDAD PARA EL ADMIN -->
+        <a th:href="@{/rentabilidad/consultar}"
+           class="sidebar-link">
+            <span class="sidebar-icon">📊</span>
+            <span class="sidebar-text">
+                Rentabilidad Neta
+            </span>
+        </a>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">📈</span>
+            <span class="sidebar-text">
+                Ranking de facturación
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+        <a th:href="@{/admin/reportes/mayores-canones}"
+           class="sidebar-link">
+            <span class="sidebar-icon">🏆</span>
+            <span class="sidebar-text">
+                Mayores cánones
+            </span>
+        </a>
+
+    </nav>
+
+</aside>
+
+<!-- =====================================================
+     RESPONSABLE
+     ===================================================== -->
+
+<aside th:fragment="responsableSidebar"
+       class="sidebar">
+
+    <div class="sidebar-title">
+        Mi Unidad
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a th:href="@{/responsable}"
+           class="sidebar-link">
+            <span class="sidebar-icon">🏠</span>
+            <span class="sidebar-text">Inicio</span>
+        </a>
+
+        <div class="sidebar-section">
+            UNIDAD DE VENTA
+        </div>
+
+        <a th:href="@{/responsable}"
+           class="sidebar-link">
+            <span class="sidebar-icon">🏪</span>
+            <span class="sidebar-text">Mi Unidad</span>
+        </a>
+
+        <a th:href="@{/responsable/mi-unidad/canon}"
+           class="sidebar-link">
+            <span class="sidebar-icon">💲</span>
+            <span class="sidebar-text">Consultar Canon</span>
+        </a>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">🍽️</span>
+            <span class="sidebar-text">
+                Platos
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+        <div class="sidebar-section">
+            EMPLEADOS
+        </div>
+
+        <a th:href="@{/responsable/empleados}"
+           class="sidebar-link">
+            <span class="sidebar-icon">👥</span>
+            <span class="sidebar-text">
+                Gestión de empleados
+            </span>
+        </a>
+
+        <a th:href="@{/responsable/sueldos}"
+           class="sidebar-link">
+            <span class="sidebar-icon">💰</span>
+            <span class="sidebar-text">
+                Liquidar sueldos
+            </span>
+        </a>
+
+        <div class="sidebar-section">
+            GESTIÓN
+        </div>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">🛒</span>
+            <span class="sidebar-text">
+                Ventas
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+        <!-- ACÁ ESTÁ EL BOTÓN DE RENTABILIDAD PARA EL RESPONSABLE -->
+        <a th:href="@{/rentabilidad/consultar}"
+           class="sidebar-link">
+            <span class="sidebar-icon">📊</span>
+            <span class="sidebar-text">
+                Rentabilidad
+            </span>
+        </a>
+
+    </nav>
+
+</aside>
+
+<!-- =====================================================
+     EMPLEADO
+     ===================================================== -->
+
+<aside th:fragment="empleadoSidebar"
+       class="sidebar">
+
+    <div class="sidebar-title">
+        Mi información
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a th:href="@{/empleado}"
+           class="sidebar-link">
+            <span class="sidebar-icon">🏠</span>
+            <span class="sidebar-text">
+                Inicio
+            </span>
+        </a>
+
+        <div class="sidebar-section">
+            TRABAJO
+        </div>
+
+        <a th:href="@{/empleado/actual}"
+           class="sidebar-link">
+            <span class="sidebar-icon">🎪</span>
+            <span class="sidebar-text">
+                Festival y Unidad actual
+            </span>
+        </a>
+
+        <a th:href="@{/empleado/historial}"
+           class="sidebar-link">
+            <span class="sidebar-icon">📅</span>
+            <span class="sidebar-text">
+                Historial laboral
+            </span>
+        </a>
+
+        <div class="sidebar-section">
+            HABERES
+        </div>
+
+        <a th:href="@{/empleado/sueldos}"
+           class="sidebar-link">
+            <span class="sidebar-icon">💰</span>
+            <span class="sidebar-text">
+                Mis sueldos
+            </span>
+        </a>
+
+        <div class="sidebar-link disabled">
+            <span class="sidebar-icon">📄</span>
+            <span class="sidebar-text">
+                Recibos PDF
+                <small>Próximamente</small>
+            </span>
+        </div>
+
+        <div class="sidebar-section">
+            CAJERO
+        </div>
+
+        <a th:href="@{/cierre-caja/listar}"
+           class="sidebar-link">
+            <span class="sidebar-icon">💵</span>
+            <span class="sidebar-text">
+                Cierre de caja
+            </span>
+        </a>
+
+    </nav>
+
+</aside>
+
+</body>
+</html>

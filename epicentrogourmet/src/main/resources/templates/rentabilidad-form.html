@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentabilidad Neta - Epicentro Gourmet</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, Helvetica, sans-serif; background: #f5f6fa; color: #222; }
+        .navbar { background: #17258f; color: white; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h1 { font-size: 22px; }
+        .navbar a { color: white; text-decoration: none; font-size: 14px; font-weight: bold; }
+        .container { max-width: 1050px; margin: 40px auto; padding: 0 25px 50px; }
+        .page-header { margin-bottom: 28px; }
+        .page-header h2 { font-size: 30px; margin-bottom: 8px; }
+        .page-header p { color: #6d6d6d; }
+        .card { background: white; border-radius: 14px; padding: 30px; margin-bottom: 25px; box-shadow: 0 3px 14px rgba(0, 0, 0, 0.07); }
+        .card h3 { font-size: 20px; margin-bottom: 22px; color: #17258f; }
+        .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .form-group { display: flex; flex-direction: column; }
+        label { font-size: 14px; font-weight: bold; margin-bottom: 7px; color: #333; }
+        input { height: 45px; border: 1px solid #d7d9e0; border-radius: 8px; padding: 0 12px; font-size: 14px; background: #fafafa; outline: none; }
+        input:focus { border-color: #243bff; background: white; box-shadow: 0 0 0 3px rgba(36, 59, 255, 0.10); }
+        .alert { padding: 14px 16px; border-radius: 9px; margin-bottom: 25px; font-size: 14px; }
+        .alert-error { background: #fff0f0; color: #b42318; border: 1px solid #ffd0cc; }
+        .actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 25px; }
+        .btn { padding: 12px 22px; border-radius: 8px; border: none; font-size: 14px; font-weight: bold; cursor: pointer; text-decoration: none; }
+        .btn-primary { background: #17258f; color: white; }
+        .btn-primary:hover { background: #243bff; }
+        
+        /* Estilos para la tabla de resultados */
+        .result-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .result-table td { padding: 12px 10px; border-bottom: 1px solid #e9eaf0; font-size: 15px; }
+        .text-right { text-align: right; font-weight: bold; }
+        .text-success { color: #17783c; }
+        .text-danger { color: #b42318; }
+        .total-row td { padding: 20px 10px; font-size: 20px; font-weight: bold; border-top: 2px solid #17258f; border-bottom: none; }
+        
+        @media (max-width: 750px) { .form-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <h1>Epicentro Gourmet</h1>
+    <a th:href="@{/}">← Volver al inicio</a>
+</nav>
+
+<main class="container">
+    <div class="page-header">
+        <h2>Reporte de Rentabilidad Neta</h2>
+        <p>Consultá la ganancia real de una unidad de venta en un período específico.</p>
+    </div>
+
+    <!-- Mensaje de Error -->
+    <div th:if="${errorGeneral}" class="alert alert-error" th:text="${errorGeneral}"></div>
+
+    <!-- FORMULARIO DE CONSULTA -->
+    <form th:action="@{/rentabilidad/consultar}" method="post">
+        <section class="card">
+            <h3>Parámetros de Búsqueda</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="idUnidadVenta">ID Unidad de Venta</label>
+                    <input type="number" id="idUnidadVenta" name="idUnidadVenta" required th:value="${idUnidadVenta}" placeholder="Ej: 1">
+                </div>
+                <div class="form-group">
+                    <label for="fechaDesde">Fecha Desde</label>
+                    <input type="date" id="fechaDesde" name="fechaDesde" required th:value="${fechaDesde}">
+                </div>
+                <div class="form-group">
+                    <label for="fechaHasta">Fecha Hasta</label>
+                    <input type="date" id="fechaHasta" name="fechaHasta" required th:value="${fechaHasta}">
+                </div>
+            </div>
+            <div class="actions">
+                <button type="submit" class="btn btn-primary">Calcular Rentabilidad</button>
+            </div>
+        </section>
+    </form>
+
+    <!-- TARJETA DE RESULTADOS (Se muestra solo si el Controller manda el DTO 'resultado') -->
+    <section class="card" th:if="${resultado != null}">
+        <h3>Resultado Financiero: <span th:text="${resultado.nombreUnidad}"></span></h3>
+        
+        <table class="result-table">
+            <tr>
+                <td>Ingresos brutos por Pedidos:</td>
+                <td class="text-right text-success" th:text="'+ $ ' + ${resultado.ingresosPedidos}"></td>
+            </tr>
+            <tr>
+                <td>Costo de producción de Platos:</td>
+                <td class="text-right text-danger" th:text="'- $ ' + ${resultado.costosPlatos}"></td>
+            </tr>
+            <tr>
+                <td>Sueldos de Empleados:</td>
+                <td class="text-right text-danger" th:text="'- $ ' + ${resultado.costosSueldos}"></td>
+            </tr>
+            <tr>
+                <td>Canon del Festival:</td>
+                <td class="text-right text-danger" th:text="'- $ ' + ${resultado.costoCanon}"></td>
+            </tr>
+            <tr class="total-row">
+                <td>RENTABILIDAD NETA:</td>
+                <td class="text-right" 
+                    th:styleappend="${resultado.rentabilidadNeta >= 0} ? 'color: #17783c;' : 'color: #b42318;'"
+                    th:text="'$ ' + ${resultado.rentabilidadNeta}">
+                </td>
+            </tr>
+        </table>
+    </section>
+
+</main>
+
+</body>
+</html>

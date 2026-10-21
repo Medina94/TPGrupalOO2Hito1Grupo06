@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Epicentro Gourmet</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+
+
+<!-- =========================
+     BARRA SUPERIOR
+     ========================= -->
+
+<header class="topbar">
+
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+
+        <span>
+            Administración
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="logout-button">
+                Cerrar sesión
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     LAYOUT
+     ========================= -->
+
+<div class="app-layout">
+
+    <div th:replace="~{fragments/sidebar :: responsableSidebar}">
+    </div>
+
+
+    <main class="main-content">
+
+
+        <!-- =========================
+             ENCABEZADO
+             ========================= -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+                <h1>Responsable</h1>
+                <p>Sistema de consultas para los responsables de Epicentro Gourmet.</p>
+            </div>
+            <div class="actions">
+
+                <a th:if="${esResponsable}"
+                   th:href="@{/responsable/empleados/nuevo}"
+                   class="btn btn-primary">
+
+                    + Nuevo Empleado
+
+                </a>
+
+                <a th:href="@{/}"
+                   class="btn btn-outline">
+
+                    Volver al inicio
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             MENSAJES
+             ========================= -->
+
+        <div class="alert alert-error"
+             th:if="${error}"
+             th:text="${error}">
+
+            Ocurrió un error.
+
+        </div>
+
+
+        <div class="alert alert-success"
+             th:if="${success}"
+             th:text="${success}">
+
+            Operación realizada correctamente.
+
+        </div>
+
+        <!-- =========================
+             CONSULTA DE EMPLEADOS
+             ========================= -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+                <h2>Consultar empleados</h2>
+            </div>
+
+            <form th:action="@{/responsable/empleados}" method="get">
+
+                <div class="form-grid">
+
+                    <div class="form-field">
+                        <label for="nombre">Nombre o apellido</label>
+                        <input type="text" id="nombre" name="nombre"
+                               placeholder="Ej: Juan Pérez"
+                               th:value="${filtroNombre}">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="dni">DNI</label>
+                        <input type="text" id="dni" name="dni"
+                               inputmode="numeric" pattern="[0-9]*"
+                               placeholder="Ej: 40123456"
+                               th:value="${filtroDni}">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="fechaDesde">Ingreso desde</label>
+                        <input type="date" id="fechaDesde" name="fechaDesde"
+                               th:value="${filtroDesde}">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="fechaHasta">Ingreso hasta</label>
+                        <input type="date" id="fechaHasta" name="fechaHasta"
+                               th:value="${filtroHasta}">
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <a th:href="@{/responsable/empleados}"
+                       class="btn btn-outline">Limpiar filtros</a>
+                </div>
+
+            </form>
+
+        </section>
+
+        <!-- =========================
+             TABLA DE EMPLEADOS
+             ========================= -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2 th:text="${hayFiltros} ? 'Resultados de la búsqueda' : 'Empleados registrados'">Empleados registrados</h2>
+
+                <span class="badge"
+                      th:text="${#lists.size(empleados) + ' empleados'}">
+
+                    0 empleados
+
+                </span>
+
+            </div>
+
+
+            <!-- HAY EMPLEADOS -->
+
+            <div class="table-responsive"
+                 th:if="${!#lists.isEmpty(empleados)}">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>Nombre</th>
+
+                        <th>Puesto</th>
+
+                        <th>DNI</th>
+
+                        <th>Email</th>
+
+                        <th>Ingreso</th>
+
+                        <th>Estado</th>
+
+                        <th th:if="${esResponsable}">Acciones</th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="empleado : ${empleados}">
+
+
+                        <!-- NOMBRE -->
+                        <td>
+                            <strong>
+                                <span th:text="${empleado.nombre}">Nombre</span>
+                                <span th:text="${empleado.apellido}">Apellido</span>
+                            </strong>
+                        </td>
+
+                        <!-- TIPO -->
+
+                        <td>
+
+                            <span class="badge"
+                                  th:if="${empleado instanceof T(com.grupo06.epicentrogourmet.entity.Cajero)}">
+
+                                Cajero
+
+                            </span>
+
+
+                            <span class="badge"
+                                  th:if="${empleado instanceof T(com.grupo06.epicentrogourmet.entity.Cocinero)}">
+
+                                Cocinero
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- DNI -->
+                        <td th:text="${empleado.dni}">DNI</td>
+
+                        <!-- EMAIL -->
+                        <td th:text="${empleado.email}">Email</td>
+
+                        <!-- INGRESO -->
+
+                        <td>
+
+                            <span th:if="${empleado.fechaIngreso != null}">
+
+                                <span
+                                        th:text="${empleado.fechaIngreso}">
+                                    Fecha Ingreso
+                                </span>
+
+
+
+                            </span>
+
+
+
+                        </td>
+
+                        <td>
+                            <span th:if="${empleado.activo}" class="badge">Activo</span>
+                            <span th:unless="${empleado.activo}" class="badge">Inactivo</span>
+                        </td>
+
+                        <td th:if="${esResponsable}">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <a th:href="@{/responsable/empleados/{id}/modificar(id=${empleado.idEmpleado})}"
+                                   class="btn btn-outline">Modificar
+                                </a>
+
+                                <form th:if="${empleado.activo}"
+                                      th:action="@{/responsable/empleados/{id}/eliminar(id=${empleado.idEmpleado})}"
+                                      method="post"
+                                      style="margin: 0;"
+                                      onsubmit="return confirm('¿Estas seguro de dar de baja a este empleado? Esta accion desactivara su acceso al sistema');">
+
+                                    <button type="submit" class="btn btn-outline">Dar de baja</button>
+                                </form>
+
+                                <form th:unless="${empleado.activo}"
+                                      th:action="@{/responsable/empleados/{id}/reactivar(id=${empleado.idEmpleado})}"
+                                      method="post"
+                                      style="margin: 0;"
+                                      onsubmit="return confirm('¿Estas seguro de dar de alta nuevamente a este empleado? Se restablecera su acceso al sistema');">
+
+                                    <button type="submit" class="btn btn-primary">Dar de alta</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- NO HAY EMPLEADOS -->
+
+            <div class="empty-state"
+                 th:if="${#lists.isEmpty(empleados)}">
+
+                <strong th:text="${hayFiltros} ? 'No se encontraron empleados con esos filtros.' : 'No hay Empleados registrados.'">
+                    No hay Empleados registrados.
+                </strong>
+
+                <span th:unless="${hayFiltros}">Todavía no hay empleados cargados.</span>
+
+                <div style="margin-top: 18px;" th:if="${esResponsable and !hayFiltros}">
+
+                    <a th:href="@{/responsable/empleados/nuevo}"
+                       class="btn btn-primary">
+
+                        + Registrar Empleado
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CONFIGURACIÓN DE COSTOS
+             ========================= -->
+
+
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

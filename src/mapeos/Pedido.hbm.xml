@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="datos.Pedido" table="pedido">
+        <id name="idPedido" column="id_pedido" type="long">
+            <generator class="identity"/>
+        </id>
+        <property name="fecha" column="fecha" type="java.time.LocalDate" not-null="true"/>
+
+        <many-to-one name="festival" class="datos.Festival" column="id_festival" not-null="true"/>
+        <many-to-one name="unidadVenta" class="datos.UnidadVenta" column="id_unidadVenta" not-null="true"/>
+
+        <set name="ventas" table="venta" order-by="id_venta asc" inverse="true" lazy="true" fetch="select">
+            <key column="id_pedido"/>
+            <one-to-many class="datos.Venta"/>
+        </set>
+    </class>
+</hibernate-mapping>

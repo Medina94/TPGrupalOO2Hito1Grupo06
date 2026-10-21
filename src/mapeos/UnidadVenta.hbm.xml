@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="datos.UnidadVenta" table="unidad_venta">
+        <id name="idUnidadVenta" column="id_unidad_venta" type="long">
+            <generator class="identity"/>
+        </id>
+        <property name="nombreComercial" column="nombre_Comercial" type="string" not-null="true"/>
+        <property name="superficie" column="superficie" type="double" not-null="true"/>
+        <property name="codigo" column="codigo" type="string" not-null="true"/>
+        <property name="costosSuperficie" column="costos_superficie" type="double" not-null="true"/>
+
+        <many-to-one name="responsable" class="datos.Empleado" column="id_responsable" not-null="true"/>
+        <many-to-one name="festival" class="datos.Festival" column="id_festival" not-null="true"/>
+
+        <set name="empleados" table="empleado" order-by="id_empleado asc" inverse="true" lazy="true">
+            <key column="id_unidad_venta"/>
+            <one-to-many class="datos.Empleado"/>
+        </set>
+
+        <set name="platos" table="plato" order-by="id_plato asc" inverse="true" lazy="true">
+            <key column="id_unidad_venta"/>
+            <one-to-many class="datos.Plato"/>
+        </set>
+
+        <set name="pedidos" table="pedido" order-by="id_pedido asc" inverse="true" lazy="true">
+            <key column="id_unidadVenta"/>
+            <one-to-many class="datos.Pedido"/>
+        </set>
+
+        <joined-subclass name="datos.FoodTruck" table="food_truck">
+            <key column="id_unidad_venta"/>
+            <property name="patente" column="patente" type="string" not-null="true"/>
+            <property name="conexionElectrica" column="conexion_electrica" type="boolean" not-null="true"/>
+            <property name="plusPorElectricidad" column="plus_por_electricidad" type="double" not-null="true"/>
+        </joined-subclass>
+
+        <joined-subclass name="datos.PuestoDesarmable" table="puesto_desarmable">
+            <key column="id_unidad_venta"/>
+            <property name="cantidadCarpas" column="cantidad_carpas" type="integer" not-null="true"/>
+            <property name="minutos" column="minutos" type="integer" not-null="true"/>
+            <property name="costosPorMontaje" column="costos_por_montaje" type="double" not-null="true"/>
+        </joined-subclass>
+    </class>
+</hibernate-mapping>

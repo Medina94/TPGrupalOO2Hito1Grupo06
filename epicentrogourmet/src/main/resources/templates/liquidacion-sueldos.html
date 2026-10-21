@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Liquidación de Sueldos - Epicentro Gourmet
+    </title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     BARRA SUPERIOR
+     ===================================================== -->
+
+<header class="topbar">
+
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+
+        <span>
+            Responsable
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="logout-button">
+
+                Cerrar sesión
+
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     LAYOUT
+     ===================================================== -->
+
+<div class="app-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <div th:replace="~{fragments/sidebar :: responsableSidebar}">
+    </div>
+
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             ENCABEZADO
+             ================================================= -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>
+                    Liquidación de Sueldos
+                </h1>
+
+                <p>
+                    Liquidación de haberes de los empleados
+                    asignados a tu Unidad de Venta.
+                </p>
+
+            </div>
+
+
+            <div class="actions">
+
+                <a th:href="@{/responsable}"
+                   class="btn btn-outline">
+
+                    ← Volver al panel
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MENSAJES
+             ================================================= -->
+
+        <div class="alert alert-error"
+             th:if="${error}"
+             th:text="${error}">
+
+            Ocurrió un error.
+
+        </div>
+
+
+        <div class="alert alert-success"
+             th:if="${success}"
+             th:text="${success}">
+
+            Operación realizada correctamente.
+
+        </div>
+
+
+        <!-- =================================================
+             RESUMEN
+             ================================================= -->
+
+        <section class="stats-grid">
+
+
+            <!-- UNIDAD -->
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Unidad de Venta
+                </div>
+
+                <div class="stat-value"
+                     th:if="${unidad != null}"
+                     th:text="${unidad.nombreComercial}">
+
+                    Unidad
+
+                </div>
+
+                <div class="stat-value"
+                     th:if="${unidad == null}">
+
+                    -
+
+                </div>
+
+                <div class="stat-description"
+                     th:if="${unidad != null}"
+                     th:text="${unidad.codigo}">
+
+                    Código
+
+                </div>
+
+            </div>
+
+
+            <!-- FESTIVAL -->
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Festival
+                </div>
+
+                <div class="stat-value"
+                     th:if="${festival != null}"
+                     th:text="${festival.nombre}">
+
+                    Festival
+
+                </div>
+
+                <div class="stat-value"
+                     th:if="${festival == null}">
+
+                    -
+
+                </div>
+
+                <div class="stat-description"
+                     th:if="${festival != null}"
+                     th:text="${festival.temporada}">
+
+                    Temporada
+
+                </div>
+
+            </div>
+
+
+            <!-- EMPLEADOS -->
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Empleados a liquidar
+                </div>
+
+                <div class="stat-value"
+                     th:text="${liquidaciones != null ? #lists.size(liquidaciones) : 0}">
+
+                    0
+
+                </div>
+
+                <div class="stat-description">
+                    Empleados activos asignados
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             LIQUIDACIÓN
+             ================================================= -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>
+                    Liquidación de haberes
+                </h2>
+
+
+                <span class="badge"
+                      th:if="${festival != null && festival.costos != null}">
+
+                    Costos configurados
+
+                </span>
+
+            </div>
+
+
+            <!-- SIN FESTIVAL -->
+
+            <div class="alert alert-error"
+                 th:if="${festival == null && unidad != null}">
+
+                La Unidad de Venta no tiene
+                un Festival asociado.
+
+            </div>
+
+
+            <!-- SIN COSTOS -->
+
+            <div class="alert alert-error"
+                 th:if="${festival != null && festival.costos == null}">
+
+                El Festival no tiene configurados los costos
+                necesarios para calcular los sueldos.
+
+            </div>
+
+
+            <!-- CON COSTOS -->
+
+            <div th:if="${festival != null && festival.costos != null}">
+
+                <p style="
+                    color: #6b7280;
+                    font-size: 14px;
+                    line-height: 1.6;
+                ">
+
+                    La liquidación utiliza los costos configurados
+                    para el Festival y la lógica de cálculo
+                    correspondiente a cada tipo de empleado.
+
+                    <br>
+
+                    Se liquidarán únicamente los empleados activos
+                    asignados a esta Unidad de Venta.
+
+                    El Responsable de la Unidad no se incluye
+                    dentro de esta liquidación.
+
+                </p>
+
+
+                <!-- BOTÓN -->
+
+                <form th:if="${liquidaciones != null && !#lists.isEmpty(liquidaciones)}"
+                      th:action="@{/responsable/sueldos/liquidar}"
+                      method="post"
+                      style="margin-top: 20px;"
+                      onsubmit="return confirm('¿Deseás liquidar los sueldos de los empleados de esta Unidad de Venta?');">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        💵 Liquidar Sueldos
+
+                    </button>
+
+                </form>
+
+
+                <!-- SIN EMPLEADOS -->
+
+                <div class="empty-state"
+                     th:if="${liquidaciones != null && #lists.isEmpty(liquidaciones)}">
+
+                    <strong>
+                        No hay empleados para liquidar.
+                    </strong>
+
+                    No existen empleados activos asignados
+                    a esta Unidad de Venta.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             EMPLEADOS
+             ================================================= -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>
+                    Empleados
+                </h2>
+
+
+                <span class="badge"
+                      th:if="${liquidaciones != null}"
+                      th:text="${#lists.size(liquidaciones) + ' empleados'}">
+
+                    0 empleados
+
+                </span>
+
+            </div>
+
+
+            <!-- TABLA -->
+
+            <div class="table-responsive"
+                 th:if="${liquidaciones != null && !#lists.isEmpty(liquidaciones)}">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>
+                            Empleado
+                        </th>
+
+                        <th>
+                            Tipo
+                        </th>
+
+                        <th>
+                            Categoría / Turno
+                        </th>
+
+                        <th>
+                            Fecha de ingreso
+                        </th>
+
+                        <th>
+                            Estado
+                        </th>
+
+                        <th>
+                            Sueldo liquidado
+                        </th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="item : ${liquidaciones}">
+
+
+                        <!-- EMPLEADO -->
+
+                        <td>
+
+                            <strong>
+
+                                <span th:text="${item.nombre}">
+                                    Nombre
+                                </span>
+
+                                <span th:text="${item.apellido}">
+                                    Apellido
+                                </span>
+
+                            </strong>
+
+                            <br>
+
+                            <small th:text="${item.email}">
+                                email@email.com
+                            </small>
+
+                        </td>
+
+
+                        <!-- TIPO -->
+
+                        <td>
+
+                            <span class="badge"
+                                  th:text="${item.tipoEmpleado}">
+
+                                Tipo
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- CATEGORÍA -->
+
+                        <td>
+
+                            <span th:text="${item.categoriaTurno}">
+                                Categoría
+                            </span>
+
+                        </td>
+
+
+                        <!-- INGRESO -->
+
+                        <td th:text="${item.fechaIngreso}">
+                            2026-01-01
+                        </td>
+
+
+                        <!-- ESTADO -->
+
+                        <td>
+
+                            <span class="badge"
+                                  th:if="${item.activo}">
+
+                                Activo
+
+                            </span>
+
+
+                            <span class="badge"
+                                  th:unless="${item.activo}">
+
+                                Inactivo
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- SUELDO -->
+
+                        <td>
+
+                            <strong th:if="${item.sueldoLiquidado != null}">
+
+                                $
+
+                                <span th:text="${#numbers.formatDecimal(
+                                        item.sueldoLiquidado,
+                                        1,
+                                        'POINT',
+                                        2,
+                                        'COMMA'
+                                )}">
+
+                                    0,00
+
+                                </span>
+
+                            </strong>
+
+
+                            <span th:if="${item.sueldoLiquidado == null}"
+                                  class="badge">
+
+                                Pendiente
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- VACÍO -->
+
+            <div class="empty-state"
+                 th:if="${liquidaciones == null || #lists.isEmpty(liquidaciones)}">
+
+                <strong>
+                    No hay empleados para mostrar.
+                </strong>
+
+                Todavía no existen empleados activos
+                asignados a esta Unidad de Venta.
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

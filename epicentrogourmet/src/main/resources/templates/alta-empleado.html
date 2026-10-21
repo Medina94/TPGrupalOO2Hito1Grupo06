@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Registrar Empleado - Epicentro Gourmet</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+    <style>
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 11px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            outline: 2px solid rgba(30, 64, 175, 0.15);
+            border-color: #1e40af;
+        }
+
+        .field-error {
+            color: #b91c1c;
+            font-size: 12px;
+        }
+
+        .form-description {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .form-actions {
+            margin-top: 24px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     BARRA SUPERIOR
+     ===================================================== -->
+
+<header class="topbar">
+
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+
+        <span>
+            Responsable
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="logout-button">
+
+                Cerrar sesión
+
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     LAYOUT
+     ===================================================== -->
+
+<div class="app-layout">
+
+
+    <!-- SIDEBAR RESPONSABLE -->
+
+    <div th:replace="~{fragments/sidebar :: responsableSidebar}">
+    </div>
+
+
+    <!-- CONTENIDO -->
+
+    <main class="main-content">
+
+
+        <!-- =====================================================
+             ENCABEZADO
+             ===================================================== -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>Registrar Empleado</h1>
+
+                <p>
+                    Registrá un nuevo empleado y sus credenciales
+                    de acceso al sistema.
+                </p>
+
+            </div>
+
+
+            <div class="actions">
+
+                <a th:href="@{/responsable/empleados}"
+                   class="btn btn-outline">
+
+                    ← Volver a empleados
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             MENSAJES
+             ===================================================== -->
+
+        <div class="alert alert-success"
+             th:if="${mensajeExito}"
+             th:text="${mensajeExito}">
+
+            El empleado se registró correctamente.
+
+        </div>
+
+
+        <div class="alert alert-error"
+             th:if="${errorGeneral}"
+             th:text="${errorGeneral}">
+
+            Ocurrió un error.
+
+        </div>
+
+
+        <!-- =====================================================
+             FORMULARIO
+             ===================================================== -->
+
+        <form th:action="@{/responsable/empleados/nuevo}"
+              th:object="${registroEmpleado}"
+              method="post">
+
+
+            <!-- =================================================
+                 DATOS DEL EMPLEADO
+                 ================================================= -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            1. Datos del Empleado
+                        </h2>
+
+                        <p class="form-description">
+                            Completá los datos personales y el tipo
+                            de empleado.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- NOMBRE -->
+
+                    <div class="form-group">
+
+                        <label for="nombre">
+                            Nombre
+                        </label>
+
+                        <input id="nombre"
+                               type="text"
+                               class="form-control"
+                               th:field="*{nombre}"
+                               placeholder="Nombre">
+
+                        <span class="field-error"
+                              th:if="${#fields.hasErrors('nombre')}"
+                              th:errors="*{nombre}">
+                        </span>
+
+                    </div>
+
+
+                    <!-- APELLIDO -->
+
+                    <div class="form-group">
+
+                        <label for="apellido">
+                            Apellido
+                        </label>
+
+                        <input id="apellido"
+                               type="text"
+                               class="form-control"
+                               th:field="*{apellido}"
+                               placeholder="Apellido">
+
+                        <span class="field-error"
+                              th:if="${#fields.hasErrors('apellido')}"
+                              th:errors="*{apellido}">
+                        </span>
+
+                    </div>
+
+
+                    <!-- DNI -->
+
+                    <div class="form-group">
+
+                        <label for="dni">
+                            DNI
+                        </label>
+
+                        <input id="dni"
+                               type="number"
+                               class="form-control"
+                               th:field="*{dni}"
+                               placeholder="DNI">
+
+                        <span class="field-error"
+                              th:if="${#fields.hasErrors('dni')}"
+                              th:errors="*{dni}">
+                        </span>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email
+                        </label>
+
+                        <input id="email"
+                               type="email"
+                               class="form-control"
+                               th:field="*{email}"
+                               placeholder="empleado@email.com">
+
+                        <span class="field-error"
+                              th:if="${#fields.hasErrors('email')}"
+                              th:errors="*{email}">
+                        </span>
+
+                    </div>
+
+
+                    <!-- FECHA NACIMIENTO -->
+
+                    <div class="form-group">
+
+                        <label for="fechaNacimiento">
+                            Fecha de nacimiento
+                        </label>
+
+                        <input id="fechaNacimiento"
+                               type="date"
+                               class="form-control"
+                               th:field="*{fechaNacimiento}">
+
+                        <span class="field-error"
+                              th:if="${#fields.hasErrors('fechaNacimiento')}"
+                              th:errors="*{fechaNacimiento}">
+                        </span>
+
+                    </div>
+
+
+                    <!-- FECHA INGRESO -->
+
+                    <div class="form-group">
+
+                        <label for="fechaIngreso">
+                            Fecha de ingreso
+                        </label>
+
+                        <input id="fechaIngreso"
+                               type="date"
+                               class="form-control"
+                               th:field="*{fechaIngreso}">
+
+                        <span class="field-error"
+                              th:if="${#fields.hasErrors('fechaIngreso')}"
+                              th:errors="*{fechaIngreso}">
+                        </span>
+
+                    </div>
+
+
+                    <!-- TIPO EMPLEADO -->
+
+                    <div class="form-group">
+
+                        <label for="tipoEmpleado">
+                            Tipo de empleado
+                        </label>
+
+                        <select id="tipoEmpleado"
+                                class="form-control"
+                                th:field="*{tipoEmpleado}">
+
+                            <option value="">
+                                Seleccionar...
+                            </option>
+
+                            <option value="COCINERO">
+                                Cocinero
+                            </option>
+
+                            <option value="CAJERO">
+                                Cajero
+                            </option>
+
+                        </select>
+
+                        <span class="field-error"
+                              th:if="${#fields.hasErrors('tipoEmpleado')}"
+                              th:errors="*{tipoEmpleado}">
+                        </span>
+
+                    </div>
+
+
+                    <!-- ROL COCINA -->
+
+                    <div class="form-group"
+                         id="grupoRolCocina"
+                         style="display: none;">
+
+                        <label for="rolCocina">
+                            Rol de cocina
+                        </label>
+
+                        <select id="rolCocina"
+                                class="form-control"
+                                th:field="*{rolCocina}">
+
+                            <option value="">
+                                Seleccionar...
+                            </option>
+
+                            <option value="COCINERO">
+                                Cocinero
+                            </option>
+
+                            <option value="AYUDANTE">
+                                Ayudante
+                            </option>
+
+                            <option value="LAVAPLATOS">
+                                Lavaplatos
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- TURNO -->
+
+                    <div class="form-group"
+                         id="grupoTurno"
+                         style="display: none;">
+
+                        <label for="turno">
+                            Turno
+                        </label>
+
+                        <select id="turno"
+                                class="form-control"
+                                th:field="*{turno}">
+
+                            <option value="">
+                                Seleccionar...
+                            </option>
+
+                            <option value="MANANA">
+                                Mañana
+                            </option>
+
+                            <option value="NOCHE">
+                                Noche
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 CREDENCIALES
+                 ================================================= -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            2. Credenciales de acceso
+                        </h2>
+
+                        <p class="form-description">
+                            Estas credenciales permitirán al empleado
+                            iniciar sesión en Epicentro Gourmet.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- USERNAME -->
+
+                    <div class="form-group">
+
+                        <label for="username">
+                            Usuario
+                        </label>
+
+                        <input id="username"
+                               type="text"
+                               class="form-control"
+                               th:field="*{username}"
+                               placeholder="Usuario">
+
+                        <span class="field-error"
+                              th:if="${#fields.hasErrors('username')}"
+                              th:errors="*{username}">
+                        </span>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="password">
+                            Contraseña
+                        </label>
+
+                        <input id="password"
+                               type="password"
+                               class="form-control"
+                               th:field="*{password}"
+                               placeholder="Mínimo 6 caracteres">
+
+                        <span class="field-error"
+                              th:if="${#fields.hasErrors('password')}"
+                              th:errors="*{password}">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BOTONES -->
+
+                <div class="form-actions">
+
+                    <a th:href="@{/responsable/empleados}"
+                       class="btn btn-outline">
+
+                        Cancelar
+
+                    </a>
+
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        Registrar empleado
+
+                    </button>
+
+                </div>
+
+            </section>
+
+        </form>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     MOSTRAR CAMPOS SEGÚN TIPO DE EMPLEADO
+     ===================================================== -->
+
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const tipoEmpleado =
+                document.getElementById("tipoEmpleado");
+
+            const grupoRolCocina =
+                document.getElementById("grupoRolCocina");
+
+            const grupoTurno =
+                document.getElementById("grupoTurno");
+
+
+            function actualizarCampos() {
+
+                const tipo =
+                    tipoEmpleado.value;
+
+
+                if (tipo === "COCINERO") {
+
+                    grupoRolCocina.style.display =
+                        "flex";
+
+                    grupoTurno.style.display =
+                        "none";
+
+                } else if (tipo === "CAJERO") {
+
+                    grupoRolCocina.style.display =
+                        "none";
+
+                    grupoTurno.style.display =
+                        "flex";
+
+                } else {
+
+                    grupoRolCocina.style.display =
+                        "none";
+
+                    grupoTurno.style.display =
+                        "none";
+                }
+            }
+
+
+            tipoEmpleado.addEventListener(
+                "change",
+                actualizarCampos
+            );
+
+
+            actualizarCampos();
+
+        }
+    );
+
+</script>
+
+</body>
+
+</html>

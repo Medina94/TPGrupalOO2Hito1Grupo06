@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Historial Laboral - Epicentro Gourmet
+    </title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+
+
+<header class="topbar">
+
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+
+        <span>
+            Empleado
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="logout-button">
+
+                Cerrar sesión
+
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<div class="app-layout">
+
+
+    <div th:replace="~{fragments/sidebar :: empleadoSidebar}">
+    </div>
+
+
+    <main class="main-content">
+
+
+        <!-- ENCABEZADO -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>
+                    Historial laboral
+                </h1>
+
+                <p>
+                    Consultá los Festivales y Unidades de Venta
+                    en los que trabajaste.
+                </p>
+
+            </div>
+
+
+            <div class="actions">
+
+                <a th:href="@{/empleado}"
+                   class="btn btn-outline">
+
+                    ← Volver al panel
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        <div class="alert alert-error"
+             th:if="${error}"
+             th:text="${error}">
+
+            Ocurrió un error.
+
+        </div>
+
+
+        <!-- DATOS EMPLEADO -->
+
+        <section class="stats-grid"
+                 th:if="${empleado != null}">
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Empleado
+                </div>
+
+                <div class="stat-value">
+
+                    <span th:text="${empleado.nombre}">
+                        Nombre
+                    </span>
+
+                    <span th:text="${empleado.apellido}">
+                        Apellido
+                    </span>
+
+                </div>
+
+                <div class="stat-description"
+                     th:text="${empleado.email}">
+
+                    email@email.com
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Asignaciones
+                </div>
+
+                <div class="stat-value"
+                     th:text="${historial != null ? #lists.size(historial) : 0}">
+
+                    0
+
+                </div>
+
+                <div class="stat-description">
+                    Registros laborales
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Historial
+                </div>
+
+                <div class="stat-value">
+                    📅
+                </div>
+
+                <div class="stat-description">
+                    Festivales y Unidades de Venta
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- HISTORIAL -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>
+                    Mis asignaciones laborales
+                </h2>
+
+                <span class="badge"
+                      th:if="${historial != null}"
+                      th:text="${#lists.size(historial) + ' registros'}">
+
+                    0 registros
+
+                </span>
+
+            </div>
+
+
+            <div class="table-responsive"
+                 th:if="${historial != null && !#lists.isEmpty(historial)}">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>
+                            Festival
+                        </th>
+
+                        <th>
+                            Temporada
+                        </th>
+
+                        <th>
+                            Unidad de Venta
+                        </th>
+
+                        <th>
+                            Tipo
+                        </th>
+
+                        <th>
+                            Desde
+                        </th>
+
+                        <th>
+                            Hasta
+                        </th>
+
+                        <th>
+                            Estado
+                        </th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="item : ${historial}">
+
+
+                        <td>
+
+                            <strong th:text="${item.festival}">
+                                Festival
+                            </strong>
+
+                        </td>
+
+
+                        <td th:text="${item.temporada}">
+                            Temporada
+                        </td>
+
+
+                        <td>
+
+                            <strong th:text="${item.unidadVenta}">
+                                Unidad
+                            </strong>
+
+                            <br>
+
+                            <small th:text="${item.codigoUnidad}">
+                                CODIGO
+                            </small>
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="badge"
+                                  th:text="${item.tipoUnidad}">
+
+                                Tipo
+
+                            </span>
+
+                        </td>
+
+
+                        <td th:text="${item.fechaDesde}">
+                            2026-01-01
+                        </td>
+
+
+                        <td>
+
+                            <span th:if="${item.fechaHasta != null}"
+                                  th:text="${item.fechaHasta}">
+
+                                2026-01-15
+
+                            </span>
+
+                            <span th:if="${item.fechaHasta == null}">
+                                Actual
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="badge"
+                                  th:text="${item.estado}">
+
+                                Estado
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="empty-state"
+                 th:if="${historial == null || #lists.isEmpty(historial)}">
+
+                <strong>
+                    No hay historial laboral para mostrar.
+                </strong>
+
+                Todavía no existen asignaciones laborales
+                registradas para tu usuario.
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+</body>
+</html>

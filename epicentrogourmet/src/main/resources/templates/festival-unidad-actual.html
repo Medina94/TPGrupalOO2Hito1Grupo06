@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Festival y Unidad Actual - Epicentro Gourmet
+    </title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+
+
+<header class="topbar">
+
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+
+        <span>
+            Empleado
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="logout-button">
+
+                Cerrar sesión
+
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<div class="app-layout">
+
+
+    <div th:replace="~{fragments/sidebar :: empleadoSidebar}">
+    </div>
+
+
+    <main class="main-content">
+
+
+        <!-- ENCABEZADO -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>
+                    Festival y Unidad actual
+                </h1>
+
+                <p>
+                    Consultá dónde estás trabajando actualmente
+                    y la información del Festival asociado.
+                </p>
+
+            </div>
+
+
+            <div class="actions">
+
+                <a th:href="@{/empleado}"
+                   class="btn btn-outline">
+
+                    ← Volver al panel
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        <div class="alert alert-error"
+             th:if="${error}"
+             th:text="${error}">
+
+            Ocurrió un error.
+
+        </div>
+
+
+        <div th:if="${informacion != null}">
+
+
+            <!-- RESUMEN -->
+
+            <section class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Unidad actual
+                    </div>
+
+                    <div class="stat-value"
+                         th:text="${informacion.nombreUnidad}">
+
+                        Unidad
+
+                    </div>
+
+                    <div class="stat-description">
+
+                        Código:
+
+                        <span th:text="${informacion.codigoUnidad}">
+                            CODIGO
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Festival actual
+                    </div>
+
+                    <div class="stat-value"
+                         th:text="${informacion.nombreFestival}">
+
+                        Festival
+
+                    </div>
+
+                    <div class="stat-description"
+                         th:text="${informacion.temporada}">
+
+                        Temporada
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Mi puesto
+                    </div>
+
+                    <div class="stat-value">
+                        👤
+                    </div>
+
+                    <div class="stat-description">
+
+                        <span th:text="${informacion.tipoEmpleado}">
+                            Empleado
+                        </span>
+
+                        ·
+
+                        <span th:text="${informacion.detallePuesto}">
+                            Puesto
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- UNIDAD -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Mi Unidad de Venta
+                    </h2>
+
+                    <span class="badge">
+                        Actual
+                    </span>
+
+                </div>
+
+
+                <div class="table-responsive">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+
+                            <th>Nombre comercial</th>
+                            <th>Tipo</th>
+                            <th>Código</th>
+                            <th>Superficie</th>
+                            <th>Responsable</th>
+
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        <tr>
+
+                            <td>
+                                <strong th:text="${informacion.nombreUnidad}">
+                                    Unidad
+                                </strong>
+                            </td>
+
+                            <td>
+                                <span class="badge"
+                                      th:text="${informacion.tipoUnidad}">
+                                    Tipo
+                                </span>
+                            </td>
+
+                            <td th:text="${informacion.codigoUnidad}">
+                                Código
+                            </td>
+
+                            <td>
+
+                                <span th:text="${informacion.superficie}">
+                                    0
+                                </span>
+
+                                m²
+
+                            </td>
+
+                            <td th:text="${informacion.responsable}">
+                                Responsable
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- FESTIVAL -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Festival actual
+                    </h2>
+
+                    <span class="badge"
+                          th:text="${informacion.temporada}">
+
+                        Temporada
+
+                    </span>
+
+                </div>
+
+
+                <div class="table-responsive">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+
+                            <th>Festival</th>
+                            <th>Temporada</th>
+                            <th>Fecha de inicio</th>
+                            <th>Fecha de fin</th>
+
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        <tr>
+
+                            <td>
+                                <strong th:text="${informacion.nombreFestival}">
+                                    Festival
+                                </strong>
+                            </td>
+
+                            <td th:text="${informacion.temporada}">
+                                Temporada
+                            </td>
+
+                            <td th:text="${informacion.fechaInicioFestival}">
+                                2026-01-01
+                            </td>
+
+                            <td th:text="${informacion.fechaFinFestival}">
+                                2026-01-15
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- EMPLEADO -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Mi información laboral
+                    </h2>
+
+                </div>
+
+
+                <div class="table-responsive">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+
+                            <th>Empleado</th>
+                            <th>Email</th>
+                            <th>Puesto</th>
+                            <th>Detalle</th>
+                            <th>Fecha de ingreso</th>
+
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        <tr>
+
+                            <td>
+                                <strong th:text="${informacion.nombreEmpleado}">
+                                    Empleado
+                                </strong>
+                            </td>
+
+                            <td th:text="${informacion.email}">
+                                Email
+                            </td>
+
+                            <td th:text="${informacion.tipoEmpleado}">
+                                Tipo
+                            </td>
+
+                            <td th:text="${informacion.detallePuesto}">
+                                Puesto
+                            </td>
+
+                            <td th:text="${informacion.fechaIngreso}">
+                                Fecha
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+</body>
+</html>

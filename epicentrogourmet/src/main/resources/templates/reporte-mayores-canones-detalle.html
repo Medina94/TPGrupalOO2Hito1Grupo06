@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Detalle de Mayores Cánones</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+
+
+<header class="topbar">
+
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+
+        <span>
+            Administración
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="logout-button">
+
+                Cerrar sesión
+
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<div class="app-layout">
+
+    <div th:replace="~{fragments/sidebar :: adminSidebar}">
+    </div>
+
+
+    <main class="main-content">
+
+
+        <!-- ENCABEZADO -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>Mayores Cánones</h1>
+
+                <p>
+                    Ranking de Unidades de Venta del Festival
+                    ordenadas de mayor a menor canon.
+                </p>
+
+            </div>
+
+
+            <a th:href="@{/admin/reportes/mayores-canones}"
+               class="btn btn-outline">
+
+                Cambiar Festival
+
+            </a>
+
+        </div>
+
+
+        <!-- FESTIVAL -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2 th:text="${festival.nombre}">
+                    Festival
+                </h2>
+
+                <span class="badge"
+                      th:text="${festival.temporada}">
+                    Temporada
+                </span>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Fecha de inicio
+                    </div>
+
+                    <div style="
+                        font-size: 18px;
+                        font-weight: 700;
+                    "
+                         th:text="${festival.fechaInicio}">
+
+                        Fecha
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Fecha de fin
+                    </div>
+
+                    <div style="
+                        font-size: 18px;
+                        font-weight: 700;
+                    "
+                         th:text="${festival.fechaFin}">
+
+                        Fecha
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Unidades incluidas
+                    </div>
+
+                    <div class="stat-value"
+                         th:text="${#lists.size(reporte)}">
+
+                        0
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RANKING -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>Ranking de cánones</h2>
+
+                <span class="badge">
+                    Mayor → Menor
+                </span>
+
+            </div>
+
+
+            <!-- HAY RESULTADOS -->
+
+            <div class="table-responsive"
+                 th:if="${!#lists.isEmpty(reporte)}">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>Posición</th>
+
+                        <th>Unidad de Venta</th>
+
+                        <th>Código</th>
+
+                        <th>Tipo</th>
+
+                        <th>Canon</th>
+
+                        <th>Acción</th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="item, estado : ${reporte}">
+
+                        <!-- POSICIÓN -->
+
+                        <td>
+
+                            <span class="badge"
+                                  th:text="${'#' + (estado.index + 1)}">
+
+                                #1
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- UNIDAD -->
+
+                        <td>
+
+                            <strong
+                                th:text="${item.nombreComercial}">
+
+                                Unidad
+
+                            </strong>
+
+                        </td>
+
+
+                        <!-- CÓDIGO -->
+
+                        <td th:text="${item.codigo}">
+                            CODIGO
+                        </td>
+
+
+                        <!-- TIPO -->
+
+                        <td th:text="${item.tipoUnidad}">
+                            Tipo
+                        </td>
+
+
+                        <!-- CANON -->
+
+                        <td>
+
+                            <strong>
+
+                                $
+
+                                <span th:text="${#numbers.formatDecimal(
+                                        item.canon,
+                                        1,
+                                        'POINT',
+                                        2,
+                                        'COMMA'
+                                )}">
+
+                                    0,00
+
+                                </span>
+
+                            </strong>
+
+                        </td>
+
+
+                        <!-- ACCIÓN -->
+
+                        <td>
+
+                            <a th:href="@{/admin/unidades/{id}/canon(id=${item.idUnidadVenta})}"
+                               class="btn btn-secondary">
+
+                                Ver detalle
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- SIN RESULTADOS -->
+
+            <div class="empty-state"
+                 th:if="${#lists.isEmpty(reporte)}">
+
+                <strong>
+                    No hay Unidades de Venta para mostrar.
+                </strong>
+
+                El Festival seleccionado todavía no tiene
+                Unidades de Venta registradas.
+
+            </div>
+
+        </section>
+
+
+        <!-- EXPLICACIÓN -->
+
+        <section class="panel">
+
+            <div class="alert alert-info">
+
+                El ranking utiliza el canon calculado para cada
+                Unidad de Venta según los costos configurados
+                en el Festival y la fórmula correspondiente
+                a su tipo de Unidad.
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+</body>
+</html>

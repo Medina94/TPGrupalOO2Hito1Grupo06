@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Mis Sueldos - Epicentro Gourmet</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     BARRA SUPERIOR
+     ===================================================== -->
+
+<header class="topbar">
+
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+
+        <span>
+            Empleado
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="logout-button">
+
+                Cerrar sesión
+
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     LAYOUT
+     ===================================================== -->
+
+<div class="app-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <div th:replace="~{fragments/sidebar :: empleadoSidebar}">
+    </div>
+
+
+    <!-- CONTENIDO -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             ENCABEZADO
+             ================================================= -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>
+                    Mis Sueldos
+                </h1>
+
+                <p>
+                    Consultá los haberes correspondientes
+                    a cada Festival en el que trabajaste.
+                </p>
+
+            </div>
+
+
+            <div class="actions">
+
+                <a th:href="@{/empleado}"
+                   class="btn btn-outline">
+
+                    ← Volver al panel
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ERROR
+             ================================================= -->
+
+        <div class="alert alert-error"
+             th:if="${error}"
+             th:text="${error}">
+
+            Ocurrió un error.
+
+        </div>
+
+
+        <!-- =================================================
+             RESUMEN DEL EMPLEADO
+             ================================================= -->
+
+        <section class="stats-grid"
+                 th:if="${empleado != null}">
+
+
+            <!-- EMPLEADO -->
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Empleado
+                </div>
+
+                <div class="stat-value">
+
+                    <span th:text="${empleado.nombre}">
+                        Nombre
+                    </span>
+
+                    <span th:text="${empleado.apellido}">
+                        Apellido
+                    </span>
+
+                </div>
+
+                <div class="stat-description"
+                     th:text="${empleado.email}">
+
+                    email@email.com
+
+                </div>
+
+            </div>
+
+
+            <!-- FESTIVALES -->
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Festivales registrados
+                </div>
+
+                <div class="stat-value"
+                     th:text="${sueldos != null ? #lists.size(sueldos) : 0}">
+
+                    0
+
+                </div>
+
+                <div class="stat-description">
+                    Historial de asignaciones
+                </div>
+
+            </div>
+
+
+            <!-- HABERES -->
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Haberes
+                </div>
+
+                <div class="stat-value">
+                    💵
+                </div>
+
+                <div class="stat-description">
+                    Sueldos liquidados por Festival
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SUELDOS POR FESTIVAL
+             ================================================= -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>
+                    Sueldos por Festival
+                </h2>
+
+
+                <span class="badge"
+                      th:if="${sueldos != null}"
+                      th:text="${#lists.size(sueldos) + ' registros'}">
+
+                    0 registros
+
+                </span>
+
+            </div>
+
+
+            <!-- TABLA -->
+
+            <div class="table-responsive"
+                 th:if="${sueldos != null && !#lists.isEmpty(sueldos)}">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>
+                            Festival
+                        </th>
+
+                        <th>
+                            Temporada
+                        </th>
+
+                        <th>
+                            Unidad de Venta
+                        </th>
+
+                        <th>
+                            Fecha inicio
+                        </th>
+
+                        <th>
+                            Fecha fin
+                        </th>
+
+                        <th>
+                            Sueldo recibido
+                        </th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="item : ${sueldos}">
+
+
+                        <!-- FESTIVAL -->
+
+                        <td>
+
+                            <strong th:text="${item.festival}">
+                                Festival
+                            </strong>
+
+                        </td>
+
+
+                        <!-- TEMPORADA -->
+
+                        <td th:text="${item.temporada}">
+                            Temporada
+                        </td>
+
+
+                        <!-- UNIDAD -->
+
+                        <td th:text="${item.unidadVenta}">
+                            Unidad
+                        </td>
+
+
+                        <!-- FECHA INICIO -->
+
+                        <td th:text="${item.fechaInicioFestival}">
+                            2026-01-01
+                        </td>
+
+
+                        <!-- FECHA FIN -->
+
+                        <td th:text="${item.fechaFinFestival}">
+                            2026-01-15
+                        </td>
+
+
+                        <!-- SUELDO -->
+
+                        <td>
+
+                            <strong th:if="${item.sueldoLiquidado != null}">
+
+                                $
+
+                                <span th:text="${#numbers.formatDecimal(
+                                        item.sueldoLiquidado,
+                                        1,
+                                        'POINT',
+                                        2,
+                                        'COMMA'
+                                )}">
+
+                                    0,00
+
+                                </span>
+
+                            </strong>
+
+
+                            <span class="badge"
+                                  th:if="${item.sueldoLiquidado == null}">
+
+                                Pendiente de liquidación
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- SIN REGISTROS -->
+
+            <div class="empty-state"
+                 th:if="${sueldos == null || #lists.isEmpty(sueldos)}">
+
+                <strong>
+                    No hay sueldos para mostrar.
+                </strong>
+
+                Todavía no existen Festivales asociados
+                a tu historial laboral.
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>
