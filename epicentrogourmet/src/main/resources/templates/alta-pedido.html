@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Alta de Pedido - Epicentro Gourmet
+    </title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     BARRA SUPERIOR
+     ===================================================== -->
+
+<header class="topbar">
+
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+
+        <span>
+            Empleado
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="logout-button">
+
+                Cerrar sesión
+
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     LAYOUT
+     ===================================================== -->
+
+<div class="app-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <div th:replace="~{fragments/sidebar :: empleadoSidebar}">
+    </div>
+
+
+    <!-- CONTENIDO -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             ENCABEZADO
+             ================================================= -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>
+                    Alta de Pedido
+                </h1>
+
+                <p>
+                    Registrá una nueva venta realizada
+                    por tu Unidad de Venta.
+                </p>
+
+            </div>
+
+
+            <div class="actions">
+
+                <a th:href="@{/empleado}"
+                   class="btn btn-outline">
+
+                    ← Volver al panel
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MENSAJES
+             ================================================= -->
+
+        <div class="alert alert-success"
+             th:if="${mensajeExito}"
+             th:text="${mensajeExito}">
+
+            Pedido registrado correctamente.
+
+        </div>
+
+
+        <div class="alert alert-error"
+             th:if="${errorGeneral}"
+             th:text="${errorGeneral}">
+
+            Ocurrió un error.
+
+        </div>
+
+
+        <!-- =================================================
+             INFORMACIÓN DEL PEDIDO
+             ================================================= -->
+
+        <section class="stats-grid"
+                 th:if="${unidad != null}">
+
+
+            <!-- UNIDAD -->
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Unidad de Venta
+                </div>
+
+                <div class="stat-value"
+                     th:text="${unidad.nombreComercial}">
+
+                    Unidad
+
+                </div>
+
+                <div class="stat-description">
+
+                    Código:
+
+                    <span th:text="${unidad.codigo}">
+                        CODIGO
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- FESTIVAL -->
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Festival
+                </div>
+
+                <div class="stat-value"
+                     th:if="${festival != null}"
+                     th:text="${festival.nombre}">
+
+                    Festival
+
+                </div>
+
+                <div class="stat-description"
+                     th:if="${festival != null}"
+                     th:text="${festival.temporada}">
+
+                    Temporada
+
+                </div>
+
+            </div>
+
+
+            <!-- FECHA -->
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Fecha del Pedido
+                </div>
+
+                <div class="stat-value">
+                    📅
+                </div>
+
+                <div class="stat-description"
+                     th:text="${fechaActual != null
+                        ? #temporals.format(fechaActual, 'dd/MM/yyyy')
+                        : '-'}">
+
+                    Fecha
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FORMULARIO
+             ================================================= -->
+
+        <section class="panel"
+                 th:if="${unidad != null}">
+
+            <div class="panel-header">
+
+                <h2>
+                    Nuevo Pedido
+                </h2>
+
+                <span class="badge">
+                    Venta
+                </span>
+
+            </div>
+
+
+            <!-- SIN PLATOS -->
+
+            <div class="empty-state"
+                 th:if="${platos == null || #lists.isEmpty(platos)}">
+
+                <strong>
+                    No hay platos disponibles.
+                </strong>
+
+                La Unidad de Venta todavía
+                no tiene platos registrados.
+
+            </div>
+
+
+            <!-- CON PLATOS -->
+
+            <form th:if="${platos != null && !#lists.isEmpty(platos)}"
+                  th:action="@{/empleado/pedidos/nuevo}"
+                  th:object="${registroPedido}"
+                  method="post">
+
+
+                <div style="
+                    display:grid;
+                    grid-template-columns:2fr 1fr;
+                    gap:20px;
+                    margin-top:10px;
+                ">
+
+
+                    <!-- PLATO -->
+
+                    <div>
+
+                        <label for="idPlato">
+                            Plato
+                        </label>
+
+                        <select id="idPlato"
+                                th:field="*{idPlato}"
+                                class="form-control">
+
+                            <option value="">
+                                Seleccionar plato...
+                            </option>
+
+                            <option th:each="plato : ${platos}"
+                                    th:value="${plato.idPlato}"
+                                    th:text="${plato.nombre
+                                        + ' - $'
+                                        + #numbers.formatDecimal(
+                                            plato.precioVenta,
+                                            1,
+                                            'POINT',
+                                            2,
+                                            'COMMA'
+                                        )}">
+
+                                Plato
+
+                            </option>
+
+                        </select>
+
+
+                        <small class="error"
+                               th:if="${#fields.hasErrors('idPlato')}"
+                               th:errors="*{idPlato}">
+
+                            Error de plato
+
+                        </small>
+
+                    </div>
+
+
+                    <!-- CANTIDAD -->
+
+                    <div>
+
+                        <label for="cantidad">
+                            Cantidad
+                        </label>
+
+                        <input id="cantidad"
+                               type="number"
+                               min="1"
+                               th:field="*{cantidad}"
+                               class="form-control">
+
+
+                        <small class="error"
+                               th:if="${#fields.hasErrors('cantidad')}"
+                               th:errors="*{cantidad}">
+
+                            Error de cantidad
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div style="
+                    margin-top:25px;
+                    display:flex;
+                    gap:10px;
+                ">
+
+                    <button type="submit"
+                            class="btn btn-primary"
+                            onclick="return confirm(
+                                '¿Deseás registrar este pedido?'
+                            );">
+
+                        Registrar Pedido
+
+                    </button>
+
+
+                    <a th:href="@{/empleado}"
+                       class="btn btn-outline">
+
+                        Cancelar
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+</body>
+</html>
