@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Cierre de Caja - Epicentro Gourmet</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, Helvetica, sans-serif; background: #f5f6fa; color: #222; }
+        .navbar { background: #17258f; color: white; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h1 { font-size: 22px; }
+        .navbar a { color: white; text-decoration: none; font-size: 14px; font-weight: bold; }
+        .container { max-width: 1050px; margin: 40px auto; padding: 0 25px 50px; }
+        .page-header { margin-bottom: 28px; }
+        .page-header h2 { font-size: 30px; margin-bottom: 8px; }
+        .page-header p { color: #6d6d6d; }
+        .card { background: white; border-radius: 14px; padding: 30px; margin-bottom: 25px; box-shadow: 0 3px 14px rgba(0, 0, 0, 0.07); }
+        .card h3 { font-size: 20px; margin-bottom: 22px; color: #17258f; }
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .form-group { display: flex; flex-direction: column; }
+        label { font-size: 14px; font-weight: bold; margin-bottom: 7px; color: #333; }
+        input, select { height: 45px; border: 1px solid #d7d9e0; border-radius: 8px; padding: 0 12px; font-size: 14px; background: #fafafa; outline: none; }
+        input:focus, select:focus { border-color: #243bff; background: white; box-shadow: 0 0 0 3px rgba(36, 59, 255, 0.10); }
+        .field-error { color: #b42318; font-size: 12px; margin-top: 6px; }
+        .alert { padding: 14px 16px; border-radius: 9px; margin-bottom: 25px; font-size: 14px; }
+        .alert-error { background: #fff0f0; color: #b42318; border: 1px solid #ffd0cc; }
+        .alert-success { background: #effbf3; color: #17783c; border: 1px solid #c8efd4; }
+        .actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 25px; }
+        .btn { padding: 12px 22px; border-radius: 8px; border: none; font-size: 14px; font-weight: bold; cursor: pointer; text-decoration: none; }
+        .btn-secondary { background: #e9eaf0; color: #333; }
+        .btn-primary { background: #17258f; color: white; }
+        .btn-primary:hover { background: #243bff; }
+        @media (max-width: 750px) { .form-grid { grid-template-columns: 1fr; } .navbar { padding: 16px 20px; } .container { margin-top: 25px; } }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <h1>Epicentro Gourmet</h1>
+    <a th:href="@{/cierre-caja/listar}">← Volver al listado</a>
+</nav>
+
+<main class="container">
+    <div class="page-header">
+        <h2>Registrar Cierre de Caja</h2>
+        <p>Ingresá los datos del cierre diario correspondiente al cajero y la unidad de venta.</p>
+    </div>
+
+    <!-- ERROR GENERAL -->
+    <div th:if="${errorGeneral}" class="alert alert-error" th:text="${errorGeneral}"></div>
+
+    <!-- ÉXITO -->
+    <div th:if="${mensajeExito}" class="alert alert-success" th:text="${mensajeExito}"></div>
+
+    <form th:action="@{/cierre-caja/agregar}" th:object="${registroCierre}" method="post">
+        
+        <section class="card">
+            <h3>Datos del Cierre</h3>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="fecha">Fecha del Cierre</label>
+                    <input type="date" id="fecha" th:field="*{fecha}">
+                    <span class="field-error" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="montoTotal">Monto Total ($)</label>
+                    <input type="number" step="0.01" min="0" id="montoTotal" th:field="*{montoTotal}" placeholder="Ej: 45000.50">
+                    <span class="field-error" th:if="${#fields.hasErrors('montoTotal')}" th:errors="*{montoTotal}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="idCajero">ID del Cajero</label>
+                    <input type="number" id="idCajero" th:field="*{idCajero}" placeholder="Ej: 1">
+                    <span class="field-error" th:if="${#fields.hasErrors('idCajero')}" th:errors="*{idCajero}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="idUnidadVenta">ID Unidad de Venta</label>
+                    <input type="number" id="idUnidadVenta" th:field="*{idUnidadVenta}" placeholder="Ej: 2">
+                    <span class="field-error" th:if="${#fields.hasErrors('idUnidadVenta')}" th:errors="*{idUnidadVenta}"></span>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a th:href="@{/cierre-caja/listar}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Guardar Cierre</button>
+            </div>
+        </section>
+    </form>
+</main>
+
+</body>
+</html>
