@@ -156,6 +156,7 @@ Se implementaron además:
 
 ## Casos de Uso implementados - Hito 2
 
+
 | Caso de Uso                                 | Responsable        | Estado | Rama | Pull Request                                                          |
 |---------------------------------------------|--------------------|---|---|-----------------------------------------------------------------------|
 | Inicio de sesión                            | Valentina Ponzo    | Finalizado | `CU-Login` | [PR #5](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/5)   |
@@ -174,6 +175,7 @@ Se implementaron además:
 | Consultar historial laboral                 | Valentina Ponzo    | Finalizado | `CU-Historial-Laboral-Empleado` | [PR #23](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/23) |
 | Consulta de Empleados con filtros           | Alejandro Escalier | Finalizado | `CU-Consulta-Empleados` | [PR #26](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/26) |
 | Envío de mail en alta de usuario            | Cristian Medina    | Finalizado | `CU-mail-alta-empleado` | [PR #27](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/27) |
+| Alta de Pedido | Valentina Ponzo | Finalizado | `CU-Alta-Pedido` | [PR #30](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/30) |
 | Editar y eliminar platos de unidad de venta | Cristian Medina    | Finalizado | `CU-agregar-platos` | [PR #31](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/31) |
 
 > Cada nuevo Caso de Uso se desarrolla en una rama independiente y posteriormente se integra a `main` mediante Pull Request.
@@ -393,16 +395,6 @@ Resultado obtenido:
 
 El resultado obtenido corresponde al orden esperado de mayor a menor.
 
-El reporte se encuentra integrado con:
-
-- Dashboard del Administrador.
-- Menú lateral del Administrador.
-- Accesos rápidos.
-- Selección de Festival.
-- Configuración y modificación de costos.
-- Pantalla de detalle del ranking.
-- Detalle individual del canon.
-
 ---
 
 ### CU - Alta y Listado de Empleados
@@ -411,7 +403,7 @@ Responsable: **Alejandro Escalier**
 
 Permite al Responsable registrar nuevos empleados y consultar los empleados de su Unidad de Venta.
 
-**Rutas:**
+#### Rutas
 
 | Método | Ruta | Descripción |
 |---|---|---|
@@ -426,41 +418,25 @@ Tipos de empleado soportados:
 - `Cocinero`, con rol de cocina: `COCINERO`, `AYUDANTE` o `LAVAPLATOS`.
 - `Cajero`, con turno: `MANANA` o `NOCHE`.
 
-Durante el registro, en una única operación transaccional, se crea:
+Durante el registro se crea:
 
-- El empleado (`Cocinero` o `Cajero`).
-- El usuario de acceso con rol `EMPLEADO`, vinculado al empleado.
+- El empleado.
+- El usuario con rol `EMPLEADO`.
 - La contraseña cifrada con BCrypt.
-- La asignación (`AsignacionEmpleado`) del empleado a la Unidad de Venta del Responsable que lo registra.
+- La asignación del empleado a la Unidad de Venta del Responsable.
 
-Validaciones implementadas:
+Validaciones:
 
 - Nombre y apellido obligatorios.
-- DNI obligatorio, mayor a cero y no repetido.
-- Email obligatorio, con formato válido y no repetido.
-- Fecha de nacimiento obligatoria y anterior a la fecha actual.
+- DNI mayor a cero y no repetido.
+- Email válido y no repetido.
 - Empleado mayor de 18 años.
-- Fecha de ingreso obligatoria y no futura.
+- Fecha de ingreso no futura.
 - Tipo de empleado obligatorio.
 - Rol de cocina obligatorio para `Cocinero`.
 - Turno obligatorio para `Cajero`.
-- Nombre de usuario obligatorio y único.
-- Contraseña obligatoria de al menos 6 caracteres.
-- El Responsable debe tener una Unidad de Venta con Festival asociado.
-- Mensajes de error por campo y mensaje general ante datos duplicados.
-- Mensaje de confirmación al registrar correctamente.
-
-#### Listado de empleados
-
-- Tabla con los empleados asignados a la Unidad de Venta del Responsable autenticado.
-- El Responsable no aparece en su propio listado.
-- Empleados ordenados por DNI.
-- Datos visibles: nombre y apellido, puesto, DNI, email, fecha de ingreso y estado.
-- Contador de empleados registrados.
-- Botón de acceso rápido a Nuevo Empleado.
-- Manejo del listado vacío.
-- Visualización de la Unidad de Venta del Responsable.
-- Acceso al canon de su Unidad de Venta.
+- Username único.
+- Contraseña de al menos 6 caracteres.
 
 ---
 
@@ -468,24 +444,17 @@ Validaciones implementadas:
 
 Responsable: **Alejandro Escalier**
 
-Permite volver a dar de alta a un empleado de la base de datos.
-
-**Rutas:**
-
-| Método | Ruta | Descripción |
-|---|---|---|
-| `POST` | `/responsable/empleados/{id}/reactivar` | Reactivación |
+Permite volver a dar de alta a un empleado.
 
 Funcionalidades:
 
-- El empleado vuelve a quedar activo.
-- Su usuario vuelve a quedar activo.
-- Se restablece el acceso al sistema.
-- Los botones disponibles dependen del estado del empleado.
-- Se solicita confirmación antes de realizar la acción.
-- Se muestran mensajes de éxito o error.
-- Solo se pueden reactivar empleados de la Unidad de Venta del Responsable.
-- La operación se realiza de forma transaccional.
+- Reactivación del empleado.
+- Reactivación del usuario.
+- Restablecimiento del acceso.
+- Confirmación antes de la operación.
+- Mensajes de éxito y error.
+- Control por Unidad de Venta.
+- Operación transaccional.
 
 ---
 
@@ -495,23 +464,19 @@ Responsable: **Valentina Ponzo**
 
 Permite al Responsable liquidar los haberes de los empleados asignados a su Unidad de Venta.
 
-Funcionalidades implementadas:
+Funcionalidades:
 
-- Obtención de la Unidad de Venta del Responsable autenticado.
-- Consulta únicamente de empleados pertenecientes a esa Unidad.
-- Asignación automática de nuevos empleados a la Unidad del Responsable.
-- Exclusión del propio Responsable de la liquidación.
-- Cálculo de haberes mediante polimorfismo para `Cocinero` y `Cajero`.
-- Uso de los costos configurados para el Festival.
+- Obtención de la Unidad del Responsable autenticado.
+- Consulta de empleados de su propia Unidad.
+- Exclusión del Responsable.
+- Cálculo mediante polimorfismo para `Cocinero` y `Cajero`.
+- Uso de los costos del Festival.
 - Persistencia del sueldo en `AsignacionEmpleado.sueldoLiquidado`.
-- Uso de `LiquidacionSueldoDTO` para mostrar los resultados.
-- Validación de Festival y costos configurados.
-- Protección para impedir que un Responsable gestione empleados de otras Unidades.
-- Incorporación de un Panel principal para el rol Responsable.
+- Uso de `LiquidacionSueldoDTO`.
+- Validación de Festival y costos.
+- Protección entre Unidades.
 
 #### Prueba realizada
-
-Se registró y asignó un empleado a `Puesto Centro`:
 
 - Empleado: `Lucía Fernández`
 - Tipo: `Cocinero`
@@ -519,7 +484,7 @@ Se registró y asignó un empleado a `Puesto Centro`:
 - Festival: `Primavera Gourmet`
 - Sueldo liquidado: `$440.000,00`
 
-El importe fue calculado correctamente y persistido en MySQL.
+El importe fue persistido correctamente en MySQL.
 
 ---
 
@@ -527,29 +492,27 @@ El importe fue calculado correctamente y persistido en MySQL.
 
 Responsable: **Alejandro Escalier**
 
-Pantalla principal que ve el Empleado al iniciar sesión, con la misma estructura general que el Panel del Responsable.
+Pantalla principal que ve el Empleado al iniciar sesión.
 
-**Ruta:**
+Ruta:
 
-| Método | Ruta | Descripción |
-|---|---|---|
-| `GET` | `/empleado` | Panel de inicio del Empleado (`empleado-dashboard.html`) |
+`GET /empleado`
 
-Información que se muestra:
+Muestra:
 
-- **Tarjetas de resumen:** Unidad de Venta, Festival y puesto.
-- **Mis datos:** nombre y apellido, DNI, email, fecha de ingreso y estado.
-- **Mi Unidad de Venta:** nombre comercial, tipo, código, Festival y Responsable.
-- **Mi actividad:** accesos a las funcionalidades disponibles para el Empleado.
-- Si el empleado no tiene una Unidad de Venta asignada, se muestra un aviso.
+- Unidad de Venta.
+- Festival.
+- Puesto.
+- Datos personales.
+- Unidad asignada.
+- Accesos a las funcionalidades disponibles.
 
-Implementación:
+El panel fue posteriormente integrado con:
 
-- `HomeController.empleadoInicio`: arma el modelo con el usuario autenticado, su empleado, su Unidad y su Festival.
-- `UnidadVentaService.buscarUnidadDelEmpleado`: obtiene la Unidad vigente del empleado a partir de su asignación.
-- `AsignacionEmpleadoRepository`: permite consultar asignaciones del empleado.
-
-El panel fue posteriormente integrado con las funcionalidades de Festival y Unidad actual, Historial laboral y Mis sueldos.
+- Festival y Unidad actual.
+- Historial laboral.
+- Mis sueldos.
+- Alta de Pedido.
 
 ---
 
@@ -557,22 +520,19 @@ El panel fue posteriormente integrado con las funcionalidades de Festival y Unid
 
 Responsable: **Valentina Ponzo**
 
-Permite que el Empleado autenticado consulte los haberes recibidos en cada Festival.
+Permite que el Empleado autenticado consulte sus haberes por Festival.
 
-Funcionalidades implementadas:
+Funcionalidades:
 
 - Identificación del empleado autenticado.
-- Consulta de sus asignaciones laborales.
-- Visualización del Festival.
-- Visualización de temporada.
-- Visualización de Unidad de Venta.
-- Visualización de fechas del Festival.
-- Visualización del sueldo liquidado.
-- Manejo de sueldos pendientes de liquidación.
+- Consulta de asignaciones laborales.
+- Festival y temporada.
+- Unidad de Venta.
+- Fechas.
+- Sueldo liquidado.
+- Manejo de sueldos pendientes.
 - Uso de `SueldoEmpleadoDTO`.
-- Acceso desde el Panel del Empleado.
-- Acceso desde el menú lateral.
-- Navegación de regreso al Panel del Empleado.
+- Acceso desde Panel y sidebar.
 
 #### Prueba realizada
 
@@ -580,9 +540,7 @@ Funcionalidades implementadas:
 - Festival: `Primavera Gourmet`
 - Temporada: `Primavera 2026`
 - Unidad: `Puesto Centro`
-- Sueldo recibido: `$440.000,00`
-
-La información coincide con el sueldo previamente liquidado y persistido en MySQL.
+- Sueldo: `$440.000,00`
 
 ---
 
@@ -590,34 +548,30 @@ La información coincide con el sueldo previamente liquidado y persistido en MyS
 
 Responsable: **Valentina Ponzo**
 
-Permite que el Empleado autenticado consulte su asignación laboral actual.
+Permite consultar la asignación laboral actual del empleado.
 
-Funcionalidades implementadas:
+Muestra:
 
-- Obtención del empleado autenticado.
-- Consulta de la Unidad de Venta asignada.
-- Visualización del nombre comercial de la Unidad.
-- Visualización del código.
-- Visualización del tipo de Unidad.
-- Visualización de la superficie.
-- Visualización del Responsable.
-- Consulta del Festival asociado.
-- Visualización del nombre y temporada del Festival.
-- Visualización de las fechas de inicio y fin.
-- Visualización del tipo de empleado.
-- Visualización de categoría o turno.
-- Uso de `EmpleadoActualDTO`.
-- Acceso desde el menú lateral.
-- Navegación de regreso al Panel del Empleado.
+- Unidad de Venta.
+- Código.
+- Tipo.
+- Superficie.
+- Responsable.
+- Festival.
+- Temporada.
+- Fechas.
+- Tipo de empleado.
+- Categoría o turno.
+
+Utiliza `EmpleadoActualDTO`.
 
 #### Prueba realizada
 
 - Empleado: `Lucía Fernández`
 - Unidad: `Puesto Centro`
 - Código: `PUEST00002`
-- Tipo de Unidad: `Puesto Desarmable`
+- Tipo: `Puesto Desarmable`
 - Festival: `Primavera Gourmet`
-- Temporada: `Primavera 2026`
 - Puesto: `Cocinero - AYUDANTE`
 
 ---
@@ -626,33 +580,27 @@ Funcionalidades implementadas:
 
 Responsable: **Valentina Ponzo**
 
-Permite al Empleado autenticado consultar todas sus asignaciones laborales registradas.
+Permite consultar todas las asignaciones laborales del empleado autenticado.
 
-Funcionalidades implementadas:
+Funcionalidades:
 
-- Consulta de todas las `AsignacionEmpleado` correspondientes al empleado autenticado.
-- Ordenamiento de las asignaciones por fecha.
-- Visualización del Festival.
-- Visualización de temporada.
-- Visualización de Unidad de Venta.
-- Visualización del código de la Unidad.
-- Visualización del tipo de Unidad.
-- Visualización de fecha desde.
-- Visualización de fecha hasta.
-- Diferenciación entre asignaciones actuales y finalizadas.
+- Consulta de `AsignacionEmpleado`.
+- Ordenamiento por fecha.
+- Festival.
+- Temporada.
+- Unidad.
+- Código.
+- Tipo de Unidad.
+- Fecha desde.
+- Fecha hasta.
+- Estado actual o finalizado.
 - Uso de `HistorialLaboralDTO`.
-- Acceso desde el Panel del Empleado.
-- Acceso desde el menú lateral.
-- Navegación de regreso al Panel del Empleado.
 
 #### Prueba realizada
 
-Para `Lucía Fernández` se visualizó correctamente:
-
+- Empleado: `Lucía Fernández`
 - Festival: `Primavera Gourmet`
-- Temporada: `Primavera 2026`
 - Unidad: `Puesto Centro`
-- Tipo: `Puesto Desarmable`
 - Desde: `2026-10-19`
 - Hasta: `Actual`
 - Estado: `Actual`
@@ -660,70 +608,150 @@ Para `Lucía Fernández` se visualizó correctamente:
 ---
 
 ### CU - Consulta de Empleados con filtros
- 
+
 Responsable: **Alejandro Escalier**
- 
-Permite al Responsable buscar empleados de su Unidad de Venta por nombre, DNI o fecha de ingreso. El panel de filtros reemplaza al panel de Unidad de Venta en la vista `empleados.html`.
- 
-**Rutas:**
- 
+
+Permite al Responsable buscar empleados de su Unidad por:
+
+- Nombre o apellido.
+- DNI.
+- Fecha de ingreso desde.
+- Fecha de ingreso hasta.
+
+Los filtros pueden combinarse.
+
+Funcionalidades:
+
+- Búsqueda parcial.
+- Búsqueda sin distinguir mayúsculas ni tildes.
+- Rango de fechas.
+- Conservación de filtros.
+- Resultados únicamente de la Unidad del Responsable.
+- El Responsable no aparece en los resultados.
+- Validación del rango de fechas.
+
+---
+
+### CU - Agregar Platos a Unidad de Venta
+
+Responsable: **Cristian Medina**
+
+Permite registrar platos asociados a una Unidad de Venta.
+
+Los platos contienen:
+
+- Nombre.
+- Precio de venta.
+- Costo de producción.
+- Unidad de Venta.
+
+Los platos registrados son posteriormente utilizados en:
+
+- Pedidos.
+- Recaudación.
+- Rentabilidad.
+- Plato Estrella.
+
+---
+
+### CU - Envío de mail en alta de usuario
+
+Responsable: **Cristian Medina**
+
+Permite enviar las credenciales de acceso al empleado al momento de registrar su usuario.
+
+Funcionalidad integrada al alta de empleado.
+
+El email permite comunicar:
+
+- Usuario.
+- Credenciales de acceso.
+- Información necesaria para ingresar al sistema.
+
+Este Caso de Uso permite cumplir con el requisito general de contar con al menos una prueba de envío de email.
+
+---
+
+### CU - Alta de Pedido
+
+Responsable: **Valentina Ponzo**
+
+Permite que un Empleado registre una nueva venta correspondiente a su Unidad de Venta.
+
+#### Rutas
+
 | Método | Ruta | Descripción |
 |---|---|---|
-| `GET` | `/responsable/empleados` | Listado de empleados, con filtros opcionales por parámetros |
- 
-**Parámetros (todos opcionales y combinables):**
- 
-| Parámetro | Tipo | Descripción |
-|---|---|---|
-| `nombre` | Texto | Nombre o apellido, búsqueda parcial |
-| `dni` | Texto numérico | DNI, búsqueda parcial |
-| `fechaDesde` | Fecha (`yyyy-MM-dd`) | Fecha de ingreso desde, inclusive |
-| `fechaHasta` | Fecha (`yyyy-MM-dd`) | Fecha de ingreso hasta, inclusive |
- 
-Funcionalidades:
- 
-- Panel "Consultar empleados" con campos de nombre o apellido, DNI e ingreso desde/hasta.
-- Botón **Buscar** y botón **Limpiar filtros**.
-- Los filtros se combinan entre sí (se aplican todos los que estén completos).
-- Búsqueda de nombre sin distinguir mayúsculas ni tildes (`perez` encuentra `Pérez`).
-- Búsqueda de nombre sobre nombre y apellido juntos (`juan perez`).
-- Búsqueda de DNI por coincidencia parcial (`4012` encuentra `40123456`).
-- Filtro por rango de fecha de ingreso; se puede completar solo una de las dos fechas.
-- Los valores ingresados se mantienen cargados luego de buscar.
-- La consulta se hace por `GET`, por lo que puede recargarse o guardarse como favorito.
-- El título de la tabla cambia a "Resultados de la búsqueda" cuando hay filtros aplicados.
-- Mensaje específico cuando ningún empleado coincide con los filtros.
-- Con filtros activos se oculta el botón "Registrar Empleado" del estado vacío.
-- Los resultados mantienen las acciones de Modificar, Dar de baja y Dar de alta.
-Validaciones:
- 
-- Si la fecha "desde" es posterior a la fecha "hasta", se informa el error y se ignoran ambas fechas.
-- El filtrado se realiza solo sobre empleados de la Unidad de Venta del Responsable autenticado; no se pueden consultar empleados de otras Unidades.
-- El Responsable no aparece en los resultados.
-Implementación:
- 
-- `EmpleadoController.empleadoInicio`: recibe los parámetros con `@RequestParam` y `@DateTimeFormat`, y devuelve a la vista los valores del filtro (`filtroNombre`, `filtroDni`, `filtroDesde`, `filtroHasta`) y el indicador `hayFiltros`.
-- `EmpleadoService.buscarEmpleados`: filtra sobre `listarEmpleados()`, que ya limita los empleados a la Unidad del Responsable.
-- `EmpleadoService.normalizar`: normaliza el texto (sin tildes y en minúsculas) para comparar nombres.
-- `empleados.html`: se reemplazó el panel de Unidad de Venta por el formulario de consulta.
+| `GET` | `/empleado/pedidos/nuevo` | Formulario de Alta de Pedido |
+| `POST` | `/empleado/pedidos/nuevo` | Registro del Pedido |
+
+Funcionalidades implementadas:
+
+- Obtención automática de la Unidad de Venta del empleado autenticado.
+- Obtención automática del Festival asociado a la Unidad.
+- Fecha del pedido establecida automáticamente con la fecha actual.
+- Listado únicamente de los platos pertenecientes a la Unidad del empleado.
+- Selección de plato.
+- Registro de cantidad.
+- Validación de plato obligatorio.
+- Validación de cantidad mayor a cero.
+- Validación de que el plato pertenezca a la Unidad del empleado.
+- Creación de `Pedido`.
+- Creación de `ItemPedido`.
+- Persistencia del Pedido y sus ítems mediante `CascadeType.ALL`.
+- Uso de `RegistroPedidoDTO`.
+- Mensajes de éxito y error.
+- Confirmación antes de registrar.
+- Integración con el Panel del Empleado.
+- Acceso desde el menú lateral.
+
+#### Prueba realizada
+
+Se registró correctamente:
+
+- Empleado autenticado: `Lucía Fernández`
+- Unidad: `Puesto Centro`
+- Festival: `Primavera Gourmet`
+- Plato: `Hamburguesa Completa`
+- Precio de venta: `$12.000,00`
+- Pedido generado: `#1`
+
+Se verificó en MySQL:
+
+- Registro creado en `pedido`.
+- Registro relacionado creado en `item_pedido`.
+- `id_pedido = 1`.
+- `id_plato = 1`.
+- Cantidad registrada correctamente.
+
+Pull Request: [PR #30](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/30)
+
+---
 
 ### Navegación y redirección según rol
 
 Flujo actual:
 
-- Tras iniciar sesión, el `RESPONSABLE` es redirigido a `/responsable`.
-- Tras iniciar sesión, el `EMPLEADO` es redirigido a `/empleado`.
-- Los demás roles continúan en `/`.
-- Si un Responsable o un Empleado ingresa a `/`, también es redirigido a su panel.
-- Existe menú lateral específico para Responsable.
-- Existe menú lateral específico para Empleado.
-- El Panel del Empleado integra accesos a Festival y Unidad actual, Historial laboral y Mis sueldos.
+- `RESPONSABLE` → `/responsable`
+- `EMPLEADO` → `/empleado`
+- Administrador → `/`
+
+Existen menús laterales específicos para:
+
+- Administrador.
+- Responsable.
+- Empleado.
+
+El Panel del Empleado integra actualmente:
+
+- Festival y Unidad actual.
+- Historial laboral.
+- Mis sueldos.
+- Alta de Pedido.
 
 ---
 
 ## Roles del sistema
-
-La aplicación contempla tres tipos principales de usuario.
 
 ### Administrador
 
@@ -732,50 +760,53 @@ Funcionalidades actuales:
 - Consultar Festivales.
 - Consultar Unidades de Venta.
 - Registrar Unidad de Venta y Responsable.
-- Configurar costos de Festivales.
+- Configurar costos.
 - Consultar cánones.
-- Consultar reporte de mayores cánones.
+- Reporte de mayores cánones.
 
-Funcionalidades previstas:
+Funcionalidades pendientes:
 
-- Consultar ranking de facturación.
+- Ranking de facturación.
+
+---
 
 ### Responsable
 
-Administra la Unidad de Venta que tiene asignada.
-
 Funcionalidades actuales:
 
-- Consultar su Unidad de Venta y su canon.
-- Acceder a un Panel principal específico.
-- Alta y listado de empleados.
-- Modificación de empleados.
-- Baja lógica de empleados.
-- Reactivación de empleados.
-- Gestionar empleados pertenecientes a su Unidad.
-- Liquidar haberes de los empleados de su Unidad.
-
-Funcionalidades previstas:
-
-- Filtros y búsqueda de empleados.
+- Consultar su Unidad.
+- Consultar canon.
+- Panel específico.
+- Alta de empleados.
+- Listado de empleados.
+- Modificación.
+- Baja lógica.
+- Reactivación.
+- Filtros y búsqueda.
+- Liquidación de haberes.
 - Agregar platos.
-- Consultar Plato Estrella.
-- Consultar reportes de ventas.
-- Consultar rentabilidad.
-- Enviar credenciales a empleados.
+- Envío de credenciales por email.
+
+Funcionalidades pendientes:
+
+- Plato Estrella.
+- Reporte de ventas.
+- Rentabilidad neta.
+- Rentabilidad entre fechas.
+
+---
 
 ### Empleado
 
-Consulta información relacionada con su actividad laboral.
-
 Funcionalidades actuales:
 
-- Acceder al Panel del Empleado.
-- Consultar Festival y Unidad actual.
-- Consultar historial laboral.
-- Consultar sueldo recibido por Festival.
+- Panel del Empleado.
+- Festival y Unidad actual.
+- Historial laboral.
+- Consulta de sueldo por Festival.
+- Alta de Pedido.
 
-Funcionalidades previstas:
+Funcionalidades pendientes:
 
 - Descargar recibo de sueldo en PDF.
 
@@ -785,29 +816,28 @@ Los empleados de tipo `Cajero` podrán además realizar el cierre diario de caja
 
 ## Interfaz y navegación
 
-Se implementó una interfaz web con:
+Se implementó:
 
 - Barra superior.
-- Menú lateral.
+- Menús laterales.
 - Dashboard de Administración.
-- Panel principal del Responsable.
-- Panel principal del Empleado.
-- Accesos rápidos.
-- Navegación entre Festivales, Unidades, Costos y Canon.
-- Gestión de empleados por Unidad de Venta.
+- Panel del Responsable.
+- Panel del Empleado.
+- Navegación por roles.
+- Listado de Festivales.
+- Gestión de Unidades.
+- Gestión de empleados.
+- Filtros de empleados.
+- Costos.
+- Canon.
 - Liquidación de Sueldos.
-- Consulta de sueldo por Festival.
-- Consulta de Festival y Unidad actual.
-- Consulta de historial laboral.
+- Consulta de sueldo.
+- Festival y Unidad actual.
+- Historial laboral.
+- Alta de Pedido.
 - Reporte de Mayores Cánones.
 - Diseño reutilizable mediante CSS.
-- Fragmentos Thymeleaf para los menús laterales.
-
-Actualmente existen estructuras de navegación para:
-
-- Administrador.
-- Responsable.
-- Empleado.
+- Fragmentos Thymeleaf.
 
 ---
 
@@ -815,10 +845,7 @@ Actualmente existen estructuras de navegación para:
 
 Entre las funcionalidades restantes se encuentran:
 
-- Filtros y búsqueda de empleados.
-- Agregar platos a una Unidad de Venta.
 - Consultar Plato Estrella.
-- Enviar credenciales mediante email.
 - Generar recibo de sueldo en PDF.
 - Generar reporte de ventas.
 - Calcular rentabilidad neta.
@@ -826,29 +853,30 @@ Entre las funcionalidades restantes se encuentran:
 - Ranking de facturación.
 - Cierre de caja del Cajero.
 
-> Esta sección deberá continuar actualizándose a medida que se integren nuevos Pull Requests a `main`.
+> Esta sección deberá continuar actualizándose a medida que se integren nuevos Pull Requests.
 
 ---
 
 ## Requisitos generales pendientes de integración
 
-Estado de requisitos generales:
+Estado actual:
 
-- Envío de email: pendiente de integración.
-- Reporte implementado mediante DTO: implementado mediante `ReporteMayoresCanonDTO`.
-- Generación de archivo PDF: pendiente de integración.
-- Dos Casos de Uso por integrante: verificar al cierre.
-- Dos validaciones por integrante: verificar al cierre.
-- Script final con datos suficientes para la demostración: pendiente.
-- Pruebas integrales de los distintos roles: pendientes de cierre.
+- Envío de email: **implementado**.
+- Reporte mediante DTO: **implementado** con `ReporteMayoresCanonDTO`.
+- Generación de PDF: **pendiente**.
+- Dos Casos de Uso por integrante: **verificar al cierre**.
+- Dos validaciones por integrante: **verificar al cierre**.
+- Script final de datos de prueba: **pendiente**.
+- Pruebas integrales: **pendientes de cierre**.
 
-Actualmente el proyecto incorpora DTOs específicos para presentación y reportes, entre ellos:
+DTOs utilizados actualmente:
 
 - `ReporteMayoresCanonDTO`
 - `LiquidacionSueldoDTO`
 - `SueldoEmpleadoDTO`
 - `EmpleadoActualDTO`
 - `HistorialLaboralDTO`
+- `RegistroPedidoDTO`
 
 ---
 
@@ -857,12 +885,12 @@ Actualmente el proyecto incorpora DTOs específicos para presentación y reporte
 Para cada Caso de Uso:
 
 1. Se crea una rama específica desde `main`.
-2. Se desarrolla y prueba la funcionalidad.
+2. Se desarrolla y prueba.
 3. Se realiza un commit descriptivo.
-4. Se publica la rama en GitHub.
-5. Se crea un Pull Request hacia `main`.
-6. Se verifica que no existan conflictos.
-7. Se agrega el link del Pull Request correspondiente al README.
+4. Se publica la rama.
+5. Se crea un Pull Request.
+6. Se verifican conflictos.
+7. Se documenta el PR en el README.
 8. Se realiza el merge hacia `main`.
 
 ---
@@ -871,16 +899,14 @@ Para cada Caso de Uso:
 
 La aplicación utiliza MySQL.
 
-La conexión se configura mediante variables de entorno.
-
-Ejemplo:
+Variables de entorno:
 
 ```bash
 export DB_USER='usuario_mysql'
 export DB_PASSWORD='password_mysql'
 ```
 
-También puede configurarse la URL completa de conexión:
+También puede configurarse la URL:
 
 ```bash
 export DB_URL='jdbc:mysql://localhost:3308/epicentrogourmet?createDatabaseIfNotExist=true&serverTimezone=America/Argentina/Buenos_Aires'
@@ -888,13 +914,13 @@ export DB_URL='jdbc:mysql://localhost:3308/epicentrogourmet?createDatabaseIfNotE
 
 El puerto puede variar según la configuración local de cada integrante.
 
-Para el usuario administrador inicial:
+Administrador:
 
 ```bash
 export ADMIN_PASSWORD='password_admin'
 ```
 
-Opcionalmente puede definirse:
+Opcional:
 
 ```bash
 export ADMIN_USERNAME='admin'
@@ -904,7 +930,7 @@ export ADMIN_USERNAME='admin'
 
 ## Ejecución del proyecto
 
-Ingresar a la carpeta de la aplicación:
+Ingresar a la aplicación:
 
 ```bash
 cd epicentrogourmet
@@ -922,7 +948,7 @@ Ejecutar:
 ./mvnw spring-boot:run
 ```
 
-Luego acceder desde el navegador a:
+Acceder:
 
 ```text
 http://localhost:8080/
@@ -935,31 +961,34 @@ http://localhost:8080/
 Actualmente el proyecto cuenta con:
 
 - Modelo de dominio persistido mediante JPA/Hibernate.
-- Conexión con MySQL.
-- Login con Spring Security.
+- MySQL.
+- Spring Security.
 - Roles `ADMINISTRADOR`, `RESPONSABLE` y `EMPLEADO`.
-- Contraseñas cifradas mediante BCrypt.
+- BCrypt.
 - Dashboard de Administración.
-- Panel principal del Responsable.
-- Panel principal del Empleado.
-- Redirección al panel correspondiente según rol.
-- Navegación mediante Thymeleaf.
+- Panel del Responsable.
+- Panel del Empleado.
+- Redirección según rol.
 - Listado de Festivales.
-- Registro de Unidad de Venta + Responsable.
+- Registro de Unidad + Responsable.
 - Consulta de Unidades por Festival.
 - Configuración y modificación de costos.
 - Cálculo de canon.
-- Reporte de Mayores Cánones mediante `ReporteMayoresCanonDTO`.
-- Ranking de cánones de mayor a menor.
-- Alta y listado de empleados por Unidad de Venta.
-- Modificación, baja lógica y reactivación de empleados.
-- Gestión de empleados filtrada por Unidad de Venta.
-- Asignación automática de empleados a la Unidad del Responsable.
+- Reporte de Mayores Cánones.
+- Alta y listado de empleados.
+- Modificación, baja y reactivación.
+- Filtros de empleados.
+- Gestión de empleados por Unidad.
+- Alta de platos.
+- Envío de credenciales por email.
+- Asignación automática de empleados.
 - Liquidación de sueldos.
-- Persistencia de haberes liquidados.
+- Persistencia de haberes.
 - Consulta de sueldo por Festival.
-- Consulta de Festival y Unidad actual del Empleado.
-- Consulta de historial laboral del Empleado.
-- Estructura de navegación del Responsable.
-- Estructura de navegación del Empleado.
-- Flujo de desarrollo mediante ramas y Pull Requests.
+- Consulta de Festival y Unidad actual.
+- Historial laboral.
+- Alta de Pedido.
+- Persistencia de `Pedido` e `ItemPedido`.
+- Integración del Alta de Pedido al Panel del Empleado.
+- Menús laterales por rol.
+- Flujo mediante ramas y Pull Requests.
