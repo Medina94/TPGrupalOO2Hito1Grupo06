@@ -156,22 +156,24 @@ Se implementaron además:
 
 ## Casos de Uso implementados - Hito 2
 
-| Caso de Uso | Responsable | Estado | Rama | Pull Request |
-|---|---|---|---|---|
-| Inicio de sesión | Valentina Ponzo | Finalizado | `CU-Login` | [PR #5](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/5) |
-| Listado de Festivales | Valentina Ponzo | Finalizado | `CU-Listado-Festivales` | [PR #6](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/6) |
-| Registrar Unidad de Venta + Responsable | Valentina Ponzo | Finalizado | `CU-Registrar-Unidad-Responsable` | [PR #7](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/7) |
-| Consultar Unidades por Festival | Valentina Ponzo | Finalizado | `CU-Unidades-Por-Festival` | [PR #8](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/8) |
-| Calcular Canon de Unidad de Venta | Valentina Ponzo | Finalizado | `CU-Calcular-Canon` | [PR #10](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/10) |
-| Alta y Listado de Empleados | Alejandro Escalier | Finalizado | `CU-Alta-Listado-Empleados` | [PR #11](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/11) |
-| Reactivación de Empleados | Alejandro Escalier | Finalizado | `CU-Reactivacion-Empleados` | [PR #15](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/15) |
-| Reporte de Mayores Cánones | Valentina Ponzo | Finalizado | `CU-Reporte-Mayores-Canones` | [PR #16](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/16) |
-| Liquidación de Sueldos | Valentina Ponzo | Finalizado | `CU-Liquidacion-Sueldos` | [PR #18](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/18) |
-| Panel de inicio del Empleado | Alejandro Escalier | Finalizado | `CU-Dashboard-Empleado` | [PR #20](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/20) |
-| Consultar sueldo por Festival | Valentina Ponzo | Finalizado | `CU-Consultar-Sueldo-Festival` | [PR #21](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/21) |
-| Consultar Festival y Unidad actual | Valentina Ponzo | Finalizado | `CU-Festival-Unidad-Actual-Empleado` | [PR #22](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/22) |
-| Consultar historial laboral | Valentina Ponzo | Finalizado | `CU-Historial-Laboral-Empleado` | [PR #23](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/23) |
-| Consulta de Empleados con filtros | Alejandro Escalier | Finalizado | `CU-Consulta-Empleados` | [PR #26](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/26) |
+| Caso de Uso                             | Responsable        | Estado | Rama | Pull Request                                                          |
+|-----------------------------------------|--------------------|---|---|-----------------------------------------------------------------------|
+| Inicio de sesión                        | Valentina Ponzo    | Finalizado | `CU-Login` | [PR #5](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/5)   |
+| Listado de Festivales                   | Valentina Ponzo    | Finalizado | `CU-Listado-Festivales` | [PR #6](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/6)   |
+| Registrar Unidad de Venta + Responsable | Valentina Ponzo    | Finalizado | `CU-Registrar-Unidad-Responsable` | [PR #7](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/7)   |
+| Consultar Unidades por Festival         | Valentina Ponzo    | Finalizado | `CU-Unidades-Por-Festival` | [PR #8](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/8)   |
+| Calcular Canon de Unidad de Venta       | Valentina Ponzo    | Finalizado | `CU-Calcular-Canon` | [PR #10](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/10) |
+| Alta y Listado de Empleados             | Alejandro Escalier | Finalizado | `CU-Alta-Listado-Empleados` | [PR #11](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/11) |
+| Reactivación de Empleados               | Alejandro Escalier | Finalizado | `CU-Reactivacion-Empleados` | [PR #15](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/15) |
+| Reporte de Mayores Cánones              | Valentina Ponzo    | Finalizado | `CU-Reporte-Mayores-Canones` | [PR #16](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/16) |
+| Liquidación de Sueldos                  | Valentina Ponzo    | Finalizado | `CU-Liquidacion-Sueldos` | [PR #18](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/18) |
+| Panel de inicio del Empleado            | Alejandro Escalier | Finalizado | `CU-Dashboard-Empleado` | [PR #20](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/20) |
+| Consultar sueldo por Festival           | Valentina Ponzo    | Finalizado | `CU-Consultar-Sueldo-Festival` | [PR #21](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/21) |
+| Consultar Festival y Unidad actual      | Valentina Ponzo    | Finalizado | `CU-Festival-Unidad-Actual-Empleado` | [PR #22](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/22) |
+| Consultar historial laboral             | Valentina Ponzo    | Finalizado | `CU-Historial-Laboral-Empleado` | [PR #23](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/23) |
+| Consulta de Empleados con filtros       | Alejandro Escalier | Finalizado | `CU-Consulta-Empleados` | [PR #26](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/26) |
+| Agregar Platos a Unidad de Venta        | Cristian Medina    | Finalizado | `CU-agregar-platos` | [PR #14](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/14) |
+| Envío de mail en alta de usuario        | Cristian Medina    | Finalizado | `CU-mail-alta-empleado` | [PR #27](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/27) |
 
 > Cada nuevo Caso de Uso se desarrolla en una rama independiente y posteriormente se integra a `main` mediante Pull Request.
 
