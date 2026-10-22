@@ -362,6 +362,9 @@ public class EmpleadoService {
                 );
 
         usuario.setActivo(true);
+
+        logger.info("Enviando correo de reactivación al empleado: {}", empleado.getEmail());
+        mailService.enviarMailReactivacion(empleado.getEmail());
     }
 
     // =====================================================
