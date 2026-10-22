@@ -17,4 +17,10 @@ public interface IMailService {
      * @param username
      */
     void enviarMailAltaResponsable(RegistroUnidadResponsableDTO registroUnidadResponsableDTO, String username);
+
+    /**
+     * Metodo asincrono para enviar un mail de reactivación de empleado.
+     */
+
+    void enviarMailReactivacion(String email);
 }

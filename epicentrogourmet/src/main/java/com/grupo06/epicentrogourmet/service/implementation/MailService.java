@@ -28,6 +28,8 @@ public class MailService implements IMailService {
     private String mailFrom;
     @Value("classpath:templates/mail/mail-alta-empleado.html")
     private Resource template;
+    @Value("classpath:templates/mail/mail-reactivacion-empleado.html")
+    private Resource templateReactivacion;
 
     public MailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
@@ -56,6 +58,35 @@ public class MailService implements IMailService {
                 "Alta de responsable de unidad en Epicentro Gourmet"
         );
     }
+
+
+
+    @Override
+    @Async
+    public void enviarMailReactivacion( String email) {
+        try {
+            String htmlContent = new String(
+                    templateReactivacion.getInputStream().readAllBytes(),
+                    StandardCharsets.UTF_8
+            );
+
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setTo(email);
+            helper.setSubject("Reactivacion de empleado en Epicentro Gourmet");
+            helper.setText(htmlContent, true);
+
+            ClassPathResource imageResource = new ClassPathResource("static/images/logo.jpg");
+            helper.addInline("epicentrogourmetLogo", imageResource);
+            mailSender.send(mimeMessage);
+        } catch (IOException | MessagingException e) {
+            logger.error("Error en el envío de mail: {}", e.getMessage());
+            throw new RuntimeException("Error al leer la plantilla o enviar el correo", e);
+        }
+
+    }
+
+
 
     private void enviarMail(
             String nombre,
