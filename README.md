@@ -178,7 +178,7 @@ Se implementaron además:
 | Alta de Pedido | Valentina Ponzo | Finalizado | `CU-Alta-Pedido` | [PR #30](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/30) |
 | Editar y eliminar platos de unidad de venta | Cristian Medina    | Finalizado | `CU-agregar-platos` | [PR #31](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/31) |
 | Envío de mail en reactivación de empleado | Alejandro Escalier | Finalizado | `CU-mail-reactivacion-empleado` | [PR #36](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/36) |
-
+| Listado de Empleados en PDF | Alejandro Escalier | Finalizado | `CU-Listado-Empleados-PDF` | [PR #37](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/37) |
 
 > Cada nuevo Caso de Uso se desarrolla en una rama independiente y posteriormente se integra a `main` mediante Pull Request.
 
@@ -751,6 +751,32 @@ Funcionalidades:
 - Logo de Epicentro Gourmet incrustado en el mail.
 - Método `enviarMailReactivacion` agregado a `IMailService` e implementado en `MailService`.
 - Reutilización de la configuración SMTP existente.
+
+---
+
+### CU - Listado de Empleados en PDF
+
+Responsable: **Alejandro Escalier**
+
+Permite al Responsable descargar en formato PDF el listado de empleados de su Unidad de Venta.
+
+#### Ruta
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| `GET` | `/responsable/empleados/pdf` | Descarga del listado de empleados en PDF |
+
+Funcionalidades:
+
+- Botón "Descargar PDF" en el listado de empleados, visible solo para el Responsable.
+- Generación del PDF mediante la librería OpenPDF.
+- Servicio propio: `IPdfService` implementado en `PdfService`.
+- Título "Epicentro Gourmet - Listado de empleados".
+- Tabla con las columnas: Nombre, Puesto, DNI, Email, Ingreso y Estado.
+- Puesto diferenciado por tipo de empleado: `Cocinero` (con su rol de cocina) o `Cajero` (con su turno).
+- Estado del empleado: `Activo` o `Baja`.
+- Cabecera de la tabla repetida en cada página.
+- Descarga como archivo adjunto: `listado-empleados.pdf`.
 
 ---
 
