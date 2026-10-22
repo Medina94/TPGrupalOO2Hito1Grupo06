@@ -782,8 +782,6 @@ Funcionalidades:
 
 ---
 
-=======
->>>>>>> main
 ### Navegación y redirección según rol
 
 Flujo actual:
