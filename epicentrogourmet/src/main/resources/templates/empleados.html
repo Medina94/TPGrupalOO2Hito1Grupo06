@@ -75,6 +75,12 @@
             <div class="actions">
 
                 <a th:if="${esResponsable}"
+                   th:href="@{/responsable/empleados/pdf}"
+                   class="btn btn-outline">
+                    Descargar PDF
+                </a>
+
+                <a th:if="${esResponsable}"
                    th:href="@{/responsable/empleados/nuevo}"
                    class="btn btn-primary">
 

@@ -1,5 +1,6 @@
 package com.grupo06.epicentrogourmet.controller;
 
+import com.grupo06.epicentrogourmet.service.IPdfService;
 import com.grupo06.epicentrogourmet.entity.Cajero;
 import com.grupo06.epicentrogourmet.entity.Cocinero;
 import jakarta.validation.Valid;
@@ -9,6 +10,9 @@ import java.util.List;
 import com.grupo06.epicentrogourmet.entity.Empleado;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,14 +32,17 @@ import com.grupo06.epicentrogourmet.dto.ModificarEmpleadoDTO;
 @Controller
 public class EmpleadoController {
 
+    private final IPdfService pdfService;
+
     private final EmpleadoService empleadoService;
 
     private final UnidadVentaService unidadVentaService;
 
     public EmpleadoController(EmpleadoService empleadoService,
-                              UnidadVentaService unidadVentaService) {
+                              UnidadVentaService unidadVentaService,IPdfService pdfService) {
         this.empleadoService = empleadoService;
         this.unidadVentaService = unidadVentaService;
+        this.pdfService = pdfService;
     }
 
     @GetMapping("/responsable/empleados")
@@ -228,6 +235,22 @@ public class EmpleadoController {
             model.addAttribute("idEmpleado", id);
             model.addAttribute("errorGeneral", e.getMessage());
             return "modificar-empleado";
+        }
+    }
+    @GetMapping("/responsable/empleados/pdf")
+    public ResponseEntity<byte[]> descargarListadoEmpleados() {
+
+        try {
+            byte[] pdf = pdfService.generarListadoEmpleados();
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION,
+                            "attachment; filename=listado-empleados.pdf")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(pdf);
+
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }
