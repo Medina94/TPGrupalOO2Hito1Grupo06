@@ -177,6 +177,7 @@ Se implementaron además:
 | Envío de mail en alta de usuario            | Cristian Medina    | Finalizado | `CU-mail-alta-empleado` | [PR #27](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/27) |
 | Alta de Pedido | Valentina Ponzo | Finalizado | `CU-Alta-Pedido` | [PR #30](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/30) |
 | Editar y eliminar platos de unidad de venta | Cristian Medina    | Finalizado | `CU-agregar-platos` | [PR #31](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/31) |
+| Envío de mail en reactivación de empleado | Alejandro Escalier | Finalizado | `CU-mail-reactivacion-empleado` | [PR #36](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/36) |
 
 > Cada nuevo Caso de Uso se desarrolla en una rama independiente y posteriormente se integra a `main` mediante Pull Request.
 
@@ -725,6 +726,30 @@ Se verificó en MySQL:
 - Cantidad registrada correctamente.
 
 Pull Request: [PR #30](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/30)
+
+---
+
+### CU - Envío de mail en reactivación de empleado
+ 
+Responsable: **Alejandro Escalier**
+ 
+Permite notificar por email al empleado cada vez que el Responsable reactiva su cuenta.
+ 
+Funcionalidad integrada a la Reactivación de Empleados.
+ 
+#### Ruta
+ 
+| Método | Ruta | Descripción |
+|---|---|---|
+| `POST` | `/responsable/empleados/{id}/reactivar` | Reactivación del empleado y envío del mail |
+ 
+Funcionalidades:
+ 
+- Envío automático del mail al reactivar un empleado.
+- Plantilla HTML propia: `mail-reactivacion-empleado.html`.
+- Logo de Epicentro Gourmet incrustado en el mail.
+- Método `enviarMailReactivacion` agregado a `IMailService` e implementado en `MailService`.
+- Reutilización de la configuración SMTP existente.
 
 ---
 
