@@ -754,6 +754,7 @@ Funcionalidades:
 
 ---
 
+CU-Listado-Empleados-PDF
 ### CU - Listado de Empleados en PDF
 
 Responsable: **Alejandro Escalier**
@@ -781,6 +782,8 @@ Funcionalidades:
 
 ---
 
+=======
+>>>>>>> main
 ### Navegación y redirección según rol
 
 Flujo actual:
