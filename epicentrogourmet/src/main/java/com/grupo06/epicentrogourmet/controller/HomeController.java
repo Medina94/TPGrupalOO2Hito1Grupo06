@@ -1,5 +1,6 @@
 package com.grupo06.epicentrogourmet.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
@@ -32,23 +33,92 @@ public class HomeController {
     }
 
     // =====================================================
-    // INICIO GENERAL
+    // HOME PUBLICA
     // =====================================================
 
     @GetMapping("/")
-    public String inicio(
+    public String inicioPublico(
             Model model,
             Authentication authentication) {
 
-        if (authentication != null) {
+        List<Festival> festivales =
+                festivalService.listarFestivales();
 
-            if (tieneRol(authentication, "ROLE_RESPONSABLE")) {
-                return "redirect:/responsable";
-            }
+        model.addAttribute(
+                "festivales",
+                festivales
+        );
 
-            if (tieneRol(authentication, "ROLE_EMPLEADO")) {
-                return "redirect:/empleado";
-            }
+        // Fecha actual para mostrar el estado de cada Festival
+        model.addAttribute(
+                "hoy",
+                LocalDate.now()
+        );
+
+        /*
+         * La Home es pública.
+         * Si existe un usuario autenticado, enviamos su rol
+         * para mostrar accesos personalizados.
+         */
+        if (authentication != null
+                && authentication.isAuthenticated()) {
+
+            model.addAttribute(
+                    "username",
+                    authentication.getName()
+            );
+
+            model.addAttribute(
+                    "autenticado",
+                    true
+            );
+
+            model.addAttribute(
+                    "esAdmin",
+                    tieneRol(
+                            authentication,
+                            "ROLE_ADMINISTRADOR"
+                    )
+            );
+
+            model.addAttribute(
+                    "esResponsable",
+                    tieneRol(
+                            authentication,
+                            "ROLE_RESPONSABLE"
+                    )
+            );
+
+            model.addAttribute(
+                    "esEmpleado",
+                    tieneRol(
+                            authentication,
+                            "ROLE_EMPLEADO"
+                    )
+            );
+
+        } else {
+
+            model.addAttribute(
+                    "autenticado",
+                    false
+            );
+        }
+
+        return "public-home";
+    }
+
+    // =====================================================
+    // PANEL DEL ADMINISTRADOR
+    // =====================================================
+
+    @GetMapping("/admin")
+    public String administradorInicio(
+            Model model,
+            Authentication authentication) {
+
+        if (authentication == null) {
+            return "redirect:/login";
         }
 
         List<Festival> festivales =
@@ -59,19 +129,19 @@ public class HomeController {
                 festivales
         );
 
-        if (authentication != null) {
+        model.addAttribute(
+                "username",
+                authentication.getName()
+        );
 
-            model.addAttribute(
-                    "username",
-                    authentication.getName()
-            );
+        model.addAttribute(
+                "esAdmin",
+                true
+        );
 
-            model.addAttribute(
-                    "esAdmin",
-                    tieneRol(authentication, "ROLE_ADMINISTRADOR")
-            );
-        }
-
+        /*
+         * Se reutiliza index.html como panel administrativo.
+         */
         return "index";
     }
 
@@ -132,7 +202,10 @@ public class HomeController {
                 usuarioActualService.obtenerUsuarioActual();
 
         UnidadVenta unidad =
-                unidadVentaService.buscarUnidadDelEmpleado(authentication.getName());
+                unidadVentaService
+                        .buscarUnidadDelEmpleado(
+                                authentication.getName()
+                        );
 
         model.addAttribute(
                 "username",
@@ -172,7 +245,9 @@ public class HomeController {
                 .getAuthorities()
                 .stream()
                 .anyMatch(authority ->
-                        authority.getAuthority().equals(rol)
+                        authority
+                                .getAuthority()
+                                .equals(rol)
                 );
     }
 }

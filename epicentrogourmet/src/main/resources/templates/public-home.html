@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Epicentro Gourmet</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f7f5;
+            color: #1f2937;
+        }
+
+
+        /* =========================
+           HEADER
+           ========================= */
+
+        .public-header {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 72px;
+            padding: 0 24px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 800;
+            text-decoration: none;
+            color: #111827;
+        }
+
+        .brand span {
+            color: #d97706;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-link {
+            color: #374151;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 14px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 11px 18px;
+            border-radius: 8px;
+
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #d97706;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #b45309;
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1px solid #d1d5db;
+            color: #374151;
+        }
+
+        .btn-outline:hover {
+            background: #f3f4f6;
+        }
+
+
+        /* =========================
+           HERO
+           ========================= */
+
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 70px 24px;
+
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .hero-tag {
+            display: inline-block;
+
+            background: #ffedd5;
+            color: #9a3412;
+
+            padding: 7px 12px;
+            border-radius: 30px;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            line-height: 1.08;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+
+        .hero h1 span {
+            color: #d97706;
+        }
+
+        .hero p {
+            font-size: 19px;
+            line-height: 1.6;
+            color: #6b7280;
+            margin-bottom: 28px;
+            max-width: 650px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .hero-image {
+            min-height: 390px;
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    rgba(17, 24, 39, 0.08),
+                    rgba(17, 24, 39, 0.25)
+                ),
+                url('/images/festival-gastronomico.jpg');
+
+            background-size: cover;
+            background-position: center;
+
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+
+            display: flex;
+            align-items: flex-end;
+
+            padding: 24px;
+        }
+
+        .hero-image-info {
+            background: rgba(255,255,255,0.93);
+            padding: 16px 18px;
+            border-radius: 14px;
+            width: 100%;
+        }
+
+        .hero-image-info strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .hero-image-info span {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           SECCIONES
+           ========================= */
+
+        .section {
+            padding: 70px 24px;
+        }
+
+        .section-white {
+            background: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-heading {
+            margin-bottom: 34px;
+        }
+
+        .section-heading h2 {
+            font-size: 34px;
+            color: #111827;
+            margin-bottom: 10px;
+        }
+
+        .section-heading p {
+            color: #6b7280;
+            font-size: 17px;
+        }
+
+
+        /* =========================
+           FESTIVALES
+           ========================= */
+
+        .festival-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(280px, 1fr));
+
+            gap: 22px;
+        }
+
+        .festival-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            overflow: hidden;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .festival-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.08);
+        }
+
+        .festival-photo {
+            height: 150px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f59e0b,
+                    #ea580c
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 62px;
+        }
+
+        .festival-content {
+            padding: 24px;
+        }
+
+        .festival-status {
+            display: inline-block;
+
+            padding: 6px 11px;
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            margin-bottom: 14px;
+        }
+
+        .status-current {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-future {
+            background: #ffedd5;
+            color: #9a3412;
+        }
+
+        .status-finished {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .festival-content h3 {
+            font-size: 22px;
+            color: #111827;
+            margin-bottom: 10px;
+        }
+
+        .festival-description {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .festival-info {
+            display: grid;
+            gap: 9px;
+
+            padding-top: 15px;
+
+            border-top: 1px solid #e5e7eb;
+
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .festival-info strong {
+            color: #374151;
+        }
+
+
+        /* =========================
+           EMPTY STATE
+           ========================= */
+
+        .empty-state {
+            background: white;
+            border: 1px dashed #d1d5db;
+            border-radius: 14px;
+
+            padding: 45px;
+            text-align: center;
+
+            color: #6b7280;
+        }
+
+
+        /* =========================
+           INFORMACIÓN
+           ========================= */
+
+        .info-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(230px, 1fr));
+
+            gap: 20px;
+        }
+
+        .info-card {
+            background: #f9fafb;
+            border-radius: 16px;
+            padding: 26px;
+        }
+
+        .info-icon {
+            font-size: 34px;
+            margin-bottom: 15px;
+        }
+
+        .info-card h3 {
+            margin-bottom: 10px;
+            color: #111827;
+        }
+
+        .info-card p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           CTA RESPONSABLE
+           ========================= */
+
+        .business-cta {
+            background: #111827;
+            color: white;
+
+            border-radius: 22px;
+
+            padding: 46px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 30px;
+        }
+
+        .business-cta h2 {
+            font-size: 31px;
+            margin-bottom: 10px;
+        }
+
+        .business-cta p {
+            color: #d1d5db;
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           FOOTER
+           ========================= */
+
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+
+            text-align: center;
+
+            padding: 30px 20px;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+           ========================= */
+
+        @media (max-width: 800px) {
+
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .hero-image {
+                min-height: 300px;
+            }
+
+            .business-cta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav {
+                flex-wrap: wrap;
+
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
+<header class="public-header">
+
+    <nav class="nav">
+
+        <a th:href="@{/}"
+           class="brand">
+
+            Epicentro <span>Gourmet</span>
+
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="#festivales"
+               class="nav-link">
+
+                Festivales
+
+            </a>
+
+
+            <a th:if="${!autenticado}"
+               th:href="@{/login}"
+               class="btn btn-outline">
+
+                Iniciar sesión
+
+            </a>
+
+
+            <a th:if="${!autenticado}"
+               th:href="@{/registro/responsable}"
+               class="btn btn-primary">
+
+                Registrar mi negocio
+
+            </a>
+
+
+            <a th:if="${autenticado and esAdmin}"
+               th:href="@{/admin}"
+               class="btn btn-primary">
+
+                Ir a Administración
+
+            </a>
+
+
+            <a th:if="${autenticado and esResponsable}"
+               th:href="@{/responsable}"
+               class="btn btn-primary">
+
+                Ir a mi Unidad
+
+            </a>
+
+
+            <a th:if="${autenticado and esEmpleado}"
+               th:href="@{/empleado}"
+               class="btn btn-primary">
+
+                Ir a mi Panel
+
+            </a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+     ===================================================== -->
+
+<section class="hero">
+
+    <div>
+
+        <span class="hero-tag">
+            🍴 Festivales gastronómicos
+        </span>
+
+
+        <h1>
+
+            Viví una experiencia
+            <span>gourmet</span>
+            diferente.
+
+        </h1>
+
+
+        <p>
+
+            Descubrí los próximos festivales de Epicentro Gourmet,
+            conocé las propuestas gastronómicas participantes y
+            encontrá nuevas experiencias para disfrutar.
+
+        </p>
+
+
+        <div class="hero-actions">
+
+            <a href="#festivales"
+               class="btn btn-primary">
+
+                Ver festivales
+
+            </a>
+
+
+            <a th:if="${!autenticado}"
+               th:href="@{/registro/responsable}"
+               class="btn btn-outline">
+
+                Participar con mi negocio
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="hero-image">
+
+        <div class="hero-image-info">
+
+            <strong>
+                Epicentro Gourmet
+            </strong>
+
+            <span>
+                Gastronomía, experiencias y nuevos sabores.
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FESTIVALES
+     ===================================================== -->
+
+<section class="section"
+         id="festivales">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <h2>
+                Nuestros festivales
+            </h2>
+
+            <p>
+                Conocé los eventos gastronómicos disponibles
+                en Epicentro Gourmet.
+            </p>
+
+        </div>
+
+
+        <div class="festival-grid"
+             th:if="${!#lists.isEmpty(festivales)}">
+
+
+            <article class="festival-card"
+                     th:each="festival : ${festivales}">
+
+
+                <!-- IMAGEN / ICONO -->
+
+                <div class="festival-photo">
+
+                    <span th:if="${festival.fechaInicio.isAfter(hoy)}">
+                        🎪
+                    </span>
+
+                    <span th:if="${!festival.fechaInicio.isAfter(hoy)
+                                 and !festival.fechaFin.isBefore(hoy)}">
+                        🍴
+                    </span>
+
+                    <span th:if="${festival.fechaFin.isBefore(hoy)}">
+                        ✓
+                    </span>
+
+                </div>
+
+
+                <div class="festival-content">
+
+
+                    <!-- ESTADO: PRÓXIMO -->
+
+                    <span class="festival-status status-future"
+                          th:if="${festival.fechaInicio.isAfter(hoy)}">
+
+                        PRÓXIMAMENTE
+
+                    </span>
+
+
+                    <!-- ESTADO: EN CURSO -->
+
+                    <span class="festival-status status-current"
+                          th:if="${!festival.fechaInicio.isAfter(hoy)
+                                 and !festival.fechaFin.isBefore(hoy)}">
+
+                        EN CURSO
+
+                    </span>
+
+
+                    <!-- ESTADO: FINALIZADO -->
+
+                    <span class="festival-status status-finished"
+                          th:if="${festival.fechaFin.isBefore(hoy)}">
+
+                        FINALIZADO
+
+                    </span>
+
+
+                    <!-- NOMBRE -->
+
+                    <h3 th:text="${festival.nombre}">
+
+                        Nombre del Festival
+
+                    </h3>
+
+
+                    <!-- DESCRIPCIÓN -->
+
+                    <p class="festival-description">
+
+                        Festival gastronómico correspondiente a
+
+                        <strong th:text="${festival.temporada}">
+                            la temporada
+                        </strong>.
+
+                        Descubrí las propuestas y Unidades de Venta
+                        participantes de Epicentro Gourmet.
+
+                    </p>
+
+
+                    <!-- INFORMACIÓN -->
+
+                    <div class="festival-info">
+
+
+                        <div>
+
+                            <strong>
+                                🍂 Temporada:
+                            </strong>
+
+                            <span th:text="${festival.temporada}">
+                                Temporada
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                📅 Fecha de inicio:
+                            </strong>
+
+                            <span th:text="${#temporals.format(
+                                    festival.fechaInicio,
+                                    'dd/MM/yyyy'
+                            )}">
+
+                                Inicio
+
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                📅 Fecha de finalización:
+                            </strong>
+
+                            <span th:text="${#temporals.format(
+                                    festival.fechaFin,
+                                    'dd/MM/yyyy'
+                            )}">
+
+                                Fin
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </div>
+
+
+        <!-- SIN FESTIVALES -->
+
+        <div class="empty-state"
+             th:if="${#lists.isEmpty(festivales)}">
+
+            <h3>
+                Próximamente nuevos festivales
+            </h3>
+
+            <p>
+                Actualmente no hay festivales publicados.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     INFORMACIÓN GENERAL
+     ===================================================== -->
+
+<section class="section section-white">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <h2>
+                ¿Cómo funciona Epicentro Gourmet?
+            </h2>
+
+            <p>
+                Un espacio para visitantes, emprendimientos
+                gastronómicos y equipos de trabajo.
+            </p>
+
+        </div>
+
+
+        <div class="info-grid">
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+                    🎪
+                </div>
+
+                <h3>
+                    Descubrí festivales
+                </h3>
+
+                <p>
+                    Consultá fechas, temporadas y propuestas
+                    gastronómicas sin necesidad de iniciar sesión.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+                    🏪
+                </div>
+
+                <h3>
+                    Participá con tu negocio
+                </h3>
+
+                <p>
+                    Los responsables pueden registrar su negocio
+                    y administrar su Unidad de Venta.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+                    👥
+                </div>
+
+                <h3>
+                    Gestioná tu equipo
+                </h3>
+
+                <p>
+                    Cada Responsable administra a los empleados
+                    que trabajan en su Unidad de Venta.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+                    🍔
+                </div>
+
+                <h3>
+                    Gestioná tus ventas
+                </h3>
+
+                <p>
+                    Platos, pedidos, caja y reportes forman parte
+                    de la gestión de cada negocio participante.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CTA RESPONSABLE
+     ===================================================== -->
+
+<section class="section"
+         th:if="${!autenticado}">
+
+    <div class="container">
+
+        <div class="business-cta">
+
+            <div>
+
+                <h2>
+                    ¿Querés participar con tu negocio?
+                </h2>
+
+                <p>
+                    Registrate como Responsable y comenzá a gestionar
+                    tu Unidad de Venta dentro de Epicentro Gourmet.
+                </p>
+
+            </div>
+
+
+            <a th:href="@{/registro/responsable}"
+               class="btn btn-primary">
+
+                Registrar mi negocio
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer>
+
+    Epicentro Gourmet ·
+    Programación Orientada a Objetos II ·
+    Universidad Nacional de Lanús
+
+</footer>
+
+
+</body>
+</html>
