@@ -18,64 +18,177 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationSuccessHandler loginSuccessHandler() {
+
         return (request, response, authentication) -> {
 
-            boolean esResponsable = authentication.getAuthorities().stream()
-                    .anyMatch(a -> a.getAuthority().equals("ROLE_RESPONSABLE"));
+            boolean esAdministrador =
+                    authentication
+                            .getAuthorities()
+                            .stream()
+                            .anyMatch(a ->
+                                    a.getAuthority()
+                                            .equals(
+                                                    "ROLE_ADMINISTRADOR"
+                                            )
+                            );
 
-            boolean esEmpleado = authentication.getAuthorities().stream()
-                    .anyMatch(a -> a.getAuthority().equals("ROLE_EMPLEADO"));
+            boolean esResponsable =
+                    authentication
+                            .getAuthorities()
+                            .stream()
+                            .anyMatch(a ->
+                                    a.getAuthority()
+                                            .equals(
+                                                    "ROLE_RESPONSABLE"
+                                            )
+                            );
+
+            boolean esEmpleado =
+                    authentication
+                            .getAuthorities()
+                            .stream()
+                            .anyMatch(a ->
+                                    a.getAuthority()
+                                            .equals(
+                                                    "ROLE_EMPLEADO"
+                                            )
+                            );
+
 
             String destino = "/";
-            if (esResponsable) {
+
+
+            if (esAdministrador) {
+
+                destino = "/admin";
+
+            } else if (esResponsable) {
+
                 destino = "/responsable";
+
             } else if (esEmpleado) {
+
                 destino = "/empleado";
             }
 
-            response.sendRedirect(request.getContextPath() + destino);
+
+            response.sendRedirect(
+                    request.getContextPath()
+                            + destino
+            );
         };
     }
 
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationSuccessHandler loginSuccessHandler)
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            AuthenticationSuccessHandler loginSuccessHandler)
             throws Exception {
 
         http
+
                 .authorizeHttpRequests(auth -> auth
 
+                        // =====================================
+                        // CONTENIDO PUBLICO
+                        // =====================================
+
                         .requestMatchers(
+                                "/",
                                 "/login",
+                                "/registro/**",
                                 "/css/**",
                                 "/js/**",
                                 "/images/**"
-                        ).permitAll()
+                        )
+                        .permitAll()
 
-                        .requestMatchers("/admin/**")
-                        .hasRole("ADMINISTRADOR")
 
-                        .requestMatchers("/responsable/**")
-                        .hasRole("RESPONSABLE")
+                        // =====================================
+                        // ADMINISTRADOR
+                        // =====================================
 
-                        .requestMatchers("/empleado/**")
-                        .hasAnyRole("EMPLEADO", "RESPONSABLE")
+                        .requestMatchers(
+                                "/admin",
+                                "/admin/**"
+                        )
+                        .hasRole(
+                                "ADMINISTRADOR"
+                        )
+
+
+                        // =====================================
+                        // RESPONSABLE
+                        // =====================================
+
+                        .requestMatchers(
+                                "/responsable",
+                                "/responsable/**"
+                        )
+                        .hasRole(
+                                "RESPONSABLE"
+                        )
+
+
+                        // =====================================
+                        // EMPLEADO
+                        // =====================================
+
+                        .requestMatchers(
+                                "/empleado",
+                                "/empleado/**"
+                        )
+                        .hasAnyRole(
+                                "EMPLEADO",
+                                "RESPONSABLE"
+                        )
+
+
+                        // =====================================
+                        // RESTO DEL SISTEMA
+                        // =====================================
 
                         .anyRequest()
                         .authenticated()
                 )
 
+
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/login")
-                        .successHandler(loginSuccessHandler)
-                        .failureUrl("/login?error")
+
+                        .loginPage(
+                                "/login"
+                        )
+
+                        .loginProcessingUrl(
+                                "/login"
+                        )
+
+                        .successHandler(
+                                loginSuccessHandler
+                        )
+
+                        .failureUrl(
+                                "/login?error"
+                        )
+
                         .permitAll()
                 )
 
+
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")
+
+                        /*
+                         * Al cerrar sesión volvemos al sitio
+                         * público y no directamente al login.
+                         */
+                        .logoutSuccessUrl(
+                                "/"
+                        )
+
                         .permitAll()
                 );
+
 
         return http.build();
     }
