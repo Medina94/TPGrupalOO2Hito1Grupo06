@@ -8,15 +8,20 @@ public interface IMailService {
      * Metodo asincrono para enviar un mail de alta de empleado.
      * @param registroEmpleadoDTO
      * @param username
+     * @param password
      */
-    void enviarMailAlta(RegistroEmpleadoDTO registroEmpleadoDTO, String username);
+    void enviarMailAlta(RegistroEmpleadoDTO registroEmpleadoDTO, String username, String password);
 
     /**
      * Metodo asincrono para enviar un mail de alta de responsable de unidad.
      * @param registroUnidadResponsableDTO
      * @param username
+     * @param password
      */
-    void enviarMailAltaResponsable(RegistroUnidadResponsableDTO registroUnidadResponsableDTO, String username);
+    void enviarMailAltaResponsable(
+            RegistroUnidadResponsableDTO registroUnidadResponsableDTO,
+            String username,
+            String password);
 
     /**
      * Metodo asincrono para enviar un mail de reactivación de empleado.

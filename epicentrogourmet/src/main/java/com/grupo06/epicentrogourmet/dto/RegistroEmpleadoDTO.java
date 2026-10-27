@@ -9,7 +9,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
 
 public class RegistroEmpleadoDTO {
 
@@ -46,15 +45,6 @@ public class RegistroEmpleadoDTO {
     private String rolCocina;
 
     private String turno;
-
-    // CREDENCIALES
-
-    @NotBlank(message = "El nombre de usuario es obligatorio")
-    private String username;
-
-    @NotBlank(message = "La contraseña es obligatoria")
-    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
-    private String password;
 
     public RegistroEmpleadoDTO() {
     }
@@ -98,9 +88,4 @@ public class RegistroEmpleadoDTO {
     public String getTurno() { return turno; }
     public void setTurno(String turno) { this.turno = turno; }
 
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
 }

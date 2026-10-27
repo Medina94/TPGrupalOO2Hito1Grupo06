@@ -1,7 +1,9 @@
 package com.grupo06.epicentrogourmet.service;
 
 import java.math.BigDecimal;
+import java.security.SecureRandom;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 
 import org.hibernate.Hibernate;
@@ -31,6 +33,7 @@ import com.grupo06.epicentrogourmet.repository.UsuarioRepository;
 
 @Service
 public class UnidadVentaService {
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     private final UnidadVentaRepository unidadVentaRepository;
     private final EmpleadoRepository empleadoRepository;
@@ -169,6 +172,7 @@ public class UnidadVentaService {
     public UnidadVenta registrarUnidadConResponsable(
             RegistroUnidadResponsableDTO dto) {
 
+        dto.setEmailResponsable(dto.getEmailResponsable().trim());
         validarDatosUnicos(dto);
 
         Festival festival = festivalRepository
@@ -185,9 +189,11 @@ public class UnidadVentaService {
         responsable =
                 empleadoRepository.save(responsable);
 
+        String email = dto.getEmailResponsable();
+        String password = generarContrasena();
         Usuario usuario = new Usuario(
-                dto.getUsername().trim(),
-                passwordEncoder.encode(dto.getPassword()),
+                email,
+                passwordEncoder.encode(password),
                 RolUsuario.RESPONSABLE,
                 responsable
         );
@@ -214,7 +220,8 @@ public class UnidadVentaService {
         asignacionEmpleadoRepository.save(asignacion);
         mailService.enviarMailAltaResponsable(
                 dto,
-                dto.getPassword()
+                usuario.getUsername(),
+                password
         );
 
         return unidadVenta;
@@ -231,9 +238,6 @@ public class UnidadVentaService {
 
         String email =
                 dto.getEmailResponsable().trim();
-
-        String username =
-                dto.getUsername().trim();
 
         if (unidadVentaRepository.existsByCodigo(codigo)) {
 
@@ -257,12 +261,18 @@ public class UnidadVentaService {
             );
         }
 
-        if (usuarioRepository.existsByUsername(username)) {
+        if (usuarioRepository.existsByUsername(email)) {
 
             throw new IllegalArgumentException(
-                    "El nombre de usuario ya se encuentra registrado."
+                    "Ya existe un usuario registrado con ese email."
             );
         }
+    }
+
+    private String generarContrasena() {
+        byte[] bytes = new byte[18];
+        SECURE_RANDOM.nextBytes(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 
 

@@ -37,24 +37,28 @@ public class MailService implements IMailService {
 
     @Override
     @Async
-    public void enviarMailAlta(RegistroEmpleadoDTO dto, String username) {
+    public void enviarMailAlta(RegistroEmpleadoDTO dto, String username, String password) {
         enviarMail(
                 dto.getNombre() + " " + dto.getApellido(),
                 dto.getEmail(),
                 username,
-                dto.getPassword(),
+                password,
                 "Alta de empleado en Epicentro Gourmet"
         );
     }
 
     @Override
-    public void enviarMailAltaResponsable(RegistroUnidadResponsableDTO registroUnidadResponsableDTO, String username) {
+    @Async
+    public void enviarMailAltaResponsable(
+            RegistroUnidadResponsableDTO registroUnidadResponsableDTO,
+            String username,
+            String password) {
         enviarMail(
                 registroUnidadResponsableDTO.getNombreResponsable() + " "
                         + registroUnidadResponsableDTO.getApellidoResponsable(),
                 registroUnidadResponsableDTO.getEmailResponsable(),
                 username,
-                registroUnidadResponsableDTO.getPassword(),
+                password,
                 "Alta de responsable de unidad en Epicentro Gourmet"
         );
     }

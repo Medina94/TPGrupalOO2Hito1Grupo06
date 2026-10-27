@@ -148,8 +148,8 @@
                 <h1>Registrar Empleado</h1>
 
                 <p>
-                    Registrá un nuevo empleado y sus credenciales
-                    de acceso al sistema.
+                    Registrá un nuevo empleado. El email será su usuario
+                    de acceso y recibirá una contraseña autogenerada.
                 </p>
 
             </div>
@@ -476,63 +476,13 @@
                         </h2>
 
                         <p class="form-description">
-                            Estas credenciales permitirán al empleado
-                            iniciar sesión en Epicentro Gourmet.
+                            El email ingresado será el usuario de acceso y se enviará allí una contraseña autogenerada.
+                            Asegurate de que el email sea correcto.
                         </p>
 
                     </div>
 
                 </div>
-
-
-                <div class="form-grid">
-
-
-                    <!-- USERNAME -->
-
-                    <div class="form-group">
-
-                        <label for="username">
-                            Usuario
-                        </label>
-
-                        <input id="username"
-                               type="text"
-                               class="form-control"
-                               th:field="*{username}"
-                               placeholder="Usuario">
-
-                        <span class="field-error"
-                              th:if="${#fields.hasErrors('username')}"
-                              th:errors="*{username}">
-                        </span>
-
-                    </div>
-
-
-                    <!-- PASSWORD -->
-
-                    <div class="form-group">
-
-                        <label for="password">
-                            Contraseña
-                        </label>
-
-                        <input id="password"
-                               type="password"
-                               class="form-control"
-                               th:field="*{password}"
-                               placeholder="Mínimo 6 caracteres">
-
-                        <span class="field-error"
-                              th:if="${#fields.hasErrors('password')}"
-                              th:errors="*{password}">
-                        </span>
-
-                    </div>
-
-                </div>
-
 
                 <!-- BOTONES -->
 

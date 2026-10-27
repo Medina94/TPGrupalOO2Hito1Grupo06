@@ -2,6 +2,8 @@ package com.grupo06.epicentrogourmet.service;
 
 import java.time.LocalDate;
 import java.text.Normalizer;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
 
 import com.grupo06.epicentrogourmet.dto.ModificarEmpleadoDTO;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class EmpleadoService {
     private static final Logger logger = LoggerFactory.getLogger(EmpleadoService.class);
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     private final EmpleadoRepository empleadoRepository;
     private final UsuarioRepository usuarioRepository;
@@ -54,6 +57,7 @@ public class EmpleadoService {
     @Transactional
     public Empleado registrarEmpleado(RegistroEmpleadoDTO dto) {
 
+        dto.setEmail(dto.getEmail().trim());
         validarDatosUnicos(dto);
 
         // 1. Obtener la Unidad del Responsable logueado
@@ -76,12 +80,12 @@ public class EmpleadoService {
                 );
 
         // 3. Crear el usuario de acceso
+        String email = dto.getEmail();
+        String password = generarContrasena();
         Usuario usuario =
                 new Usuario(
-                        dto.getUsername().trim(),
-                        passwordEncoder.encode(
-                                dto.getPassword()
-                        ),
+                        email,
+                        passwordEncoder.encode(password),
                         RolUsuario.EMPLEADO,
                         empleado
                 );
@@ -104,7 +108,7 @@ public class EmpleadoService {
 
         // 5. Enviar correo de alta al empleado
         logger.info("Enviando correo de alta al empleado: {}", empleado.getEmail());
-        mailService.enviarMailAlta(dto, usuario.getUsername());
+        mailService.enviarMailAlta(dto, usuario.getUsername(), password);
         return empleado;
     }
 
@@ -117,9 +121,6 @@ public class EmpleadoService {
 
         String email =
                 dto.getEmail().trim();
-
-        String username =
-                dto.getUsername().trim();
 
         if (empleadoRepository.existsByDni(
                 dto.getDni())) {
@@ -136,12 +137,18 @@ public class EmpleadoService {
             );
         }
 
-        if (usuarioRepository.existsByUsername(username)) {
+        if (usuarioRepository.existsByUsername(email)) {
 
             throw new IllegalArgumentException(
-                    "El nombre de usuario ya se encuentra registrado."
+                    "Ya existe un usuario registrado con ese email."
             );
         }
+    }
+
+    private String generarContrasena() {
+        byte[] bytes = new byte[18];
+        SECURE_RANDOM.nextBytes(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 
     // =====================================================
