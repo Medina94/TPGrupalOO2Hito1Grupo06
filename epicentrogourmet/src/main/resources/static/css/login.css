@@ -4,175 +4,400 @@
     box-sizing: border-box;
 }
 
+:root {
+    --blue: #172b8f;
+    --blue-dark: #102273;
+    --orange: #f28c28;
+    --orange-dark: #d96f0b;
+    --orange-soft: #fff4e8;
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
+
     background: #f4f5f8;
+
     min-height: 100vh;
 }
+
 
 .login-container {
     min-height: 100vh;
+
     display: flex;
 }
 
-/* PANEL IZQUIERDO */
+
+/* =========================
+   PANEL IZQUIERDO
+   ========================= */
 
 .left-panel {
     width: 50%;
-    background: linear-gradient(135deg, #243bff 0%, #1829b5 55%, #101968 100%);
+
     color: white;
+
     padding: 65px;
+
     display: flex;
+
     flex-direction: column;
+
     justify-content: space-between;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(16, 34, 115, 0.92) 0%,
+            rgba(23, 43, 143, 0.87) 55%,
+            rgba(217, 111, 11, 0.73) 100%
+        ),
+        url("/images/festival-gastronomico.jpg");
+
+    background-size: cover;
+    background-position: center;
 }
+
+
+/*
+   Línea naranja para conectar visualmente
+   el login con el sitio público.
+*/
+.left-panel::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    right: 0;
+
+    width: 6px;
+    height: 100%;
+
+    background: var(--orange);
+}
+
 
 .brand-box {
     max-width: 470px;
+
     margin-top: 40px;
+
+    position: relative;
+
+    z-index: 2;
 }
+
 
 .logo {
     width: 58px;
     height: 58px;
+
     border: 2px solid rgba(255, 255, 255, 0.9);
+
     border-radius: 16px;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     font-size: 32px;
+
     margin-bottom: 35px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(5px);
 }
+
 
 .left-panel h1 {
     font-size: 52px;
+
     line-height: 1.08;
+
     margin-bottom: 24px;
+
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.20);
 }
+
 
 .left-panel p {
     font-size: 17px;
+
     line-height: 1.7;
-    color: rgba(255, 255, 255, 0.88);
-}
 
-.footer-text {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.7);
-}
+    color: rgba(255, 255, 255, 0.92);
 
-
-/* PANEL DERECHO */
-
-.right-panel {
-    width: 50%;
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 50px;
-}
-
-.form-box {
-    width: 100%;
-    max-width: 390px;
-}
-
-.form-box h2 {
-    font-size: 35px;
-    color: #1b1b1b;
-    margin-bottom: 9px;
-}
-
-.subtitle {
-    color: #787878;
-    font-size: 15px;
-    margin-bottom: 35px;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.20);
 }
 
 
-/* FORMULARIO */
+/* Botón Volver al inicio */
 
-.login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-}
+.left-panel a {
+    display: inline-block;
 
-.input-group {
-    display: flex;
-    flex-direction: column;
-}
+    color: white !important;
 
-.input-group label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 8px;
-}
+    text-decoration: none !important;
 
-.input-group input {
-    height: 49px;
-    padding: 0 15px;
-    border: 1px solid #d8dae2;
-    border-radius: 9px;
-    background: #fafafa;
-    font-size: 15px;
-    outline: none;
-    transition: 0.2s ease;
-}
+    border: 1px solid rgba(255, 255, 255, 0.75) !important;
 
-.input-group input:focus {
-    border-color: #243bff;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(36, 59, 255, 0.12);
+    padding: 10px 18px !important;
+
+    border-radius: 8px !important;
+
+    font-weight: 600 !important;
+
+    font-size: 14px !important;
+
+    background: rgba(0, 0, 0, 0.10);
+
+    backdrop-filter: blur(4px);
+
+    transition:
+        background-color 0.2s,
+        border-color 0.2s,
+        transform 0.2s;
 }
 
 
-/* BOTÓN */
+.left-panel a:hover {
+    background: var(--orange);
 
-.btn-login {
-    height: 49px;
-    margin-top: 5px;
-    border: none;
-    border-radius: 9px;
-    background: #171717;
-    color: white;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
+    border-color: var(--orange) !important;
 
-.btn-login:hover {
-    background: #243bff;
     transform: translateY(-1px);
 }
 
 
-/* MENSAJES */
+.footer-text {
+    font-size: 13px;
+
+    color: rgba(255, 255, 255, 0.78);
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+/* =========================
+   PANEL DERECHO
+   ========================= */
+
+.right-panel {
+    width: 50%;
+
+    background: white;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 50px;
+}
+
+
+.form-box {
+    width: 100%;
+
+    max-width: 390px;
+}
+
+
+.form-box::before {
+    content: "EPICENTRO GOURMET";
+
+    display: block;
+
+    color: var(--orange);
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 12px;
+}
+
+
+.form-box h2 {
+    font-size: 35px;
+
+    color: #1b1b1b;
+
+    margin-bottom: 9px;
+}
+
+
+.form-box h2::after {
+    content: "";
+
+    display: block;
+
+    width: 45px;
+    height: 4px;
+
+    background: var(--orange);
+
+    border-radius: 10px;
+
+    margin-top: 12px;
+}
+
+
+.subtitle {
+    color: #787878;
+
+    font-size: 15px;
+
+    margin-top: 14px;
+
+    margin-bottom: 35px;
+}
+
+
+/* =========================
+   FORMULARIO
+   ========================= */
+
+.login-form {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 22px;
+}
+
+
+.input-group {
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.input-group label {
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #333;
+
+    margin-bottom: 8px;
+}
+
+
+.input-group input {
+    height: 49px;
+
+    padding: 0 15px;
+
+    border: 1px solid #d8dae2;
+
+    border-radius: 9px;
+
+    background: #fafafa;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition: 0.2s ease;
+}
+
+
+.input-group input:focus {
+    border-color: var(--orange);
+
+    background: white;
+
+    box-shadow:
+        0 0 0 3px rgba(242, 140, 40, 0.12);
+}
+
+
+/* =========================
+   BOTÓN LOGIN
+   ========================= */
+
+.btn-login {
+    height: 49px;
+
+    margin-top: 5px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: var(--blue);
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s,
+        transform 0.2s;
+}
+
+
+.btn-login:hover {
+    background: var(--orange);
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   MENSAJES
+   ========================= */
 
 .alert {
     padding: 12px 15px;
+
     border-radius: 9px;
+
     font-size: 14px;
+
     margin-bottom: 22px;
 }
 
+
 .alert.error {
     background: #fff0f0;
+
     color: #b42318;
+
     border: 1px solid #ffd0cc;
 }
 
+
 .alert.success {
     background: #effbf3;
+
     color: #17783c;
+
     border: 1px solid #c8efd4;
 }
 
 
-/* RESPONSIVE */
+/* =========================
+   RESPONSIVE
+   ========================= */
 
 @media (max-width: 850px) {
 
@@ -180,29 +405,46 @@ body {
         flex-direction: column;
     }
 
+
     .left-panel,
     .right-panel {
         width: 100%;
     }
 
+
     .left-panel {
-        min-height: 280px;
+        min-height: 340px;
+
         padding: 40px 30px;
     }
+
+
+    .left-panel::after {
+        width: 100%;
+        height: 5px;
+
+        top: auto;
+        bottom: 0;
+    }
+
 
     .brand-box {
         margin-top: 0;
     }
 
+
     .left-panel h1 {
         font-size: 38px;
     }
+
 
     .footer-text {
         margin-top: 40px;
     }
 
+
     .right-panel {
         padding: 50px 25px;
     }
+
 }
