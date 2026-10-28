@@ -203,6 +203,8 @@ Puede trabajar en distintos turnos, por ejemplo:
 | Consultar Unidades por Festival | Valentina Ponzo | Finalizado | PR #8 |
 | Calcular Canon de Unidad de Venta | Valentina Ponzo | Finalizado | PR #10 |
 | Alta y Listado de Empleados | Alejandro Escalier | Finalizado | PR #11 |
+ Modificar empleado | Jose Arratia | Finalizado | PR #12 |
+| Baja logica de empleado | Jose Arratia | Finalizado | PR #13 |
 | Agregar Platos a Unidad de Venta | Cristian Medina | Finalizado | PR #14 |
 | Reactivación de Empleados | Alejandro Escalier | Finalizado | PR #15 |
 | Reporte de Mayores Cánones | Valentina Ponzo | Finalizado | PR #16 |
@@ -219,6 +221,8 @@ Puede trabajar en distintos turnos, por ejemplo:
 | Listado de Empleados en PDF | Alejandro Escalier | Finalizado | PR #37 |
 | Home pública | Valentina Ponzo | Finalizado | PR #39 |
 | Script unificado de datos | Valentina Ponzo | Finalizado | PR #40 |
+| Consultar empleados | Jose Arratia | Finalizado | PR #41 |
+| Ranking de facturacion | Jose Arratia | Finalizado | PR #42 |
 | Registro público de Responsable + Unidad | Valentina Ponzo | Finalizado | PR #43 |
 | Detalle público de Festival + Unidades | Valentina Ponzo | Finalizado | PR #44 |
 | Gestión segura de empleados por Unidad | Valentina Ponzo | Finalizado | PR #45 |
@@ -226,6 +230,7 @@ Puede trabajar en distintos turnos, por ejemplo:
 | Rol supervisor del Administrador | Valentina Ponzo | Finalizado | PR #48 |
 | Navegación e identidad visual | Valentina Ponzo | Finalizado | PR #49 |
 | Cierre de Caja y Consulta de Rentabilidad | Cristian Prantera | Finalizado | [PR #51](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/51) |
+| Reportes de ventas | Jose Arratia | Finalizado | PR #54 |
 
 > Cada Caso de Uso o corrección significativa fue desarrollado mediante ramas de trabajo y posteriormente integrado a `main` mediante Pull Request.
 
