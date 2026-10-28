@@ -12,17 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.grupo06.epicentrogourmet.dto.RegistroUnidadResponsableDTO;
-import com.grupo06.epicentrogourmet.entity.AsignacionEmpleado;
-import com.grupo06.epicentrogourmet.entity.Cajero;
-import com.grupo06.epicentrogourmet.entity.Cocinero;
 import com.grupo06.epicentrogourmet.entity.CostosFestival;
 import com.grupo06.epicentrogourmet.entity.Empleado;
 import com.grupo06.epicentrogourmet.entity.Festival;
 import com.grupo06.epicentrogourmet.entity.FoodTruck;
 import com.grupo06.epicentrogourmet.entity.PuestoDesarmable;
-import com.grupo06.epicentrogourmet.entity.RolCocina;
+import com.grupo06.epicentrogourmet.entity.Responsable;
 import com.grupo06.epicentrogourmet.entity.RolUsuario;
-import com.grupo06.epicentrogourmet.entity.Turno;
 import com.grupo06.epicentrogourmet.entity.UnidadVenta;
 import com.grupo06.epicentrogourmet.entity.Usuario;
 import com.grupo06.epicentrogourmet.repository.AsignacionEmpleadoRepository;
@@ -33,7 +29,9 @@ import com.grupo06.epicentrogourmet.repository.UsuarioRepository;
 
 @Service
 public class UnidadVentaService {
-    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+
+    private static final SecureRandom SECURE_RANDOM =
+            new SecureRandom();
 
     private final UnidadVentaRepository unidadVentaRepository;
     private final EmpleadoRepository empleadoRepository;
@@ -42,6 +40,7 @@ public class UnidadVentaService {
     private final AsignacionEmpleadoRepository asignacionEmpleadoRepository;
     private final PasswordEncoder passwordEncoder;
     private final IMailService mailService;
+
 
     public UnidadVentaService(
             UnidadVentaRepository unidadVentaRepository,
@@ -56,16 +55,20 @@ public class UnidadVentaService {
         this.empleadoRepository = empleadoRepository;
         this.festivalRepository = festivalRepository;
         this.usuarioRepository = usuarioRepository;
-        this.asignacionEmpleadoRepository = asignacionEmpleadoRepository;
+        this.asignacionEmpleadoRepository =
+                asignacionEmpleadoRepository;
         this.passwordEncoder = passwordEncoder;
         this.mailService = mailService;
     }
 
 
+    // =====================================================
     // CONSULTA DE UNIDADES POR FESTIVAL
+    // =====================================================
 
     @Transactional(readOnly = true)
-    public List<UnidadVenta> listarPorFestival(Long idFestival) {
+    public List<UnidadVenta> listarPorFestival(
+            Long idFestival) {
 
         return unidadVentaRepository
                 .findByFestival_IdFestivalOrderByNombreComercialAsc(
@@ -74,10 +77,13 @@ public class UnidadVentaService {
     }
 
 
+    // =====================================================
     // BUSCAR UNIDAD POR ID
+    // =====================================================
 
     @Transactional(readOnly = true)
-    public UnidadVenta buscarPorId(Long idUnidadVenta) {
+    public UnidadVenta buscarPorId(
+            Long idUnidadVenta) {
 
         return unidadVentaRepository
                 .findById(idUnidadVenta)
@@ -89,16 +95,22 @@ public class UnidadVentaService {
     }
 
 
-    // UNIDAD DE VENTA DEL RESPONSABLE LOGUEADO
+    // =====================================================
+    // UNIDAD DEL RESPONSABLE LOGUEADO
+    // =====================================================
 
     @Transactional(readOnly = true)
-    public UnidadVenta buscarUnidadDelResponsable(String username) {
+    public UnidadVenta buscarUnidadDelResponsable(
+            String username) {
 
-        Usuario usuario = usuarioRepository
-                .findByUsername(username)
-                .orElse(null);
+        Usuario usuario =
+                usuarioRepository
+                        .findByUsername(username)
+                        .orElse(null);
 
-        if (usuario == null || usuario.getEmpleado() == null) {
+        if (usuario == null
+                || usuario.getEmpleado() == null) {
+
             return null;
         }
 
@@ -111,14 +123,23 @@ public class UnidadVentaService {
                 .orElse(null);
     }
 
+
+    // =====================================================
+    // UNIDAD DEL EMPLEADO LOGUEADO
+    // =====================================================
+
     @Transactional(readOnly = true)
-    public UnidadVenta buscarUnidadDelEmpleado(String username) {
+    public UnidadVenta buscarUnidadDelEmpleado(
+            String username) {
 
-        Usuario usuario = usuarioRepository
-                .findByUsername(username)
-                .orElse(null);
+        Usuario usuario =
+                usuarioRepository
+                        .findByUsername(username)
+                        .orElse(null);
 
-        if (usuario == null || usuario.getEmpleado() == null) {
+        if (usuario == null
+                || usuario.getEmpleado() == null) {
+
             return null;
         }
 
@@ -129,15 +150,21 @@ public class UnidadVentaService {
                 .stream()
                 .findFirst()
                 .map(asignacion ->
-                        (UnidadVenta) Hibernate.unproxy(asignacion.getUnidadVenta())
+                        (UnidadVenta) Hibernate.unproxy(
+                                asignacion.getUnidadVenta()
+                        )
                 )
                 .orElse(null);
     }
 
+
+    // =====================================================
     // CALCULAR CANON
+    // =====================================================
 
     @Transactional(readOnly = true)
-    public BigDecimal calcularCanon(Long idUnidadVenta) {
+    public BigDecimal calcularCanon(
+            Long idUnidadVenta) {
 
         UnidadVenta unidadVenta =
                 buscarPorId(idUnidadVenta);
@@ -166,39 +193,66 @@ public class UnidadVentaService {
     }
 
 
+    // =====================================================
     // REGISTRO DE UNIDAD + RESPONSABLE
+    // =====================================================
 
     @Transactional
     public UnidadVenta registrarUnidadConResponsable(
             RegistroUnidadResponsableDTO dto) {
 
-        dto.setEmailResponsable(dto.getEmailResponsable().trim());
+        dto.setEmailResponsable(
+                dto.getEmailResponsable().trim()
+        );
+
         validarDatosUnicos(dto);
 
-        Festival festival = festivalRepository
-                .findById(dto.getIdFestival())
-                .orElseThrow(() ->
-                        new IllegalArgumentException(
-                                "El festival seleccionado no existe."
-                        )
-                );
 
-        Empleado responsable =
+        Festival festival =
+                festivalRepository
+                        .findById(dto.getIdFestival())
+                        .orElseThrow(() ->
+                                new IllegalArgumentException(
+                                        "El festival seleccionado no existe."
+                                )
+                        );
+
+
+        // -------------------------------------------------
+        // CREAR RESPONSABLE
+        // -------------------------------------------------
+
+        Responsable responsable =
                 crearResponsable(dto);
 
         responsable =
                 empleadoRepository.save(responsable);
 
-        String email = dto.getEmailResponsable();
-        String password = generarContrasena();
-        Usuario usuario = new Usuario(
-                email,
-                passwordEncoder.encode(password),
-                RolUsuario.RESPONSABLE,
-                responsable
-        );
+
+        // -------------------------------------------------
+        // CREAR USUARIO
+        // -------------------------------------------------
+
+        String email =
+                dto.getEmailResponsable();
+
+        String password =
+                generarContrasena();
+
+        Usuario usuario =
+                new Usuario(
+                        email,
+                        passwordEncoder.encode(password),
+                        RolUsuario.RESPONSABLE,
+                        responsable
+                );
 
         usuarioRepository.save(usuario);
+
+
+        // -------------------------------------------------
+        // CREAR UNIDAD DE VENTA
+        // -------------------------------------------------
 
         UnidadVenta unidadVenta =
                 crearUnidadVenta(
@@ -210,25 +264,34 @@ public class UnidadVentaService {
         unidadVenta =
                 unidadVentaRepository.save(unidadVenta);
 
-        AsignacionEmpleado asignacion =
-                new AsignacionEmpleado(
-                        responsable,
-                        unidadVenta,
-                        obtenerFechaInicioAsignacion(festival)
-                );
 
-        asignacionEmpleadoRepository.save(asignacion);
+        /*
+         * El Responsable administra la Unidad de Venta.
+         *
+         * NO se crea una AsignacionEmpleado porque no cumple
+         * obligatoriamente una función operativa como Cajero
+         * o Cocinero.
+         */
+
+
+        // -------------------------------------------------
+        // ENVIAR CREDENCIALES
+        // -------------------------------------------------
+
         mailService.enviarMailAltaResponsable(
                 dto,
                 usuario.getUsername(),
                 password
         );
 
+
         return unidadVenta;
     }
 
 
+    // =====================================================
     // VALIDACIONES DE DATOS ÚNICOS
+    // =====================================================
 
     private void validarDatosUnicos(
             RegistroUnidadResponsableDTO dto) {
@@ -239,12 +302,14 @@ public class UnidadVentaService {
         String email =
                 dto.getEmailResponsable().trim();
 
+
         if (unidadVentaRepository.existsByCodigo(codigo)) {
 
             throw new IllegalArgumentException(
                     "Ya existe una unidad de venta con ese código."
             );
         }
+
 
         if (empleadoRepository.existsByDni(
                 dto.getDniResponsable())) {
@@ -254,12 +319,14 @@ public class UnidadVentaService {
             );
         }
 
+
         if (empleadoRepository.existsByEmail(email)) {
 
             throw new IllegalArgumentException(
                     "Ya existe un empleado con ese email."
             );
         }
+
 
         if (usuarioRepository.existsByUsername(email)) {
 
@@ -269,110 +336,48 @@ public class UnidadVentaService {
         }
     }
 
+
+    // =====================================================
+    // GENERACIÓN DE CONTRASEÑA
+    // =====================================================
+
     private String generarContrasena() {
-        byte[] bytes = new byte[18];
+
+        byte[] bytes =
+                new byte[18];
+
         SECURE_RANDOM.nextBytes(bytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+
+        return Base64
+                .getUrlEncoder()
+                .withoutPadding()
+                .encodeToString(bytes);
     }
 
 
+    // =====================================================
     // CREACIÓN DEL RESPONSABLE
+    // =====================================================
 
-    private Empleado crearResponsable(
+    private Responsable crearResponsable(
             RegistroUnidadResponsableDTO dto) {
 
-        String tipoEmpleado =
-                dto.getTipoEmpleado()
-                        .trim()
-                        .toUpperCase();
+        return new Responsable(
+                dto.getNombreResponsable().trim(),
+                dto.getApellidoResponsable().trim(),
+                dto.getDniResponsable(),
+                dto.getEmailResponsable().trim(),
+                dto.getFechaNacimientoResponsable(),
 
-        if ("COCINERO".equals(tipoEmpleado)) {
-
-            if (dto.getRolCocina() == null
-                    || dto.getRolCocina().isBlank()) {
-
-                throw new IllegalArgumentException(
-                        "Debe seleccionar el rol de cocina."
-                );
-            }
-
-            RolCocina rolCocina;
-
-            try {
-
-                rolCocina =
-                        RolCocina.valueOf(
-                                dto.getRolCocina()
-                                        .trim()
-                                        .toUpperCase()
-                        );
-
-            } catch (IllegalArgumentException e) {
-
-                throw new IllegalArgumentException(
-                        "El rol de cocina seleccionado no es válido."
-                );
-            }
-
-            return new Cocinero(
-                    dto.getNombreResponsable().trim(),
-                    dto.getApellidoResponsable().trim(),
-                    dto.getDniResponsable(),
-                    dto.getEmailResponsable().trim(),
-                    dto.getFechaNacimientoResponsable(),
-                    dto.getFechaIngresoResponsable(),
-                    rolCocina
-            );
-        }
-
-
-        if ("CAJERO".equals(tipoEmpleado)) {
-
-            if (dto.getTurno() == null
-                    || dto.getTurno().isBlank()) {
-
-                throw new IllegalArgumentException(
-                        "Debe seleccionar el turno del cajero."
-                );
-            }
-
-            Turno turno;
-
-            try {
-
-                turno =
-                        Turno.valueOf(
-                                dto.getTurno()
-                                        .trim()
-                                        .toUpperCase()
-                        );
-
-            } catch (IllegalArgumentException e) {
-
-                throw new IllegalArgumentException(
-                        "El turno seleccionado no es válido."
-                );
-            }
-
-            return new Cajero(
-                    dto.getNombreResponsable().trim(),
-                    dto.getApellidoResponsable().trim(),
-                    dto.getDniResponsable(),
-                    dto.getEmailResponsable().trim(),
-                    dto.getFechaNacimientoResponsable(),
-                    dto.getFechaIngresoResponsable(),
-                    turno
-            );
-        }
-
-
-        throw new IllegalArgumentException(
-                "El tipo de empleado seleccionado no es válido."
+                // La fecha de alta se genera automáticamente.
+                LocalDate.now()
         );
     }
 
 
+    // =====================================================
     // CREACIÓN DE LA UNIDAD
+    // =====================================================
 
     private UnidadVenta crearUnidadVenta(
             RegistroUnidadResponsableDTO dto,
@@ -384,6 +389,7 @@ public class UnidadVentaService {
                         .trim()
                         .toUpperCase();
 
+
         if ("FOOD_TRUCK".equals(tipoUnidad)) {
 
             if (dto.getPatente() == null
@@ -393,6 +399,7 @@ public class UnidadVentaService {
                         "La patente del Food Truck es obligatoria."
                 );
             }
+
 
             return new FoodTruck(
                     dto.getNombreComercial().trim(),
@@ -416,6 +423,7 @@ public class UnidadVentaService {
                 );
             }
 
+
             if (dto.getMinutosMontaje() == null
                     || dto.getMinutosMontaje() <= 0) {
 
@@ -423,6 +431,7 @@ public class UnidadVentaService {
                         "Los minutos de montaje deben ser mayores a cero."
                 );
             }
+
 
             return new PuestoDesarmable(
                     dto.getNombreComercial().trim(),
@@ -440,22 +449,4 @@ public class UnidadVentaService {
                 "El tipo de unidad seleccionado no es válido."
         );
     }
-
-
-    // FECHA DE INICIO DE LA ASIGNACIÓN
-
-    private LocalDate obtenerFechaInicioAsignacion(
-            Festival festival) {
-
-        LocalDate hoy =
-                LocalDate.now();
-
-        if (festival.getFechaInicio().isAfter(hoy)) {
-            return festival.getFechaInicio();
-        }
-
-        return hoy;
-    }
-
-
 }
