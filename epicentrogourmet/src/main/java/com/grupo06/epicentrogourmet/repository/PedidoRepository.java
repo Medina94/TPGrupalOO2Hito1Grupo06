@@ -19,4 +19,14 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     """)
 
     List<Pedido> buscarPedidosPorFestivalConItems(@Param("idFestival") Long idFestival);
+
+    @Query("""
+        SELECT DISTINCT p
+        FROM Pedido p
+        LEFT JOIN FETCH p.items i
+        LEFT JOIN FETCH i.plato
+        WHERE p.unidadVenta.idUnidadVenta = :idUnidadVenta
+        ORDER BY p.idPedido DESC
+    """)
+    List<Pedido> buscarPedidosPorUnidadConItems(@Param("idUnidadVenta") Long idUnidadVenta);
 }

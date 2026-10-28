@@ -182,4 +182,24 @@ public class PedidoService {
                 java.util.stream.Collectors.toMap(java.util.Map.Entry::getKey, java.util.Map.Entry::getValue, (a, b) -> a, java.util.LinkedHashMap::new));
     }
 
+    @Transactional(readOnly = true)
+    public List<Pedido> listarPedidosDeUnidad(String username) {
+
+        UnidadVenta unidad = unidadVentaService.buscarUnidadDelEmpleado(username);
+
+        if (unidad == null) {
+            throw new IllegalArgumentException("El responsable no tiene una Unidad de Venta asignada");
+        }
+
+        return pedidoRepository.buscarPedidosPorUnidadConItems(unidad.getIdUnidadVenta()
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public java.math.BigDecimal calcularRecaudacionUnidad(String username) {
+
+        List<Pedido> pedidos = listarPedidosDeUnidad(username);
+
+        return pedidos.stream().map(Pedido::calcularTotalVenta).reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+    }
 }

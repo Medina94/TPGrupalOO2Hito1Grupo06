@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes de Ventas</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+
+        <span>Responsable</span>
+
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="logout-button">
+                Cerrar sesión
+            </button>
+        </form>
+
+    </div>
+
+</header>
+
+<div class="app-layout">
+
+    <div th:replace="~{fragments/sidebar :: responsableSidebar}"></div>
+
+    <main class="main-content">
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>Reportes de Ventas</h1>
+
+                <p>
+                    Consultá la recaudación y el detalle de los pedidos
+                    realizados en tu Unidad de Venta.
+                </p>
+
+            </div>
+
+            <a th:href="@{/responsable}" class="btn btn-outline">
+                Volver al panel
+            </a>
+
+        </div>
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>Resumen de recaudación</h2>
+
+                <span class="badge"
+                      th:text="${cantidadPedidos + ' pedidos'}">
+                    0 pedidos
+                </span>
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table>
+
+                    <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Resultado</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>
+                            <strong>Recaudación total</strong>
+                        </td>
+
+                        <td>
+                            <strong th:text="${'$ ' + #numbers.formatDecimal(
+                                recaudacion,
+                                1,
+                                'POINT',
+                                2,
+                                'COMMA'
+                            )}">
+                                $ 0,00
+                            </strong>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Cantidad de pedidos registrados</td>
+                        <td th:text="${cantidadPedidos}">0</td>
+                    </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>Detalle de pedidos</h2>
+
+                <span class="badge"
+                      th:text="${cantidadPedidos + ' registros'}">
+                    0 registros
+                </span>
+
+            </div>
+
+            <div class="table-responsive"
+                 th:if="${!#lists.isEmpty(pedidos)}">
+
+                <table>
+
+                    <thead>
+                    <tr>
+                        <th>N.º de pedido</th>
+                        <th>Importe de venta</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="pedido : ${pedidos}">
+
+                        <td>
+                            <strong th:text="${pedido.idPedido}">
+                                1
+                            </strong>
+                        </td>
+
+                        <td th:text="${'$ ' + #numbers.formatDecimal(
+                            pedido.calcularTotalVenta(),
+                            1,
+                            'POINT',
+                            2,
+                            'COMMA'
+                        )}">
+                            $ 0,00
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="empty-state"
+                 th:if="${#lists.isEmpty(pedidos)}">
+
+                <strong>
+                    Todavía no hay ventas registradas.
+                </strong>
+
+                Cuando se registren pedidos en tu Unidad de Venta,
+                aparecerán aquí junto con sus importes.
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>
