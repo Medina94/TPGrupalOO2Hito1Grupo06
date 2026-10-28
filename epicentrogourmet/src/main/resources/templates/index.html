@@ -3,7 +3,9 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
@@ -11,13 +13,16 @@
 
     <link rel="stylesheet"
           th:href="@{/css/dashboard.css}">
+
 </head>
+
 
 <body>
 
-<!-- =========================
+
+<!-- =====================================================
      BARRA SUPERIOR
-     ========================= -->
+     ===================================================== -->
 
 <header class="topbar">
 
@@ -25,14 +30,17 @@
         Epicentro Gourmet
     </div>
 
+
     <div class="topbar-user">
 
         <span>
             Usuario:
+
             <strong th:text="${username}">
                 usuario
             </strong>
         </span>
+
 
         <form th:action="@{/logout}"
               method="post">
@@ -51,25 +59,27 @@
 </header>
 
 
-<!-- =========================
+
+<!-- =====================================================
      LAYOUT PRINCIPAL
-     ========================= -->
+     ===================================================== -->
 
 <div class="app-layout">
 
 
-    <!-- =========================
+    <!-- =================================================
          SIDEBAR ADMINISTRADOR
-         ========================= -->
+         ================================================= -->
 
     <div th:if="${esAdmin}"
          th:replace="~{fragments/sidebar :: adminSidebar}">
     </div>
 
 
-    <!-- =========================
+
+    <!-- =================================================
          CONTENIDO PRINCIPAL
-         ========================= -->
+         ================================================= -->
 
     <main class="main-content"
           th:classappend="${!esAdmin} ? ' no-sidebar' : ''">
@@ -82,9 +92,9 @@
         <div th:if="${esAdmin}">
 
 
-            <!-- =========================
+            <!-- =================================================
                  ENCABEZADO
-                 ========================= -->
+                 ================================================= -->
 
             <div class="page-header">
 
@@ -95,26 +105,19 @@
                     </h1>
 
                     <p>
-                        Gestioná los festivales, unidades de venta,
+                        Supervisá los festivales, unidades de venta,
                         costos y reportes de Epicentro Gourmet.
                     </p>
 
                 </div>
 
-
-                <a th:href="@{/admin/unidades/nueva}"
-                   class="btn btn-primary">
-
-                    + Nueva Unidad de Venta
-
-                </a>
-
             </div>
 
 
-            <!-- =========================
+
+            <!-- =================================================
                  TARJETAS DE RESUMEN
-                 ========================= -->
+                 ================================================= -->
 
             <section class="stats-grid">
 
@@ -141,12 +144,13 @@
                 </div>
 
 
+
                 <!-- UNIDADES -->
 
                 <div class="stat-card">
 
                     <div class="stat-label">
-                        Gestión de unidades
+                        Supervisión de unidades
                     </div>
 
                     <div class="stat-value">
@@ -154,10 +158,11 @@
                     </div>
 
                     <div class="stat-description">
-                        Registro y consulta por Festival
+                        Consulta de Unidades de Venta por Festival
                     </div>
 
                 </div>
+
 
 
                 <!-- REPORTES -->
@@ -181,9 +186,10 @@
             </section>
 
 
-            <!-- =========================
+
+            <!-- =================================================
                  ACCESOS RÁPIDOS
-                 ========================= -->
+                 ================================================= -->
 
             <section class="panel">
 
@@ -207,16 +213,6 @@
                 ">
 
 
-                    <!-- REGISTRAR UNIDAD -->
-
-                    <a th:href="@{/admin/unidades/nueva}"
-                       class="btn btn-primary">
-
-                        + Registrar Unidad
-
-                    </a>
-
-
                     <!-- FESTIVALES -->
 
                     <a href="#festivales"
@@ -225,6 +221,7 @@
                         Ver Festivales
 
                     </a>
+
 
 
                     <!-- COSTOS -->
@@ -237,6 +234,7 @@
                     </a>
 
 
+
                     <!-- RANKING FACTURACIÓN -->
 
                     <button type="button"
@@ -247,6 +245,7 @@
                         Ranking de facturación
 
                     </button>
+
 
 
                     <!-- MAYORES CÁNONES -->
@@ -263,12 +262,14 @@
             </section>
 
 
-            <!-- =========================
+
+            <!-- =================================================
                  FESTIVALES
-                 ========================= -->
+                 ================================================= -->
 
             <section class="panel"
                      id="festivales">
+
 
                 <div class="panel-header">
 
@@ -286,7 +287,10 @@
                 </div>
 
 
-                <!-- HAY FESTIVALES -->
+
+                <!-- =================================================
+                     HAY FESTIVALES
+                     ================================================= -->
 
                 <div class="table-responsive"
                      th:if="${!#lists.isEmpty(festivales)}">
@@ -324,6 +328,7 @@
 
                         <tbody>
 
+
                         <tr th:each="festival : ${festivales}">
 
 
@@ -341,6 +346,7 @@
                             </td>
 
 
+
                             <!-- TEMPORADA -->
 
                             <td th:text="${festival.temporada}">
@@ -348,6 +354,7 @@
                                 Temporada
 
                             </td>
+
 
 
                             <!-- FECHA INICIO -->
@@ -359,6 +366,7 @@
                             </td>
 
 
+
                             <!-- FECHA FIN -->
 
                             <td th:text="${festival.fechaFin}">
@@ -366,6 +374,7 @@
                                 Fecha fin
 
                             </td>
+
 
 
                             <!-- ACCIONES -->
@@ -385,6 +394,7 @@
                                     </a>
 
 
+
                                     <!-- CONFIGURAR COSTOS -->
 
                                     <a th:href="@{/admin/festivales/{id}/costos(id=${festival.idFestival})}"
@@ -400,6 +410,7 @@
 
                         </tr>
 
+
                         </tbody>
 
                     </table>
@@ -407,7 +418,10 @@
                 </div>
 
 
-                <!-- SIN FESTIVALES -->
+
+                <!-- =================================================
+                     SIN FESTIVALES
+                     ================================================= -->
 
                 <div class="empty-state"
                      th:if="${#lists.isEmpty(festivales)}">
@@ -424,9 +438,10 @@
             </section>
 
 
-            <!-- =========================
+
+            <!-- =================================================
                  FUNCIONALIDADES
-                 ========================= -->
+                 ================================================= -->
 
             <section class="panel">
 
@@ -460,15 +475,16 @@
                         </div>
 
                         <strong>
-                            Gestión de empleados
+                            Supervisión de empleados
                         </strong>
 
                         <div class="stat-description">
-                            Alta, modificación, baja,
-                            reactivación y filtros.
+                            Consulta administrativa de los empleados
+                            registrados en el sistema.
                         </div>
 
                     </div>
+
 
 
                     <!-- CÁNONES -->
@@ -500,6 +516,7 @@
                         </div>
 
                     </div>
+
 
 
                     <!-- RANKING -->
@@ -540,9 +557,9 @@
         </div>
 
 
+
         <!-- =====================================================
              USUARIO NO ADMIN
-             TEMPORAL
              ===================================================== -->
 
         <div th:unless="${esAdmin}">
@@ -574,9 +591,11 @@
 
                 </div>
 
+
                 <p>
                     Las funcionalidades correspondientes
-                    a tu rol se encuentran en desarrollo.
+                    a tu rol se encuentran disponibles
+                    desde su panel específico.
                 </p>
 
             </section>
@@ -586,6 +605,7 @@
     </main>
 
 </div>
+
 
 </body>
 </html>

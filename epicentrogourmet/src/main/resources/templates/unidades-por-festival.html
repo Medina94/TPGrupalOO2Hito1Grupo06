@@ -5,6 +5,7 @@
 <head>
 
     <meta charset="UTF-8">
+
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
@@ -15,12 +16,13 @@
 
 </head>
 
+
 <body>
 
 
-<!-- =========================
+<!-- =====================================================
      BARRA SUPERIOR
-     ========================= -->
+     ===================================================== -->
 
 <header class="topbar">
 
@@ -28,18 +30,22 @@
         Epicentro Gourmet
     </div>
 
+
     <div class="topbar-user">
 
         <span>
             Administración
         </span>
 
+
         <form th:action="@{/logout}"
               method="post">
 
             <button type="submit"
                     class="logout-button">
+
                 Cerrar sesión
+
             </button>
 
         </form>
@@ -49,31 +55,46 @@
 </header>
 
 
-<!-- =========================
+
+<!-- =====================================================
      LAYOUT
-     ========================= -->
+     ===================================================== -->
 
 <div class="app-layout">
+
+
+    <!-- SIDEBAR ADMIN -->
 
     <div th:replace="~{fragments/sidebar :: adminSidebar}">
     </div>
 
 
+
+    <!-- =================================================
+         CONTENIDO PRINCIPAL
+         ================================================= -->
+
     <main class="main-content">
 
 
-        <!-- =========================
+        <!-- =================================================
              ENCABEZADO
-             ========================= -->
+             ================================================= -->
 
         <div class="page-header">
 
+
             <div class="page-title">
 
-                <h1>Unidades de Venta</h1>
+                <h1>
+                    Unidades de Venta
+                </h1>
+
 
                 <p>
+
                     Festival:
+
                     <strong th:text="${festival.nombre}">
                         Festival
                     </strong>
@@ -83,24 +104,19 @@
                     <span th:text="${festival.temporada}">
                         Temporada
                     </span>
+
                 </p>
 
             </div>
 
 
+
             <div class="actions">
 
-                <a th:href="@{/admin/unidades/nueva}"
-                   class="btn btn-primary">
-
-                    + Nueva Unidad
-
-                </a>
-
-                <a th:href="@{/}"
+                <a th:href="@{/admin}"
                    class="btn btn-outline">
 
-                    Volver al inicio
+                    Volver al panel
 
                 </a>
 
@@ -109,9 +125,10 @@
         </div>
 
 
-        <!-- =========================
+
+        <!-- =================================================
              MENSAJES
-             ========================= -->
+             ================================================= -->
 
         <div class="alert alert-error"
              th:if="${error}"
@@ -131,17 +148,22 @@
         </div>
 
 
-        <!-- =========================
+
+        <!-- =================================================
              INFORMACIÓN DEL FESTIVAL
-             ========================= -->
+             ================================================= -->
 
         <section class="stats-grid">
+
+
+            <!-- FESTIVAL -->
 
             <div class="stat-card">
 
                 <div class="stat-label">
                     Festival
                 </div>
+
 
                 <div style="
                     font-size: 18px;
@@ -153,6 +175,7 @@
 
                 </div>
 
+
                 <div class="stat-description"
                      th:text="${festival.temporada}">
 
@@ -163,11 +186,15 @@
             </div>
 
 
+
+            <!-- FECHA -->
+
             <div class="stat-card">
 
                 <div class="stat-label">
                     Fecha de inicio
                 </div>
+
 
                 <div style="
                     font-size: 18px;
@@ -182,11 +209,15 @@
             </div>
 
 
+
+            <!-- CANTIDAD DE UNIDADES -->
+
             <div class="stat-card">
 
                 <div class="stat-label">
                     Unidades registradas
                 </div>
+
 
                 <div class="stat-value"
                      th:text="${#lists.size(unidades)}">
@@ -200,15 +231,20 @@
         </section>
 
 
-        <!-- =========================
+
+        <!-- =================================================
              TABLA DE UNIDADES
-             ========================= -->
+             ================================================= -->
 
         <section class="panel">
 
+
             <div class="panel-header">
 
-                <h2>Unidades de Venta registradas</h2>
+                <h2>
+                    Unidades de Venta registradas
+                </h2>
+
 
                 <span class="badge"
                       th:text="${#lists.size(unidades) + ' unidades'}">
@@ -220,35 +256,54 @@
             </div>
 
 
-            <!-- HAY UNIDADES -->
+
+            <!-- =================================================
+                 HAY UNIDADES
+                 ================================================= -->
 
             <div class="table-responsive"
                  th:if="${!#lists.isEmpty(unidades)}">
 
+
                 <table>
+
 
                     <thead>
 
                     <tr>
 
-                        <th>Nombre comercial</th>
+                        <th>
+                            Nombre comercial
+                        </th>
 
-                        <th>Tipo</th>
+                        <th>
+                            Tipo
+                        </th>
 
-                        <th>Código</th>
+                        <th>
+                            Código
+                        </th>
 
-                        <th>Superficie</th>
+                        <th>
+                            Superficie
+                        </th>
 
-                        <th>Responsable</th>
+                        <th>
+                            Responsable
+                        </th>
 
-                        <th>Acciones</th>
+                        <th>
+                            Acciones
+                        </th>
 
                     </tr>
 
                     </thead>
 
 
+
                     <tbody>
+
 
                     <tr th:each="unidad : ${unidades}">
 
@@ -267,9 +322,11 @@
                         </td>
 
 
+
                         <!-- TIPO -->
 
                         <td>
+
 
                             <span class="badge"
                                   th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.FoodTruck)}">
@@ -289,6 +346,7 @@
                         </td>
 
 
+
                         <!-- CÓDIGO -->
 
                         <td th:text="${unidad.codigo}">
@@ -296,6 +354,7 @@
                             CODIGO
 
                         </td>
+
 
 
                         <!-- SUPERFICIE -->
@@ -311,19 +370,19 @@
                         </td>
 
 
+
                         <!-- RESPONSABLE -->
 
                         <td>
 
+
                             <span th:if="${unidad.responsable != null}">
 
-                                <span
-                                    th:text="${unidad.responsable.nombre}">
+                                <span th:text="${unidad.responsable.nombre}">
                                     Nombre
                                 </span>
 
-                                <span
-                                    th:text="${unidad.responsable.apellido}">
+                                <span th:text="${unidad.responsable.apellido}">
                                     Apellido
                                 </span>
 
@@ -331,10 +390,13 @@
 
 
                             <span th:if="${unidad.responsable == null}">
+
                                 Sin responsable
+
                             </span>
 
                         </td>
+
 
 
                         <!-- ACCIONES -->
@@ -354,64 +416,86 @@
 
                         </td>
 
+
                     </tr>
 
+
                     </tbody>
+
 
                 </table>
 
             </div>
 
 
-            <!-- NO HAY UNIDADES -->
+
+            <!-- =================================================
+                 NO HAY UNIDADES
+                 ================================================= -->
 
             <div class="empty-state"
                  th:if="${#lists.isEmpty(unidades)}">
+
 
                 <strong>
                     No hay Unidades de Venta registradas.
                 </strong>
 
-                Este Festival todavía no tiene
-                Unidades de Venta asociadas.
 
-                <div style="margin-top: 18px;">
+                <p>
+                    Este Festival todavía no tiene
+                    Unidades de Venta asociadas.
+                </p>
 
-                    <a th:href="@{/admin/unidades/nueva}"
-                       class="btn btn-primary">
 
-                        + Registrar Unidad de Venta
+                <p style="
+                    margin-top: 12px;
+                    color: #6b7280;
+                ">
 
-                    </a>
+                    Las Unidades son registradas por sus
+                    Responsables desde el registro público.
 
-                </div>
+                </p>
 
             </div>
 
         </section>
 
 
-        <!-- =========================
+
+        <!-- =================================================
              CONFIGURACIÓN DE COSTOS
-             ========================= -->
+             ================================================= -->
 
         <section class="panel">
 
+
             <div class="panel-header">
 
-                <h2>Configuración del Festival</h2>
+                <h2>
+                    Configuración del Festival
+                </h2>
+
 
                 <span class="badge"
                       th:if="${festival.costos != null}">
+
                     Costos configurados
+
                 </span>
+
 
                 <span class="badge"
                       th:if="${festival.costos == null}">
+
                     Sin configurar
+
                 </span>
 
             </div>
+
+
 
             <p style="
                 color: #6b7280;
@@ -426,6 +510,7 @@
             </p>
 
 
+
             <div class="alert alert-info"
                  th:if="${festival.costos == null}">
 
@@ -435,16 +520,20 @@
             </div>
 
 
+
             <a th:href="@{/admin/festivales/{id}/costos(id=${festival.idFestival})}"
                class="btn btn-outline">
+
 
                 <span th:if="${festival.costos == null}">
                     Configurar costos
                 </span>
 
+
                 <span th:if="${festival.costos != null}">
                     Modificar costos
                 </span>
+
 
             </a>
 
@@ -454,6 +543,7 @@
     </main>
 
 </div>
+
 
 </body>
 
