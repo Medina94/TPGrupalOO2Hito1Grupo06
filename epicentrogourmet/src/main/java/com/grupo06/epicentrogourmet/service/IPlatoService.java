@@ -13,6 +13,15 @@ public interface IPlatoService {
     List<PlatoDTO> listarPlatos();
 
     /**
+     * Busca el plato incluido en la mayor cantidad de pedidos
+     * de una unidad y festival.
+     * @param idUnidadVenta identificador de la unidad de venta
+     * @param idFestival identificador del festival
+     * @return PlatoDTO ganador o null si no hay pedidos
+     */
+    PlatoDTO obtenerPlatoEstrella(Long idUnidadVenta, Long idFestival);
+
+    /**
      * Metodo para agregar un plato a la BD.
      * @param platoDTO
      */

@@ -336,6 +336,48 @@
         </section>
 
 
+        <section class="panel"
+                 th:if="${unidad != null}">
+
+            <div class="panel-header">
+                <h2>Plato estrella</h2>
+                <span class="badge"
+                      th:if="${festival != null}"
+                      th:text="${festival.nombre}">
+                    Festival
+                </span>
+            </div>
+
+            <div class="empty-state"
+                 th:if="${platoEstrella == null}">
+                <strong>Todavía no hay pedidos para este festival.</strong>
+                <span>El plato estrella aparecerá cuando se registre un pedido.</span>
+            </div>
+
+            <div class="stat-card"
+                 th:if="${platoEstrella != null}">
+                <div class="stat-label">Plato más pedido</div>
+                <div class="stat-value"
+                     th:text="${platoEstrella.nombre}">
+                    Plato
+                </div>
+                <div class="stat-description">
+                    Precio de venta: $
+                    <span th:text="${platoEstrella.precioVenta}">
+                        0
+                    </span>
+                </div>
+                <div class="stat-description">
+                    Cantidad de pedidos:
+                    <span th:text="${platoEstrella.cantidadPedidos}">
+                        0
+                    </span>
+                </div>
+            </div>
+
+        </section>
+
+
         <!-- SIN UNIDAD -->
 
         <section class="panel"

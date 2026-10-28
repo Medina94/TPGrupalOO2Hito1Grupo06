@@ -12,6 +12,7 @@ import com.grupo06.epicentrogourmet.entity.Festival;
 import com.grupo06.epicentrogourmet.entity.UnidadVenta;
 import com.grupo06.epicentrogourmet.entity.Usuario;
 import com.grupo06.epicentrogourmet.service.FestivalService;
+import com.grupo06.epicentrogourmet.service.IPlatoService;
 import com.grupo06.epicentrogourmet.service.IUsuarioActualService;
 import com.grupo06.epicentrogourmet.service.UnidadVentaService;
 
@@ -21,15 +22,18 @@ public class HomeController {
     private final FestivalService festivalService;
     private final UnidadVentaService unidadVentaService;
     private final IUsuarioActualService usuarioActualService;
+    private final IPlatoService platoService;
 
     public HomeController(
             FestivalService festivalService,
             UnidadVentaService unidadVentaService,
-            IUsuarioActualService usuarioActualService) {
+            IUsuarioActualService usuarioActualService,
+            IPlatoService platoService) {
 
         this.festivalService = festivalService;
         this.unidadVentaService = unidadVentaService;
         this.usuarioActualService = usuarioActualService;
+        this.platoService = platoService;
     }
 
     // =====================================================
@@ -180,6 +184,13 @@ public class HomeController {
                     "festival",
                     unidad.getFestival()
             );
+            model.addAttribute(
+                    "platoEstrella",
+                    platoService.obtenerPlatoEstrella(
+                            unidad.getIdUnidadVenta(),
+                            unidad.getFestival().getIdFestival()
+                    )
+            );
         }
 
         return "responsable-dashboard";
@@ -227,6 +238,13 @@ public class HomeController {
             model.addAttribute(
                     "festival",
                     unidad.getFestival()
+            );
+            model.addAttribute(
+                    "platoEstrella",
+                    platoService.obtenerPlatoEstrella(
+                            unidad.getIdUnidadVenta(),
+                            unidad.getFestival().getIdFestival()
+                    )
             );
         }
 
