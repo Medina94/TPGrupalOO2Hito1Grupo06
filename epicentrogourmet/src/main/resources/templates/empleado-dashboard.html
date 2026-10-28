@@ -637,42 +637,38 @@
                 </div>
 
 
-                <!-- CIERRE DE CAJA -->
+				<!-- CIERRE DE CAJA -->
 
-                <div class="stat-card"
-                     th:if="${empleado instanceof T(com.grupo06.epicentrogourmet.entity.Cajero)}">
+				                <div class="stat-card"
+				                     th:if="${empleado instanceof T(com.grupo06.epicentrogourmet.entity.Cajero)}">
 
-                    <div class="stat-label">
-                        Cierre de caja
-                    </div>
+				                    <div class="stat-label">
+				                        Cierre de caja
+				                    </div>
 
-                    <div class="stat-value">
-                        💰
-                    </div>
+				                    <div class="stat-value">
+				                        💰
+				                    </div>
 
-                    <div class="stat-description">
+				                    <div class="stat-description">
 
-                        Realizá el cierre diario
-                        de caja de tu Unidad.
+				                        Realizá el cierre diario
+				                        de caja de tu Unidad.
 
-                    </div>
+				                    </div>
 
-                    <div style="margin-top: 18px;">
+				                    <div style="margin-top: 18px;">
 
-                        <button type="button"
-                                class="btn btn-outline"
-                                disabled>
+				                        <a th:href="@{/cierre-caja/agregar}"
+				                           class="btn btn-primary">
 
-                            Próximamente
+				                            Realizar cierre
 
-                        </button>
+				                        </a>
 
-                    </div>
+				                    </div>
 
-                </div>
-
-
-            </div>
+				                </div>
 
         </section>
 
