@@ -230,7 +230,7 @@ Puede trabajar en distintos turnos, por ejemplo:
 | Rol supervisor del Administrador | Valentina Ponzo | Finalizado | PR #48 |
 | Navegación e identidad visual | Valentina Ponzo | Finalizado | PR #49 |
 | Cierre de Caja y Consulta de Rentabilidad | Cristian Prantera | Finalizado | [PR #51](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/51) |
-| Descargar recibo de sueldo PDF                   | Cristian Medina    | Finalizado | `CU-descargar-recibo-sueldo`         | [PR #52](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/52) |
+| Descargar recibo de sueldo PDF                   | Cristian Medina    | Finalizado | [PR #52](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/52) |
 | Reportes de ventas | Jose Arratia | Finalizado | PR #54 |
 
 > Cada Caso de Uso o corrección significativa fue desarrollado mediante ramas de trabajo y posteriormente integrado a `main` mediante Pull Request.
