@@ -157,4 +157,29 @@ public class PedidoService {
          */
         return pedidoRepository.save(pedido);
     }
+
+
+    @Transactional(readOnly = true)
+    public java.util.Map<UnidadVenta, java.math.BigDecimal> calcularRankingFacturacion(Long idFestival) {
+
+        List<Pedido> pedidos = pedidoRepository.buscarPedidosPorFestivalConItems(idFestival);
+
+        java.util.Map<UnidadVenta, java.math.BigDecimal> ranking = new java.util.LinkedHashMap<>();
+
+        for (Pedido pedido : pedidos) {
+            UnidadVenta unidad = pedido.getUnidadVenta();
+
+            if (unidad == null) {
+                continue;
+            }
+
+            java.math.BigDecimal total = pedido.calcularTotalVenta();
+
+            ranking.merge(unidad, total, java.math.BigDecimal::add);
+        }
+
+        return ranking.entrySet().stream().sorted(java.util.Map.Entry.<UnidadVenta, java.math.BigDecimal>comparingByValue().reversed()).collect(
+                java.util.stream.Collectors.toMap(java.util.Map.Entry::getKey, java.util.Map.Entry::getValue, (a, b) -> a, java.util.LinkedHashMap::new));
+    }
+
 }
