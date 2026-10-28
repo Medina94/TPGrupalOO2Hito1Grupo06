@@ -661,4 +661,9 @@ public class EmpleadoService {
 
         return hoy;
     }
+
+    @Transactional(readOnly = true)
+    public List<Empleado> listarTodosLosEmpleados() {
+        return empleadoRepository.findAllByOrderByDniAsc();
+    }
 }
