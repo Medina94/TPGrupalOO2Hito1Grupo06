@@ -5,6 +5,7 @@
 <head>
 
     <meta charset="UTF-8">
+
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
@@ -68,10 +69,11 @@
 
             </div>
 
-            <a th:href="@{/}"
+
+            <a th:href="@{/admin}"
                class="btn btn-outline">
 
-                Volver al inicio
+                Volver al panel
 
             </a>
 
@@ -102,11 +104,17 @@
                     <thead>
 
                     <tr>
+
                         <th>Festival</th>
+
                         <th>Temporada</th>
+
                         <th>Fecha inicio</th>
+
                         <th>Fecha fin</th>
+
                         <th>Acción</th>
+
                     </tr>
 
                     </thead>
@@ -117,32 +125,29 @@
                     <tr th:each="festival : ${festivales}">
 
                         <td>
-                            <strong
-                                th:text="${festival.nombre}">
+
+                            <strong th:text="${festival.nombre}">
                                 Festival
                             </strong>
+
                         </td>
 
-                        <td
-                            th:text="${festival.temporada}">
+                        <td th:text="${festival.temporada}">
                             Temporada
                         </td>
 
-                        <td
-                            th:text="${festival.fechaInicio}">
+                        <td th:text="${festival.fechaInicio}">
                             Fecha inicio
                         </td>
 
-                        <td
-                            th:text="${festival.fechaFin}">
+                        <td th:text="${festival.fechaFin}">
                             Fecha fin
                         </td>
 
                         <td>
 
-                            <a
-                                th:href="@{/admin/festivales/{id}/costos(id=${festival.idFestival})}"
-                                class="btn btn-primary">
+                            <a th:href="@{/admin/festivales/{id}/costos(id=${festival.idFestival})}"
+                               class="btn btn-primary">
 
                                 Configurar costos
 

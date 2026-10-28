@@ -3,17 +3,24 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Costos del Festival</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Costos del Festival
+    </title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
 
         body {
             font-family: Arial, sans-serif;
@@ -21,8 +28,9 @@
             color: #333;
         }
 
+
         .navbar {
-            background-color: #1f4e79;
+            background-color: #17258f;
             color: white;
             padding: 16px 30px;
             display: flex;
@@ -30,9 +38,19 @@
             align-items: center;
         }
 
+
         .navbar h2 {
             margin: 0;
         }
+
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
 
         .container {
             max-width: 900px;
@@ -43,15 +61,18 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
+
         .title {
             margin-bottom: 10px;
-            color: #1f4e79;
+            color: #17258f;
         }
+
 
         .subtitle {
             margin-bottom: 25px;
             color: #666;
         }
+
 
         .success {
             background-color: #d4edda;
@@ -62,13 +83,15 @@
             margin-bottom: 20px;
         }
 
+
         .section-title {
             margin-top: 25px;
             margin-bottom: 15px;
-            color: #1f4e79;
+            color: #17258f;
             border-bottom: 1px solid #ddd;
             padding-bottom: 6px;
         }
+
 
         .grid {
             display: grid;
@@ -76,15 +99,18 @@
             gap: 18px;
         }
 
+
         .field {
             display: flex;
             flex-direction: column;
         }
 
+
         label {
             font-weight: bold;
             margin-bottom: 6px;
         }
+
 
         input {
             padding: 10px;
@@ -93,10 +119,12 @@
             font-size: 14px;
         }
 
+
         input:focus {
             outline: none;
-            border-color: #1f4e79;
+            border-color: #17258f;
         }
+
 
         .error {
             color: #c0392b;
@@ -104,11 +132,13 @@
             margin-top: 5px;
         }
 
+
         .buttons {
             margin-top: 30px;
             display: flex;
             gap: 12px;
         }
+
 
         .btn {
             text-decoration: none;
@@ -119,55 +149,100 @@
             font-size: 14px;
         }
 
+
         .btn-primary {
-            background-color: #1f4e79;
+            background-color: #17258f;
             color: white;
         }
+
 
         .btn-secondary {
             background-color: #6c757d;
             color: white;
         }
 
+
         @media (max-width: 700px) {
+
             .grid {
                 grid-template-columns: 1fr;
             }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
+
 <div class="navbar">
-    <h2>Epicentro Gourmet</h2>
-    <span>Configuración de costos</span>
+
+    <h2>
+        Epicentro Gourmet
+    </h2>
+
+
+    <a th:href="@{/admin}">
+        ← Volver al panel
+    </a>
+
 </div>
+
+
 
 <div class="container">
 
-    <h1 class="title">Costos del Festival</h1>
+
+    <h1 class="title">
+        Costos del Festival
+    </h1>
+
 
     <p class="subtitle">
+
         Festival:
-        <strong th:text="${festival.nombre}"></strong>
+
+        <strong th:text="${festival.nombre}">
+            Festival
+        </strong>
+
         -
-        <span th:text="${festival.temporada}"></span>
+
+        <span th:text="${festival.temporada}">
+            Temporada
+        </span>
+
     </p>
 
-    <div class="success" th:if="${param.success}">
+
+
+    <div class="success"
+         th:if="${param.success}">
+
         Los costos fueron guardados correctamente.
+
     </div>
+
+
 
     <form th:action="@{/admin/festivales/{id}/costos(id=${festival.idFestival})}"
           th:object="${costosDTO}"
           method="post">
 
-        <h3 class="section-title">Costos de la Unidad de Venta</h3>
+
+        <h3 class="section-title">
+            Costos de la Unidad de Venta
+        </h3>
+
 
         <div class="grid">
 
+
             <div class="field">
+
                 <label for="costoPorSuperficie">
                     Costo por superficie
                 </label>
@@ -178,13 +253,18 @@
                        id="costoPorSuperficie"
                        th:field="*{costoPorSuperficie}">
 
+
                 <span class="error"
                       th:if="${#fields.hasErrors('costoPorSuperficie')}"
                       th:errors="*{costoPorSuperficie}">
                 </span>
+
             </div>
 
+
+
             <div class="field">
+
                 <label for="costoPorMontaje">
                     Costo por montaje
                 </label>
@@ -195,13 +275,18 @@
                        id="costoPorMontaje"
                        th:field="*{costoPorMontaje}">
 
+
                 <span class="error"
                       th:if="${#fields.hasErrors('costoPorMontaje')}"
                       th:errors="*{costoPorMontaje}">
                 </span>
+
             </div>
 
+
+
             <div class="field">
+
                 <label for="plusElectricidad">
                     Plus por electricidad
                 </label>
@@ -212,20 +297,28 @@
                        id="plusElectricidad"
                        th:field="*{plusElectricidad}">
 
+
                 <span class="error"
                       th:if="${#fields.hasErrors('plusElectricidad')}"
                       th:errors="*{plusElectricidad}">
                 </span>
+
             </div>
 
         </div>
 
 
-        <h3 class="section-title">Costos para Liquidación de Sueldos</h3>
+
+        <h3 class="section-title">
+            Costos para Liquidación de Sueldos
+        </h3>
+
 
         <div class="grid">
 
+
             <div class="field">
+
                 <label for="sueldoBase">
                     Sueldo base
                 </label>
@@ -236,13 +329,18 @@
                        id="sueldoBase"
                        th:field="*{sueldoBase}">
 
+
                 <span class="error"
                       th:if="${#fields.hasErrors('sueldoBase')}"
                       th:errors="*{sueldoBase}">
                 </span>
+
             </div>
 
+
+
             <div class="field">
+
                 <label for="valorPorAnioAntiguedad">
                     Valor por año de antigüedad
                 </label>
@@ -253,13 +351,18 @@
                        id="valorPorAnioAntiguedad"
                        th:field="*{valorPorAnioAntiguedad}">
 
+
                 <span class="error"
                       th:if="${#fields.hasErrors('valorPorAnioAntiguedad')}"
                       th:errors="*{valorPorAnioAntiguedad}">
                 </span>
+
             </div>
 
+
+
             <div class="field">
+
                 <label for="plusCocinero">
                     Plus Cocinero
                 </label>
@@ -270,13 +373,18 @@
                        id="plusCocinero"
                        th:field="*{plusCocinero}">
 
+
                 <span class="error"
                       th:if="${#fields.hasErrors('plusCocinero')}"
                       th:errors="*{plusCocinero}">
                 </span>
+
             </div>
 
+
+
             <div class="field">
+
                 <label for="plusAyudante">
                     Plus Ayudante
                 </label>
@@ -287,13 +395,18 @@
                        id="plusAyudante"
                        th:field="*{plusAyudante}">
 
+
                 <span class="error"
                       th:if="${#fields.hasErrors('plusAyudante')}"
                       th:errors="*{plusAyudante}">
                 </span>
+
             </div>
 
+
+
             <div class="field">
+
                 <label for="plusLavaplatos">
                     Plus Lavaplatos
                 </label>
@@ -304,31 +417,44 @@
                        id="plusLavaplatos"
                        th:field="*{plusLavaplatos}">
 
+
                 <span class="error"
                       th:if="${#fields.hasErrors('plusLavaplatos')}"
                       th:errors="*{plusLavaplatos}">
                 </span>
+
             </div>
 
         </div>
 
+
+
         <div class="buttons">
+
 
             <button type="submit"
                     class="btn btn-primary">
+
                 Guardar costos
+
             </button>
 
-            <a th:href="@{/admin/festivales/{id}/unidades(id=${festival.idFestival})}"
+
+            <a th:href="@{/admin}"
                class="btn btn-secondary">
-                Volver a unidades
+
+                Volver al panel
+
             </a>
 
         </div>
+
 
     </form>
 
 </div>
 
+
 </body>
+
 </html>
