@@ -27,6 +27,8 @@ public class PlatoDTO {
     )
     private BigDecimal costoProduccion;
 
+    private Long cantidadPedidos;
+
     public Long getIdPlato() {
         return idPlato;
     }
@@ -57,5 +59,13 @@ public class PlatoDTO {
 
     public void setCostoProduccion(BigDecimal costoProduccion) {
         this.costoProduccion = costoProduccion;
+    }
+
+    public Long getCantidadPedidos() {
+        return cantidadPedidos;
+    }
+
+    public void setCantidadPedidos(Long cantidadPedidos) {
+        this.cantidadPedidos = cantidadPedidos;
     }
 }

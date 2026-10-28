@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 
 import com.grupo06.epicentrogourmet.dto.PlatoDTO;
 import com.grupo06.epicentrogourmet.service.IPlatoService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +23,25 @@ public class PlatoController {
 
     public PlatoController(IPlatoService platoService) {
         this.platoService = platoService;
+    }
+
+    @ModelAttribute("homePath")
+    public String homePath(Authentication authentication) {
+        if (hasRole(authentication, "ROLE_ADMINISTRADOR")) {
+            return "/admin";
+        }
+        if (hasRole(authentication, "ROLE_RESPONSABLE")) {
+            return "/responsable";
+        }
+        if (hasRole(authentication, "ROLE_EMPLEADO")) {
+            return "/empleado";
+        }
+        return "/";
+    }
+
+    private boolean hasRole(Authentication authentication, String role) {
+        return authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals(role));
     }
 
     @GetMapping("/plato/listar")

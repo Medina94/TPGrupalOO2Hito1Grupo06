@@ -8,6 +8,7 @@ import com.grupo06.epicentrogourmet.entity.Usuario;
 import com.grupo06.epicentrogourmet.repository.PlatoRepository;
 import com.grupo06.epicentrogourmet.repository.UnidadVentaRepository;
 import com.grupo06.epicentrogourmet.service.IPlatoService;
+import org.springframework.data.domain.PageRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,30 @@ public class PlatoService implements IPlatoService {
                 .stream()
                 .map(plato -> modelMapper.map(plato, PlatoDTO.class))
                 .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PlatoDTO obtenerPlatoEstrella(Long idUnidadVenta, Long idFestival) {
+        return platoRepository
+                .buscarPlatoEstrella(
+                        idUnidadVenta,
+                        idFestival,
+                        PageRequest.of(0, 1)
+                )
+                .stream()
+                .findFirst()
+                .map(proyeccion -> {
+                    PlatoDTO platoDTO = modelMapper.map(
+                            proyeccion.getPlato(),
+                            PlatoDTO.class
+                    );
+                    platoDTO.setCantidadPedidos(
+                            proyeccion.getCantidadPedidos()
+                    );
+                    return platoDTO;
+                })
+                .orElse(null);
     }
 
     @Override
