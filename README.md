@@ -225,6 +225,7 @@ Puede trabajar en distintos turnos, por ejemplo:
 | Consulta de Plato Estrella | Cristian Medina | Finalizado | PR #46 |
 | Rol supervisor del Administrador | Valentina Ponzo | Finalizado | PR #48 |
 | Navegación e identidad visual | Valentina Ponzo | Finalizado | PR #49 |
+| Cierre de Caja y Consulta de Rentabilidad | Cristian Prantera | Finalizado | [PR #51](https://github.com/Medina94/TPGrupalOO2Hito1Grupo06/pull/51) |
 
 > Cada Caso de Uso o corrección significativa fue desarrollado mediante ramas de trabajo y posteriormente integrado a `main` mediante Pull Request.
 
@@ -609,6 +610,33 @@ Incluye:
 
 ---
 
+# CU - Gestión de Cierres de Caja
+
+Responsable: **Cristian Prantera**  
+Integrado mediante **PR #51**.
+
+Permite registrar y consultar cierres de caja de las Unidades de Venta.
+
+Incluye:
+
+- Registro de la fecha y el monto del cierre.
+- Consulta de cierres por rango de fechas.
+- Resumen con cantidad de cierres, recaudación total y promedio por cierre.
+- Generación de comprobantes de cierre en PDF.
+
+---
+
+# CU - Consulta de Rentabilidad Neta
+
+Responsable: **Cristian Prantera**  
+Integrado mediante **PR #51**.
+
+Permite consultar la rentabilidad de una Unidad de Venta para un período determinado.
+
+Se consideran los ingresos por pedidos, los costos de producción de los platos, los sueldos y el canon para obtener la rentabilidad neta.
+
+---
+
 # Script unificado de datos
 
 Responsable: **Valentina Ponzo**  
@@ -842,7 +870,10 @@ Entre los DTO utilizados:
 
 **Implementada.**
 
-Se genera el listado de empleados de la Unidad del Responsable mediante OpenPDF.
+Se generan:
+
+- Listados de empleados de la Unidad del Responsable.
+- Comprobantes de cierre de caja.
 
 ## Script final de datos
 
@@ -883,6 +914,10 @@ Se eliminaron accesos operativos de alta de Unidad desde Administración.
 ## PR #49 - Navegación e identidad visual
 
 Se corrigieron las rutas de regreso de cada rol y se unificó el diseño visual de Home, Login y paneles internos.
+
+## PR #51 - Cierre de Caja y Consulta de Rentabilidad
+
+Se incorporaron el registro y consulta de cierres de caja, los filtros por fecha, el resumen de recaudación, la generación de comprobantes PDF y la consulta de rentabilidad neta de una Unidad de Venta.
 
 ---
 
@@ -988,6 +1023,11 @@ Actualmente el proyecto cuenta con:
 - Historial laboral.
 - Alta de Pedido.
 - `Pedido` e `ItemPedido`.
+- Gestión de Cierres de Caja.
+- Consulta de Cierres de Caja por fecha.
+- Resumen de recaudación y promedio por cierre.
+- Generación de PDF de Cierres de Caja.
+- Consulta de Rentabilidad Neta.
 - Script unificado de datos.
 - Menús laterales por rol.
 - Navegación corregida.
@@ -1016,5 +1056,8 @@ Antes de la entrega se recomienda verificar:
 - Gestión de empleados por Unidad.
 - PDF.
 - Canon.
+- Cierres de Caja.
+- Filtros y resumen de recaudación.
+- Consulta de Rentabilidad Neta.
 - Navegación entre paneles.
 - Que cada integrante pueda explicar sus Casos de Uso.
