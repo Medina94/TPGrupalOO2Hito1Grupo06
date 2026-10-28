@@ -7,11 +7,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.grupo06.epicentrogourmet.entity.Festival;
 import com.grupo06.epicentrogourmet.entity.UnidadVenta;
 import com.grupo06.epicentrogourmet.entity.Usuario;
 import com.grupo06.epicentrogourmet.service.FestivalService;
+import com.grupo06.epicentrogourmet.service.IPlatoService;
 import com.grupo06.epicentrogourmet.service.IUsuarioActualService;
 import com.grupo06.epicentrogourmet.service.UnidadVentaService;
 
@@ -21,16 +23,20 @@ public class HomeController {
     private final FestivalService festivalService;
     private final UnidadVentaService unidadVentaService;
     private final IUsuarioActualService usuarioActualService;
+    private final IPlatoService platoService;
 
     public HomeController(
             FestivalService festivalService,
             UnidadVentaService unidadVentaService,
-            IUsuarioActualService usuarioActualService) {
+            IUsuarioActualService usuarioActualService,
+            IPlatoService platoService) {
 
         this.festivalService = festivalService;
         this.unidadVentaService = unidadVentaService;
         this.usuarioActualService = usuarioActualService;
+        this.platoService = platoService;
     }
+
 
     // =====================================================
     // HOME PUBLICA
@@ -49,64 +55,60 @@ public class HomeController {
                 festivales
         );
 
-        // Fecha actual para mostrar el estado de cada Festival
         model.addAttribute(
                 "hoy",
                 LocalDate.now()
         );
 
-        /*
-         * La Home es pública.
-         * Si existe un usuario autenticado, enviamos su rol
-         * para mostrar accesos personalizados.
-         */
-        if (authentication != null
-                && authentication.isAuthenticated()) {
-
-            model.addAttribute(
-                    "username",
-                    authentication.getName()
-            );
-
-            model.addAttribute(
-                    "autenticado",
-                    true
-            );
-
-            model.addAttribute(
-                    "esAdmin",
-                    tieneRol(
-                            authentication,
-                            "ROLE_ADMINISTRADOR"
-                    )
-            );
-
-            model.addAttribute(
-                    "esResponsable",
-                    tieneRol(
-                            authentication,
-                            "ROLE_RESPONSABLE"
-                    )
-            );
-
-            model.addAttribute(
-                    "esEmpleado",
-                    tieneRol(
-                            authentication,
-                            "ROLE_EMPLEADO"
-                    )
-            );
-
-        } else {
-
-            model.addAttribute(
-                    "autenticado",
-                    false
-            );
-        }
+        agregarDatosUsuario(
+                model,
+                authentication
+        );
 
         return "public-home";
     }
+
+
+    // =====================================================
+    // DETALLE PUBLICO DE FESTIVAL
+    // =====================================================
+
+    @GetMapping("/festivales/{idFestival}")
+    public String detalleFestivalPublico(
+            @PathVariable Long idFestival,
+            Model model,
+            Authentication authentication) {
+
+        Festival festival =
+                festivalService.buscarPorId(idFestival);
+
+        List<UnidadVenta> unidades =
+                unidadVentaService
+                        .listarPorFestival(idFestival);
+
+        model.addAttribute(
+                "festival",
+                festival
+        );
+
+        model.addAttribute(
+                "unidades",
+                unidades
+        );
+
+        model.addAttribute(
+                "hoy",
+                LocalDate.now()
+        );
+
+        agregarDatosUsuario(
+                model,
+                authentication
+        );
+
+        return "festival-publico";
+    }
+
 
     // =====================================================
     // PANEL DEL ADMINISTRADOR
@@ -139,11 +141,9 @@ public class HomeController {
                 true
         );
 
-        /*
-         * Se reutiliza index.html como panel administrativo.
-         */
         return "index";
     }
+
 
     // =====================================================
     // PANEL DEL RESPONSABLE
@@ -180,10 +180,18 @@ public class HomeController {
                     "festival",
                     unidad.getFestival()
             );
+            model.addAttribute(
+                    "platoEstrella",
+                    platoService.obtenerPlatoEstrella(
+                            unidad.getIdUnidadVenta(),
+                            unidad.getFestival().getIdFestival()
+                    )
+            );
         }
 
         return "responsable-dashboard";
     }
+
 
     // =====================================================
     // PANEL DEL EMPLEADO
@@ -228,10 +236,73 @@ public class HomeController {
                     "festival",
                     unidad.getFestival()
             );
+            model.addAttribute(
+                    "platoEstrella",
+                    platoService.obtenerPlatoEstrella(
+                            unidad.getIdUnidadVenta(),
+                            unidad.getFestival().getIdFestival()
+                    )
+            );
         }
 
         return "empleado-dashboard";
     }
+
+
+    // =====================================================
+    // DATOS DEL USUARIO PARA PAGINAS PUBLICAS
+    // =====================================================
+
+    private void agregarDatosUsuario(
+            Model model,
+            Authentication authentication) {
+
+        if (authentication != null
+                && authentication.isAuthenticated()) {
+
+            model.addAttribute(
+                    "username",
+                    authentication.getName()
+            );
+
+            model.addAttribute(
+                    "autenticado",
+                    true
+            );
+
+            model.addAttribute(
+                    "esAdmin",
+                    tieneRol(
+                            authentication,
+                            "ROLE_ADMINISTRADOR"
+                    )
+            );
+
+            model.addAttribute(
+                    "esResponsable",
+                    tieneRol(
+                            authentication,
+                            "ROLE_RESPONSABLE"
+                    )
+            );
+
+            model.addAttribute(
+                    "esEmpleado",
+                    tieneRol(
+                            authentication,
+                            "ROLE_EMPLEADO"
+                    )
+            );
+
+        } else {
+
+            model.addAttribute(
+                    "autenticado",
+                    false
+            );
+        }
+    }
+
 
     // =====================================================
     // UTILIDAD

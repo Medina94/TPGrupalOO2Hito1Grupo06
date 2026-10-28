@@ -98,6 +98,7 @@ public class SecurityConfig {
                                 "/",
                                 "/login",
                                 "/registro/**",
+                                "/festivales/**",
                                 "/css/**",
                                 "/js/**",
                                 "/images/**"
@@ -178,10 +179,6 @@ public class SecurityConfig {
 
                 .logout(logout -> logout
 
-                        /*
-                         * Al cerrar sesión volvemos al sitio
-                         * público y no directamente al login.
-                         */
                         .logoutSuccessUrl(
                                 "/"
                         )

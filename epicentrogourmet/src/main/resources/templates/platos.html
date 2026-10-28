@@ -3,123 +3,219 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
+
     <title>Mis Platos - Epicentro Gourmet</title>
+
     <link rel="stylesheet"
           th:href="@{/css/dashboard.css}">
+
 </head>
 
 <body>
 
+
 <header class="topbar">
+
     <div class="brand">
         Epicentro Gourmet
     </div>
 
     <div class="topbar-user">
-        <span>Mi Unidad</span>
+
+        <span>
+            Mi Unidad
+        </span>
 
         <form th:action="@{/logout}"
               method="post">
+
             <button type="submit"
                     class="logout-button">
+
                 Cerrar sesión
+
             </button>
+
         </form>
+
     </div>
+
 </header>
+
 
 <div class="app-layout">
 
     <div th:replace="~{fragments/sidebar :: responsableSidebar}">
     </div>
 
+
     <main class="main-content">
 
         <div class="page-header">
+
             <div class="page-title">
+
                 <h1>Mis Platos</h1>
-                <p>Platos registrados para mi unidad de venta.</p>
+
+                <p>
+                    Platos registrados para mi Unidad de Venta.
+                </p>
+
             </div>
+
 
             <div class="actions">
+
                 <a th:href="@{/plato/agregar}"
                    class="btn btn-primary">
+
                     + Agregar plato
+
                 </a>
 
-                <a th:href="@{/}"
+
+                <a th:href="@{/responsable}"
                    class="btn btn-outline">
-                    Volver al inicio
+
+                    Volver al panel
+
                 </a>
+
             </div>
+
         </div>
+
 
         <div class="alert alert-error"
              th:if="${errorGeneral}"
              th:text="${errorGeneral}">
         </div>
 
+
         <div class="alert alert-success"
              th:if="${mensajeExito}"
              th:text="${mensajeExito}">
         </div>
 
+
         <section class="panel">
+
             <div class="panel-header">
-                <h2>Platos registrados</h2>
+
+                <h2>
+                    Platos registrados
+                </h2>
+
                 <span class="badge"
                       th:text="${#lists.size(platos) + ' platos'}">
+
                     0 platos
+
                 </span>
+
             </div>
+
 
             <div class="empty-state"
                  th:if="${#lists.isEmpty(platos) and errorGeneral == null}">
-                <strong>Todavía no hay platos registrados.</strong>
-                <span>Agregá un plato para que aparezca en este listado.</span>
+
+                <strong>
+                    Todavía no hay platos registrados.
+                </strong>
+
+                <span>
+                    Agregá un plato para que aparezca en este listado.
+                </span>
+
             </div>
+
 
             <div class="table-responsive"
                  th:if="${!#lists.isEmpty(platos)}">
+
                 <table>
+
                     <thead>
+
                     <tr>
+
                         <th>Nombre</th>
+
                         <th>Precio de venta</th>
+
                         <th>Costo de producción</th>
+
                         <th scope="col">Modificar</th>
+
                         <th scope="col">Eliminar</th>
+
                     </tr>
+
                     </thead>
+
+
                     <tbody>
+
                     <tr th:each="plato : ${platos}">
-                        <td th:text="${plato.nombre}"></td>
-                        <td th:text="'$ ' + ${plato.precioVenta}"></td>
-                        <td th:text="'$ ' + ${plato.costoProduccion}"></td>
+
+                        <td th:text="${plato.nombre}">
+                        </td>
+
+                        <td th:text="'$ ' + ${plato.precioVenta}">
+                        </td>
+
+                        <td th:text="'$ ' + ${plato.costoProduccion}">
+                        </td>
+
+
                         <td>
+
                             <a th:href="@{/plato/{idPlato}/editar(idPlato=${plato.idPlato})}"
                                th:aria-label="'Modificar ' + ${plato.nombre}"
-                               title="Modificar plato">✏️</a>
+                               title="Modificar plato">
+
+                                ✏️
+
+                            </a>
+
                         </td>
+
+
                         <td>
+
                             <form th:action="@{/plato/{idPlato}/eliminar(idPlato=${plato.idPlato})}"
                                   method="post"
                                   onsubmit="return confirm('¿Querés eliminar este plato?');">
+
                                 <button type="submit"
                                         th:aria-label="'Eliminar ' + ${plato.nombre}"
-                                        title="Eliminar plato">🗑️</button>
+                                        title="Eliminar plato">
+
+                                    🗑️
+
+                                </button>
+
                             </form>
+
                         </td>
+
                     </tr>
+
                     </tbody>
+
                 </table>
+
             </div>
+
         </section>
 
     </main>
+
 </div>
 
 </body>

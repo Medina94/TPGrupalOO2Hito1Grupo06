@@ -1,17 +1,10 @@
 package com.grupo06.epicentrogourmet.service;
 
-import java.time.LocalDate;
-import java.text.Normalizer;
 import java.security.SecureRandom;
+import java.text.Normalizer;
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
-
-import com.grupo06.epicentrogourmet.dto.ModificarEmpleadoDTO;
-import com.grupo06.epicentrogourmet.dto.RegistroEmpleadoDTO;
-import com.grupo06.epicentrogourmet.entity.*;
-import com.grupo06.epicentrogourmet.repository.AsignacionEmpleadoRepository;
-import com.grupo06.epicentrogourmet.repository.EmpleadoRepository;
-import com.grupo06.epicentrogourmet.repository.UsuarioRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +12,30 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.grupo06.epicentrogourmet.dto.ModificarEmpleadoDTO;
+import com.grupo06.epicentrogourmet.dto.RegistroEmpleadoDTO;
+import com.grupo06.epicentrogourmet.entity.AsignacionEmpleado;
+import com.grupo06.epicentrogourmet.entity.Cajero;
+import com.grupo06.epicentrogourmet.entity.Cocinero;
+import com.grupo06.epicentrogourmet.entity.Empleado;
+import com.grupo06.epicentrogourmet.entity.Festival;
+import com.grupo06.epicentrogourmet.entity.RolCocina;
+import com.grupo06.epicentrogourmet.entity.RolUsuario;
+import com.grupo06.epicentrogourmet.entity.Turno;
+import com.grupo06.epicentrogourmet.entity.UnidadVenta;
+import com.grupo06.epicentrogourmet.entity.Usuario;
+import com.grupo06.epicentrogourmet.repository.AsignacionEmpleadoRepository;
+import com.grupo06.epicentrogourmet.repository.EmpleadoRepository;
+import com.grupo06.epicentrogourmet.repository.UsuarioRepository;
+
 @Service
 public class EmpleadoService {
-    private static final Logger logger = LoggerFactory.getLogger(EmpleadoService.class);
-    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(EmpleadoService.class);
+
+    private static final SecureRandom SECURE_RANDOM =
+            new SecureRandom();
 
     private final EmpleadoRepository empleadoRepository;
     private final UsuarioRepository usuarioRepository;
@@ -31,6 +44,7 @@ public class EmpleadoService {
     private final UnidadVentaService unidadVentaService;
     private final IUsuarioActualService usuarioActualService;
     private final IMailService mailService;
+
 
     public EmpleadoService(
             EmpleadoRepository empleadoRepository,
@@ -44,44 +58,60 @@ public class EmpleadoService {
         this.empleadoRepository = empleadoRepository;
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
-        this.asignacionEmpleadoRepository = asignacionEmpleadoRepository;
+        this.asignacionEmpleadoRepository =
+                asignacionEmpleadoRepository;
         this.unidadVentaService = unidadVentaService;
         this.usuarioActualService = usuarioActualService;
         this.mailService = mailService;
     }
+
 
     // =====================================================
     // ALTA DE EMPLEADO
     // =====================================================
 
     @Transactional
-    public Empleado registrarEmpleado(RegistroEmpleadoDTO dto) {
+    public Empleado registrarEmpleado(
+            RegistroEmpleadoDTO dto) {
 
-        dto.setEmail(dto.getEmail().trim());
+        dto.setEmail(
+                dto.getEmail().trim()
+        );
+
         validarDatosUnicos(dto);
 
-        // 1. Obtener la Unidad del Responsable logueado
+
+        // Obtener la Unidad del Responsable logueado
         UnidadVenta unidadVenta =
                 obtenerUnidadDelResponsableActual();
 
         Festival festival =
                 unidadVenta.getFestival();
 
+
         if (festival == null) {
+
             throw new IllegalArgumentException(
                     "La Unidad de Venta no tiene un Festival asociado."
             );
         }
 
-        // 2. Crear y guardar el empleado
+
+        // Crear empleado
         Empleado empleado =
                 empleadoRepository.save(
                         crearEmpleado(dto)
                 );
 
-        // 3. Crear el usuario de acceso
-        String email = dto.getEmail();
-        String password = generarContrasena();
+
+        // Crear usuario de acceso
+        String email =
+                dto.getEmail();
+
+        String password =
+                generarContrasena();
+
+
         Usuario usuario =
                 new Usuario(
                         email,
@@ -90,9 +120,11 @@ public class EmpleadoService {
                         empleado
                 );
 
+
         usuarioRepository.save(usuario);
 
-        // 4. Asignar el empleado a la Unidad
+
+        // Asignar empleado a la Unidad del Responsable
         AsignacionEmpleado asignacion =
                 new AsignacionEmpleado(
                         empleado,
@@ -102,15 +134,29 @@ public class EmpleadoService {
                         )
                 );
 
+
         asignacionEmpleadoRepository.save(
                 asignacion
         );
 
-        // 5. Enviar correo de alta al empleado
-        logger.info("Enviando correo de alta al empleado: {}", empleado.getEmail());
-        mailService.enviarMailAlta(dto, usuario.getUsername(), password);
+
+        // Enviar credenciales por mail
+        logger.info(
+                "Enviando correo de alta al empleado: {}",
+                empleado.getEmail()
+        );
+
+
+        mailService.enviarMailAlta(
+                dto,
+                usuario.getUsername(),
+                password
+        );
+
+
         return empleado;
     }
+
 
     // =====================================================
     // VALIDACIONES DE ALTA
@@ -122,6 +168,7 @@ public class EmpleadoService {
         String email =
                 dto.getEmail().trim();
 
+
         if (empleadoRepository.existsByDni(
                 dto.getDni())) {
 
@@ -130,14 +177,18 @@ public class EmpleadoService {
             );
         }
 
-        if (empleadoRepository.existsByEmail(email)) {
+
+        if (empleadoRepository.existsByEmail(
+                email)) {
 
             throw new IllegalArgumentException(
                     "Ya existe un empleado con ese email."
             );
         }
 
-        if (usuarioRepository.existsByUsername(email)) {
+
+        if (usuarioRepository.existsByUsername(
+                email)) {
 
             throw new IllegalArgumentException(
                     "Ya existe un usuario registrado con ese email."
@@ -145,11 +196,25 @@ public class EmpleadoService {
         }
     }
 
+
+    // =====================================================
+    // GENERACIÓN DE CONTRASEÑA
+    // =====================================================
+
     private String generarContrasena() {
-        byte[] bytes = new byte[18];
+
+        byte[] bytes =
+                new byte[18];
+
         SECURE_RANDOM.nextBytes(bytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+
+
+        return Base64
+                .getUrlEncoder()
+                .withoutPadding()
+                .encodeToString(bytes);
     }
+
 
     // =====================================================
     // CREACIÓN DEL EMPLEADO
@@ -163,6 +228,11 @@ public class EmpleadoService {
                         .trim()
                         .toUpperCase();
 
+
+        // -------------------------------------------------
+        // COCINERO
+        // -------------------------------------------------
+
         if ("COCINERO".equals(tipoEmpleado)) {
 
             if (dto.getRolCocina() == null
@@ -173,7 +243,9 @@ public class EmpleadoService {
                 );
             }
 
+
             RolCocina rolCocina;
+
 
             try {
 
@@ -191,6 +263,7 @@ public class EmpleadoService {
                 );
             }
 
+
             return new Cocinero(
                     dto.getNombre().trim(),
                     dto.getApellido().trim(),
@@ -202,6 +275,11 @@ public class EmpleadoService {
             );
         }
 
+
+        // -------------------------------------------------
+        // CAJERO
+        // -------------------------------------------------
+
         if ("CAJERO".equals(tipoEmpleado)) {
 
             if (dto.getTurno() == null
@@ -212,7 +290,9 @@ public class EmpleadoService {
                 );
             }
 
+
             Turno turno;
+
 
             try {
 
@@ -230,6 +310,7 @@ public class EmpleadoService {
                 );
             }
 
+
             return new Cajero(
                     dto.getNombre().trim(),
                     dto.getApellido().trim(),
@@ -241,10 +322,12 @@ public class EmpleadoService {
             );
         }
 
+
         throw new IllegalArgumentException(
                 "El tipo de empleado seleccionado no es válido."
         );
     }
+
 
     // =====================================================
     // LISTADO DE EMPLEADOS DEL RESPONSABLE
@@ -256,16 +339,35 @@ public class EmpleadoService {
         UnidadVenta unidadVenta =
                 obtenerUnidadDelResponsableActual();
 
+
         return asignacionEmpleadoRepository
                 .findByUnidadVenta(unidadVenta)
                 .stream()
+
+                /*
+                 * Solamente empleados con asignación vigente.
+                 *
+                 * Si fechaHasta tiene valor, significa que esa
+                 * asignación ya terminó.
+                 */
+                .filter(
+                        asignacion ->
+                                asignacion.getFechaHasta() == null
+                )
+
                 .map(
                         AsignacionEmpleado::getEmpleado
                 )
+
                 .filter(
                         empleado ->
                                 empleado != null
                 )
+
+                /*
+                 * El Responsable no debe aparecer en el listado
+                 * de empleados operativos de la Unidad.
+                 */
                 .filter(
                         empleado ->
                                 !esResponsableDeUnidad(
@@ -273,6 +375,7 @@ public class EmpleadoService {
                                         unidadVenta
                                 )
                 )
+
                 .sorted(
                         (e1, e2) ->
                                 Integer.compare(
@@ -280,8 +383,10 @@ public class EmpleadoService {
                                         e2.getDni()
                                 )
                 )
+
                 .toList();
     }
+
 
     // =====================================================
     // CONSULTA / FILTRO DE EMPLEADOS
@@ -294,36 +399,94 @@ public class EmpleadoService {
             LocalDate fechaDesde,
             LocalDate fechaHasta) {
 
-        String nombreNormalizado = normalizar(nombre);
-        String dniFiltro = dni == null ? "" : dni.trim();
+        String nombreNormalizado =
+                normalizar(nombre);
+
+        String dniFiltro =
+                dni == null
+                        ? ""
+                        : dni.trim();
+
 
         return listarEmpleados()
                 .stream()
-                .filter(e -> nombreNormalizado.isEmpty()
-                        || normalizar(e.getNombre() + " " + e.getApellido())
-                        .contains(nombreNormalizado))
-                .filter(e -> dniFiltro.isEmpty()
-                        || String.valueOf(e.getDni()).contains(dniFiltro))
-                .filter(e -> fechaDesde == null
-                        || (e.getFechaIngreso() != null
-                        && !e.getFechaIngreso().isBefore(fechaDesde)))
-                .filter(e -> fechaHasta == null
-                        || (e.getFechaIngreso() != null
-                        && !e.getFechaIngreso().isAfter(fechaHasta)))
+
+                .filter(
+                        e ->
+                                nombreNormalizado.isEmpty()
+                                        || normalizar(
+                                                e.getNombre()
+                                                        + " "
+                                                        + e.getApellido()
+                                        )
+                                        .contains(
+                                                nombreNormalizado
+                                        )
+                )
+
+                .filter(
+                        e ->
+                                dniFiltro.isEmpty()
+                                        || String.valueOf(
+                                                e.getDni()
+                                        )
+                                        .contains(
+                                                dniFiltro
+                                        )
+                )
+
+                .filter(
+                        e ->
+                                fechaDesde == null
+                                        || (
+                                        e.getFechaIngreso()
+                                                != null
+                                                && !e
+                                                .getFechaIngreso()
+                                                .isBefore(
+                                                        fechaDesde
+                                                )
+                                )
+                )
+
+                .filter(
+                        e ->
+                                fechaHasta == null
+                                        || (
+                                        e.getFechaIngreso()
+                                                != null
+                                                && !e
+                                                .getFechaIngreso()
+                                                .isAfter(
+                                                        fechaHasta
+                                                )
+                                )
+                )
+
                 .toList();
     }
 
-    private String normalizar(String texto) {
+
+    private String normalizar(
+            String texto) {
 
         if (texto == null) {
             return "";
         }
 
+
         return Normalizer
-                .normalize(texto.trim(), Normalizer.Form.NFD)
-                .replaceAll("\\p{M}", "")
+                .normalize(
+                        texto.trim(),
+                        Normalizer.Form.NFD
+                )
+                .replaceAll(
+                        "\\p{M}",
+                        ""
+                )
                 .toLowerCase();
     }
+
 
     // =====================================================
     // BAJA LÓGICA
@@ -338,15 +501,19 @@ public class EmpleadoService {
                         idEmpleado
                 );
 
+
         empleado.setActivo(false);
+
 
         Usuario usuario =
                 buscarUsuarioDelEmpleado(
                         idEmpleado
                 );
 
+
         usuario.setActivo(false);
     }
+
 
     // =====================================================
     // REACTIVACIÓN
@@ -361,18 +528,30 @@ public class EmpleadoService {
                         idEmpleado
                 );
 
+
         empleado.setActivo(true);
+
 
         Usuario usuario =
                 buscarUsuarioDelEmpleado(
                         idEmpleado
                 );
 
+
         usuario.setActivo(true);
 
-        logger.info("Enviando correo de reactivación al empleado: {}", empleado.getEmail());
-        mailService.enviarMailReactivacion(empleado.getEmail());
+
+        logger.info(
+                "Enviando correo de reactivación al empleado: {}",
+                empleado.getEmail()
+        );
+
+
+        mailService.enviarMailReactivacion(
+                empleado.getEmail()
+        );
     }
+
 
     // =====================================================
     // BUSCAR EMPLEADO
@@ -386,6 +565,7 @@ public class EmpleadoService {
                 idEmpleado
         );
     }
+
 
     // =====================================================
     // MODIFICAR EMPLEADO
@@ -401,6 +581,17 @@ public class EmpleadoService {
                         idEmpleado
                 );
 
+
+        Usuario usuario =
+                buscarUsuarioDelEmpleado(
+                        idEmpleado
+                );
+
+
+        // -------------------------------------------------
+        // VALIDAR DNI
+        // -------------------------------------------------
+
         if (empleadoRepository.existsByDni(
                 dto.getDni())
                 && empleado.getDni()
@@ -411,8 +602,15 @@ public class EmpleadoService {
             );
         }
 
+
+        // -------------------------------------------------
+        // VALIDAR EMAIL
+        // -------------------------------------------------
+
         String email =
-                dto.getEmail().trim();
+                dto.getEmail()
+                        .trim();
+
 
         if (empleadoRepository.existsByEmail(email)
                 && !empleado
@@ -423,6 +621,28 @@ public class EmpleadoService {
                     "Ya existe otro empleado con ese email."
             );
         }
+
+
+        /*
+         * El email también es el username.
+         * Validamos que no esté siendo utilizado
+         * por otro Usuario.
+         */
+        if (!usuario
+                .getUsername()
+                .equalsIgnoreCase(email)
+                && usuarioRepository
+                .existsByUsername(email)) {
+
+            throw new IllegalArgumentException(
+                    "Ya existe otro usuario registrado con ese email."
+            );
+        }
+
+
+        // -------------------------------------------------
+        // ACTUALIZAR DATOS GENERALES
+        // -------------------------------------------------
 
         empleado.setNombre(
                 dto.getNombre().trim()
@@ -448,6 +668,20 @@ public class EmpleadoService {
                 dto.getFechaIngreso()
         );
 
+
+        // -------------------------------------------------
+        // SINCRONIZAR EMAIL Y USERNAME
+        // -------------------------------------------------
+
+        usuario.setUsername(
+                email
+        );
+
+
+        // -------------------------------------------------
+        // DATOS DEL COCINERO
+        // -------------------------------------------------
+
         if (empleado instanceof Cocinero cocinero) {
 
             if (dto.getRolCocina() == null
@@ -457,6 +691,7 @@ public class EmpleadoService {
                         "Debe seleccionar el rol de cocina."
                 );
             }
+
 
             try {
 
@@ -475,6 +710,11 @@ public class EmpleadoService {
                 );
             }
 
+
+        // -------------------------------------------------
+        // DATOS DEL CAJERO
+        // -------------------------------------------------
+
         } else if (empleado instanceof Cajero cajero) {
 
             if (dto.getTurno() == null
@@ -484,6 +724,7 @@ public class EmpleadoService {
                         "Debe seleccionar el turno del cajero."
                 );
             }
+
 
             try {
 
@@ -503,10 +744,17 @@ public class EmpleadoService {
             }
         }
 
+
+        usuarioRepository.save(
+                usuario
+        );
+
+
         return empleadoRepository.save(
                 empleado
         );
     }
+
 
     // =====================================================
     // UNIDAD DEL RESPONSABLE ACTUAL
@@ -518,6 +766,7 @@ public class EmpleadoService {
                 usuarioActualService
                         .obtenerUsuarioActual();
 
+
         if (usuario.getEmpleado() == null) {
 
             throw new IllegalArgumentException(
@@ -525,11 +774,13 @@ public class EmpleadoService {
             );
         }
 
+
         UnidadVenta unidadVenta =
                 unidadVentaService
                         .buscarUnidadDelResponsable(
                                 usuario.getUsername()
                         );
+
 
         if (unidadVenta == null) {
 
@@ -538,8 +789,10 @@ public class EmpleadoService {
             );
         }
 
+
         return unidadVenta;
     }
+
 
     // =====================================================
     // CONTROL DE ACCESO A EMPLEADOS
@@ -557,21 +810,40 @@ public class EmpleadoService {
                                 )
                         );
 
+
         UnidadVenta unidadVenta =
                 obtenerUnidadDelResponsableActual();
 
+
+        /*
+         * El Responsable no puede modificarse,
+         * darse de baja o reactivarse desde
+         * Gestión de Empleados.
+         */
         if (esResponsableDeUnidad(
                 empleado,
                 unidadVenta)) {
 
             throw new IllegalArgumentException(
-                    "El Responsable no puede modificarse, darse de baja o reactivarse desde la gestión de empleados."
+                    "El Responsable no puede modificarse, "
+                    + "darse de baja o reactivarse desde "
+                    + "la gestión de empleados."
             );
         }
 
+
+        /*
+         * Comprobamos solamente la asignación vigente.
+         *
+         * De esta forma un Responsable no puede administrar
+         * a alguien que trabajó anteriormente en su Unidad
+         * pero actualmente pertenece a otra.
+         */
         boolean perteneceAUnidad =
                 asignacionEmpleadoRepository
-                        .findByEmpleado(empleado)
+                        .findByEmpleado_IdEmpleadoAndFechaHastaIsNullOrderByFechaDesdeDesc(
+                                empleado.getIdEmpleado()
+                        )
                         .stream()
                         .anyMatch(
                                 asignacion ->
@@ -584,15 +856,19 @@ public class EmpleadoService {
                                                 )
                         );
 
+
         if (!perteneceAUnidad) {
 
             throw new IllegalArgumentException(
-                    "El empleado no pertenece a la Unidad de Venta del Responsable."
+                    "El empleado no pertenece actualmente "
+                    + "a la Unidad de Venta del Responsable."
             );
         }
 
+
         return empleado;
     }
+
 
     // =====================================================
     // USUARIO ASOCIADO AL EMPLEADO
@@ -604,22 +880,30 @@ public class EmpleadoService {
         return usuarioRepository
                 .findAll()
                 .stream()
+
                 .filter(
                         usuario ->
                                 usuario.getEmpleado()
                                         != null
+
                                         && usuario
                                         .getEmpleado()
                                         .getIdEmpleado()
-                                        .equals(idEmpleado)
+                                        .equals(
+                                                idEmpleado
+                                        )
                 )
+
                 .findFirst()
+
                 .orElseThrow(() ->
                         new IllegalArgumentException(
-                                "No se encontró el usuario asociado al empleado."
+                                "No se encontró el usuario "
+                                + "asociado al empleado."
                         )
                 );
     }
+
 
     // =====================================================
     // RESPONSABLE DE LA UNIDAD
@@ -629,9 +913,12 @@ public class EmpleadoService {
             Empleado empleado,
             UnidadVenta unidadVenta) {
 
-        if (unidadVenta.getResponsable() == null) {
+        if (unidadVenta.getResponsable()
+                == null) {
+
             return false;
         }
+
 
         return unidadVenta
                 .getResponsable()
@@ -640,6 +927,7 @@ public class EmpleadoService {
                         empleado.getIdEmpleado()
                 );
     }
+
 
     // =====================================================
     // FECHA DE INICIO DE ASIGNACIÓN
@@ -651,6 +939,7 @@ public class EmpleadoService {
         LocalDate hoy =
                 LocalDate.now();
 
+
         if (festival
                 .getFechaInicio()
                 .isAfter(hoy)) {
@@ -659,6 +948,20 @@ public class EmpleadoService {
                     .getFechaInicio();
         }
 
+
         return hoy;
+    }
+
+
+    // =====================================================
+    // LISTADO GENERAL
+    // ADMIN / REPORTES QUE NECESITEN TODOS LOS EMPLEADOS
+    // =====================================================
+
+    @Transactional(readOnly = true)
+    public List<Empleado> listarTodosLosEmpleados() {
+
+        return empleadoRepository
+                .findAllByOrderByDniAsc();
     }
 }

@@ -1,18 +1,12 @@
 <!DOCTYPE html>
-<html lang="es"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Epicentro Gourmet</title>
 
     <style>
-
         * {
             box-sizing: border-box;
             margin: 0;
@@ -24,7 +18,6 @@
             background: #f7f7f5;
             color: #1f2937;
         }
-
 
         /* =========================
            HEADER
@@ -43,7 +36,6 @@
             margin: 0 auto;
             min-height: 72px;
             padding: 0 24px;
-
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -78,10 +70,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-
             padding: 11px 18px;
             border-radius: 8px;
-
             font-weight: 700;
             text-decoration: none;
             border: none;
@@ -107,7 +97,6 @@
             background: #f3f4f6;
         }
 
-
         /* =========================
            HERO
            ========================= */
@@ -116,7 +105,6 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 70px 24px;
-
             display: grid;
             grid-template-columns: 1.1fr 0.9fr;
             gap: 50px;
@@ -125,16 +113,12 @@
 
         .hero-tag {
             display: inline-block;
-
             background: #ffedd5;
             color: #9a3412;
-
             padding: 7px 12px;
             border-radius: 30px;
-
             font-size: 14px;
             font-weight: 700;
-
             margin-bottom: 18px;
         }
 
@@ -166,22 +150,17 @@
         .hero-image {
             min-height: 390px;
             border-radius: 24px;
-
             background:
                 linear-gradient(
                     rgba(17, 24, 39, 0.08),
                     rgba(17, 24, 39, 0.25)
                 ),
                 url('/images/festival-gastronomico.jpg');
-
             background-size: cover;
             background-position: center;
-
             box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-
             display: flex;
             align-items: flex-end;
-
             padding: 24px;
         }
 
@@ -201,7 +180,6 @@
             color: #6b7280;
             font-size: 14px;
         }
-
 
         /* =========================
            SECCIONES
@@ -235,17 +213,14 @@
             font-size: 17px;
         }
 
-
         /* =========================
            FESTIVALES
            ========================= */
 
         .festival-grid {
             display: grid;
-
             grid-template-columns:
                 repeat(auto-fit, minmax(280px, 1fr));
-
             gap: 22px;
         }
 
@@ -254,7 +229,6 @@
             border: 1px solid #e5e7eb;
             border-radius: 16px;
             overflow: hidden;
-
             transition:
                 transform 0.2s ease,
                 box-shadow 0.2s ease;
@@ -267,18 +241,15 @@
 
         .festival-photo {
             height: 150px;
-
             background:
                 linear-gradient(
                     135deg,
                     #f59e0b,
                     #ea580c
                 );
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             font-size: 62px;
         }
 
@@ -288,13 +259,10 @@
 
         .festival-status {
             display: inline-block;
-
             padding: 6px 11px;
             border-radius: 20px;
-
             font-size: 12px;
             font-weight: 800;
-
             margin-bottom: 14px;
         }
 
@@ -328,11 +296,8 @@
         .festival-info {
             display: grid;
             gap: 9px;
-
             padding-top: 15px;
-
             border-top: 1px solid #e5e7eb;
-
             color: #6b7280;
             font-size: 14px;
         }
@@ -341,6 +306,13 @@
             color: #374151;
         }
 
+        .festival-actions {
+            margin-top: 20px;
+        }
+
+        .festival-actions .btn {
+            width: 100%;
+        }
 
         /* =========================
            EMPTY STATE
@@ -350,13 +322,10 @@
             background: white;
             border: 1px dashed #d1d5db;
             border-radius: 14px;
-
             padding: 45px;
             text-align: center;
-
             color: #6b7280;
         }
-
 
         /* =========================
            INFORMACIÓN
@@ -364,10 +333,8 @@
 
         .info-grid {
             display: grid;
-
             grid-template-columns:
                 repeat(auto-fit, minmax(230px, 1fr));
-
             gap: 20px;
         }
 
@@ -392,7 +359,6 @@
             line-height: 1.6;
         }
 
-
         /* =========================
            CTA RESPONSABLE
            ========================= */
@@ -400,15 +366,11 @@
         .business-cta {
             background: #111827;
             color: white;
-
             border-radius: 22px;
-
             padding: 46px;
-
             display: flex;
             justify-content: space-between;
             align-items: center;
-
             gap: 30px;
         }
 
@@ -422,7 +384,6 @@
             line-height: 1.6;
         }
 
-
         /* =========================
            FOOTER
            ========================= */
@@ -430,14 +391,10 @@
         footer {
             background: #0f172a;
             color: #cbd5e1;
-
             text-align: center;
-
             padding: 30px 20px;
-
             font-size: 14px;
         }
-
 
         /* =========================
            RESPONSIVE
@@ -464,14 +421,11 @@
 
             .nav {
                 flex-wrap: wrap;
-
                 padding-top: 12px;
                 padding-bottom: 12px;
             }
         }
-
     </style>
-
 </head>
 
 
@@ -486,11 +440,8 @@
 
     <nav class="nav">
 
-        <a th:href="@{/}"
-           class="brand">
-
+        <a th:href="@{/}" class="brand">
             Epicentro <span>Gourmet</span>
-
         </a>
 
 
@@ -498,54 +449,42 @@
 
             <a href="#festivales"
                class="nav-link">
-
                 Festivales
-
             </a>
 
 
             <a th:if="${!autenticado}"
                th:href="@{/login}"
                class="btn btn-outline">
-
                 Iniciar sesión
-
             </a>
 
 
             <a th:if="${!autenticado}"
                th:href="@{/registro/responsable}"
                class="btn btn-primary">
-
                 Registrar mi negocio
-
             </a>
 
 
             <a th:if="${autenticado and esAdmin}"
                th:href="@{/admin}"
                class="btn btn-primary">
-
                 Ir a Administración
-
             </a>
 
 
             <a th:if="${autenticado and esResponsable}"
                th:href="@{/responsable}"
                class="btn btn-primary">
-
                 Ir a mi Unidad
-
             </a>
 
 
             <a th:if="${autenticado and esEmpleado}"
                th:href="@{/empleado}"
                class="btn btn-primary">
-
                 Ir a mi Panel
-
             </a>
 
         </div>
@@ -553,7 +492,6 @@
     </nav>
 
 </header>
-
 
 
 <!-- =====================================================
@@ -568,41 +506,29 @@
             🍴 Festivales gastronómicos
         </span>
 
-
         <h1>
-
             Viví una experiencia
             <span>gourmet</span>
             diferente.
-
         </h1>
 
-
         <p>
-
             Descubrí los próximos festivales de Epicentro Gourmet,
             conocé las propuestas gastronómicas participantes y
             encontrá nuevas experiencias para disfrutar.
-
         </p>
-
 
         <div class="hero-actions">
 
             <a href="#festivales"
                class="btn btn-primary">
-
                 Ver festivales
-
             </a>
-
 
             <a th:if="${!autenticado}"
                th:href="@{/registro/responsable}"
                class="btn btn-outline">
-
                 Participar con mi negocio
-
             </a>
 
         </div>
@@ -629,13 +555,11 @@
 </section>
 
 
-
 <!-- =====================================================
      FESTIVALES
      ===================================================== -->
 
-<section class="section"
-         id="festivales">
+<section class="section" id="festivales">
 
     <div class="container">
 
@@ -661,8 +585,6 @@
                      th:each="festival : ${festivales}">
 
 
-                <!-- IMAGEN / ICONO -->
-
                 <div class="festival-photo">
 
                     <span th:if="${festival.fechaInicio.isAfter(hoy)}">
@@ -684,47 +606,29 @@
                 <div class="festival-content">
 
 
-                    <!-- ESTADO: PRÓXIMO -->
-
                     <span class="festival-status status-future"
                           th:if="${festival.fechaInicio.isAfter(hoy)}">
-
                         PRÓXIMAMENTE
-
                     </span>
 
-
-                    <!-- ESTADO: EN CURSO -->
 
                     <span class="festival-status status-current"
                           th:if="${!festival.fechaInicio.isAfter(hoy)
                                  and !festival.fechaFin.isBefore(hoy)}">
-
                         EN CURSO
-
                     </span>
 
-
-                    <!-- ESTADO: FINALIZADO -->
 
                     <span class="festival-status status-finished"
                           th:if="${festival.fechaFin.isBefore(hoy)}">
-
                         FINALIZADO
-
                     </span>
 
 
-                    <!-- NOMBRE -->
-
                     <h3 th:text="${festival.nombre}">
-
                         Nombre del Festival
-
                     </h3>
 
-
-                    <!-- DESCRIPCIÓN -->
 
                     <p class="festival-description">
 
@@ -740,13 +644,9 @@
                     </p>
 
 
-                    <!-- INFORMACIÓN -->
-
                     <div class="festival-info">
 
-
                         <div>
-
                             <strong>
                                 🍂 Temporada:
                             </strong>
@@ -754,12 +654,10 @@
                             <span th:text="${festival.temporada}">
                                 Temporada
                             </span>
-
                         </div>
 
 
                         <div>
-
                             <strong>
                                 📅 Fecha de inicio:
                             </strong>
@@ -768,16 +666,12 @@
                                     festival.fechaInicio,
                                     'dd/MM/yyyy'
                             )}">
-
                                 Inicio
-
                             </span>
-
                         </div>
 
 
                         <div>
-
                             <strong>
                                 📅 Fecha de finalización:
                             </strong>
@@ -786,12 +680,26 @@
                                     festival.fechaFin,
                                     'dd/MM/yyyy'
                             )}">
-
                                 Fin
-
                             </span>
-
                         </div>
+
+                    </div>
+
+
+                    <!-- NUEVO: DETALLE PÚBLICO -->
+
+                    <div class="festival-actions">
+
+                        <a
+                            th:href="@{/festivales/{idFestival}(
+                                idFestival=${festival.idFestival}
+                            )}"
+                            class="btn btn-primary">
+
+                            Ver festival
+
+                        </a>
 
                     </div>
 
@@ -801,8 +709,6 @@
 
         </div>
 
-
-        <!-- SIN FESTIVALES -->
 
         <div class="empty-state"
              th:if="${#lists.isEmpty(festivales)}">
@@ -820,7 +726,6 @@
     </div>
 
 </section>
-
 
 
 <!-- =====================================================
@@ -919,13 +824,11 @@
 
             </div>
 
-
         </div>
 
     </div>
 
 </section>
-
 
 
 <!-- =====================================================
@@ -955,9 +858,7 @@
 
             <a th:href="@{/registro/responsable}"
                class="btn btn-primary">
-
                 Registrar mi negocio
-
             </a>
 
         </div>
@@ -967,17 +868,14 @@
 </section>
 
 
-
 <!-- =====================================================
      FOOTER
      ===================================================== -->
 
 <footer>
-
     Epicentro Gourmet ·
     Programación Orientada a Objetos II ·
     Universidad Nacional de Lanús
-
 </footer>
 
 

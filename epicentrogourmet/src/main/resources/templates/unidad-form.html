@@ -5,7 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Registrar Unidad de Venta - Epicentro Gourmet</title>
+    <title th:text="${modoPublico}
+            ? 'Registrar mi negocio - Epicentro Gourmet'
+            : 'Registrar Unidad de Venta - Epicentro Gourmet'">
+        Registrar Unidad de Venta - Epicentro Gourmet
+    </title>
 
     <style>
         * {
@@ -57,6 +61,18 @@
 
         .page-header p {
             color: #6d6d6d;
+            line-height: 1.5;
+        }
+
+        .public-info {
+            background: #eef1ff;
+            border: 1px solid #d8ddff;
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 25px;
+            color: #27336f;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
         .card {
@@ -190,6 +206,7 @@
             font-size: 13px;
             margin-top: -12px;
             margin-bottom: 20px;
+            line-height: 1.5;
         }
 
         @media (max-width: 750px) {
@@ -215,8 +232,16 @@
 
     <h1>Epicentro Gourmet</h1>
 
-    <a th:href="@{/}">
+    <a
+        th:if="${modoPublico}"
+        th:href="@{/}">
         ← Volver a festivales
+    </a>
+
+    <a
+        th:unless="${modoPublico}"
+        th:href="@{/admin}">
+        ← Volver al panel
     </a>
 
 </nav>
@@ -226,17 +251,38 @@
 
     <div class="page-header">
 
-        <h2>Registrar Unidad de Venta</h2>
+        <h2
+            th:text="${modoPublico}
+                ? 'Registrá tu negocio'
+                : 'Registrar Unidad de Venta'">
+            Registrar Unidad de Venta
+        </h2>
 
-        <p>
-            Registrá la nueva unidad junto con su responsable
-            y las credenciales de acceso al sistema.
+        <p th:if="${modoPublico}">
+            Completá tus datos y los de tu Unidad de Venta
+            para participar de uno de los festivales disponibles.
+        </p>
+
+        <p th:unless="${modoPublico}">
+            Registrá una nueva Unidad de Venta junto con su responsable.
         </p>
 
     </div>
 
 
+    <div
+        th:if="${modoPublico}"
+        class="public-info">
+
+        Al completar el registro se creará tu cuenta de Responsable.
+        Tu email será utilizado como nombre de usuario y recibirás allí
+        una contraseña generada automáticamente para ingresar al sistema.
+
+    </div>
+
+
     <!-- ERROR GENERAL -->
+
     <div
         th:if="${errorGeneral}"
         class="alert alert-error"
@@ -245,6 +291,7 @@
 
 
     <!-- ÉXITO -->
+
     <div
         th:if="${mensajeExito}"
         class="alert alert-success"
@@ -253,12 +300,17 @@
 
 
     <form
-        th:action="@{/admin/unidades/nueva}"
+        th:action="${modoPublico}
+            ? @{/registro/responsable}
+            : @{/admin/unidades/nueva}"
         th:object="${registroUnidad}"
         method="post">
 
 
-        <!-- 1. UNIDAD -->
+        <!-- ================================================= -->
+        <!-- 1. DATOS DE LA UNIDAD -->
+        <!-- ================================================= -->
+
         <section class="card">
 
             <h3>1. Datos de la Unidad de Venta</h3>
@@ -399,11 +451,16 @@
 
 
             <!-- FOOD TRUCK -->
+
             <div
                 id="datosFoodTruck"
                 class="conditional-section">
 
-                <hr style="margin: 28px 0; border: 0; border-top: 1px solid #eee;">
+                <hr style="
+                    margin: 28px 0;
+                    border: 0;
+                    border-top: 1px solid #eee;
+                ">
 
                 <h3>Datos del Food Truck</h3>
 
@@ -443,11 +500,16 @@
 
 
             <!-- PUESTO DESARMABLE -->
+
             <div
                 id="datosPuesto"
                 class="conditional-section">
 
-                <hr style="margin: 28px 0; border: 0; border-top: 1px solid #eee;">
+                <hr style="
+                    margin: 28px 0;
+                    border: 0;
+                    border-top: 1px solid #eee;
+                ">
 
                 <h3>Datos del Puesto Desarmable</h3>
 
@@ -489,16 +551,24 @@
         </section>
 
 
+        <!-- ================================================= -->
+        <!-- 2. DATOS DEL RESPONSABLE -->
+        <!-- ================================================= -->
 
-        <!-- 2. RESPONSABLE -->
         <section class="card">
 
             <h3>2. Datos del Responsable</h3>
 
-            <p class="section-note">
-                El responsable también será registrado como empleado
-                de la unidad.
+            <p class="section-note" th:if="${modoPublico}">
+                Estos datos se utilizarán para crear tu cuenta
+                de Responsable de la Unidad de Venta.
             </p>
+
+            <p class="section-note" th:unless="${modoPublico}">
+                Ingresá los datos de la persona responsable
+                de la Unidad de Venta.
+            </p>
+
 
             <div class="form-grid">
 
@@ -551,6 +621,7 @@
 
                     <input
                         type="number"
+                        min="1"
                         id="dniResponsable"
                         th:field="*{dniResponsable}">
 
@@ -584,7 +655,6 @@
                 </div>
 
 
-                <!-- FECHA NACIMIENTO -->
                 <div class="form-group">
 
                     <label for="fechaNacimientoResponsable">
@@ -596,14 +666,12 @@
                         id="fechaNacimientoResponsable"
                         th:field="*{fechaNacimientoResponsable}">
 
-                    <!-- Fecha inválida -->
                     <span
                         class="field-error"
                         th:if="${#fields.hasErrors('fechaNacimientoResponsable')}"
                         th:errors="*{fechaNacimientoResponsable}">
                     </span>
 
-                    <!-- Menor de edad -->
                     <span
                         class="field-error"
                         th:if="${#fields.hasErrors('mayorDeEdad')}"
@@ -612,153 +680,59 @@
 
                 </div>
 
-
-                <!-- FECHA INGRESO -->
-                <div class="form-group">
-
-                    <label for="fechaIngresoResponsable">
-                        Fecha de ingreso
-                    </label>
-
-                    <input
-                        type="date"
-                        id="fechaIngresoResponsable"
-                        th:field="*{fechaIngresoResponsable}">
-
-                    <span
-                        class="field-error"
-                        th:if="${#fields.hasErrors('fechaIngresoResponsable')}"
-                        th:errors="*{fechaIngresoResponsable}">
-                    </span>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="tipoEmpleado">
-                        Tipo de empleado
-                    </label>
-
-                    <select
-                        id="tipoEmpleado"
-                        th:field="*{tipoEmpleado}"
-                        onchange="actualizarTipoEmpleado()">
-
-                        <option value="">
-                            Seleccionar...
-                        </option>
-
-                        <option value="COCINERO">
-                            Personal de cocina
-                        </option>
-
-                        <option value="CAJERO">
-                            Cajero
-                        </option>
-
-                    </select>
-
-                    <span
-                        class="field-error"
-                        th:if="${#fields.hasErrors('tipoEmpleado')}"
-                        th:errors="*{tipoEmpleado}">
-                    </span>
-
-                </div>
-
-
-                <!-- COCINERO -->
-                <div
-                    id="datosCocinero"
-                    class="form-group conditional-section">
-
-                    <label for="rolCocina">
-                        Rol de cocina
-                    </label>
-
-                    <select
-                        id="rolCocina"
-                        th:field="*{rolCocina}">
-
-                        <option value="">
-                            Seleccionar...
-                        </option>
-
-                        <option value="COCINERO">
-                            Cocinero
-                        </option>
-
-                        <option value="AYUDANTE">
-                            Ayudante
-                        </option>
-
-                        <option value="LAVAPLATOS">
-                            Lavaplatos
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <!-- CAJERO -->
-                <div
-                    id="datosCajero"
-                    class="form-group conditional-section">
-
-                    <label for="turno">
-                        Turno
-                    </label>
-
-                    <select
-                        id="turno"
-                        th:field="*{turno}">
-
-                        <option value="">
-                            Seleccionar...
-                        </option>
-
-                        <option value="MANANA">
-                            Mañana
-                        </option>
-
-                        <option value="NOCHE">
-                            Noche
-                        </option>
-
-                    </select>
-
-                </div>
-
             </div>
 
         </section>
 
 
-
+        <!-- ================================================= -->
         <!-- 3. CREDENCIALES -->
+        <!-- ================================================= -->
+
         <section class="card">
 
             <h3>3. Credenciales del Responsable</h3>
 
             <p class="section-note">
-                El email ingresado será el usuario de acceso. Se enviará allí
-                una contraseña autogenerada; asegurate de que el email sea correcto.
+
+                El email ingresado será utilizado como nombre de usuario.
+
+                <span th:if="${modoPublico}">
+                    Cuando completes el registro recibirás allí
+                    una contraseña generada automáticamente.
+                </span>
+
+                <span th:unless="${modoPublico}">
+                    La contraseña será generada automáticamente
+                    y enviada al email del Responsable.
+                </span>
+
             </p>
 
 
             <div class="actions">
 
                 <a
+                    th:if="${modoPublico}"
                     th:href="@{/}"
                     class="btn btn-secondary">
                     Cancelar
                 </a>
 
+                <a
+                    th:unless="${modoPublico}"
+                    th:href="@{/admin}"
+                    class="btn btn-secondary">
+                    Cancelar
+                </a>
+
+
                 <button
                     type="submit"
-                    class="btn btn-primary">
+                    class="btn btn-primary"
+                    th:text="${modoPublico}
+                        ? 'Registrar mi negocio'
+                        : 'Registrar unidad'">
 
                     Registrar unidad
 
@@ -771,7 +745,6 @@
     </form>
 
 </main>
-
 
 
 <script>
@@ -801,37 +774,11 @@
     }
 
 
-    function actualizarTipoEmpleado() {
-
-        const tipo =
-            document.getElementById("tipoEmpleado").value;
-
-        const cocinero =
-            document.getElementById("datosCocinero");
-
-        const cajero =
-            document.getElementById("datosCajero");
-
-
-        cocinero.style.display =
-            tipo === "COCINERO"
-                ? "flex"
-                : "none";
-
-
-        cajero.style.display =
-            tipo === "CAJERO"
-                ? "flex"
-                : "none";
-    }
-
-
     document.addEventListener(
         "DOMContentLoaded",
         function () {
 
             actualizarTipoUnidad();
-            actualizarTipoEmpleado();
 
         }
     );

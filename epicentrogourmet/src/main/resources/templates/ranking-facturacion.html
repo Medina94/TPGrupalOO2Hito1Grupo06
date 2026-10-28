@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Ranking de Facturación
+    </title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+
+
+<header class="topbar">
+
+    <div class="brand">
+        Epicentro Gourmet
+    </div>
+
+    <div class="topbar-user">
+
+        <span>
+            Administración
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="logout-button">
+
+                Cerrar sesión
+
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<div class="app-layout">
+
+
+    <div th:replace="~{fragments/sidebar :: adminSidebar}">
+    </div>
+
+
+    <main class="main-content">
+
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>
+                    Ranking de Facturación
+                </h1>
+
+                <p>
+                    Consultá las Unidades de Venta ordenadas
+                    por el total de sus ventas en cada Festival.
+                </p>
+
+            </div>
+
+
+            <a th:href="@{/admin}"
+               class="btn btn-outline">
+
+                Volver al panel
+
+            </a>
+
+        </div>
+
+
+        <section class="panel">
+
+
+            <div class="panel-header">
+
+                <h2>
+                    Seleccionar Festival
+                </h2>
+
+                <span class="badge"
+                      th:text="${#lists.size(festivales) + ' festivales'}">
+
+                    0 festivales
+
+                </span>
+
+            </div>
+
+
+            <div class="table-responsive"
+                 th:if="${!#lists.isEmpty(festivales)}">
+
+
+                <table>
+
+
+                    <thead>
+
+                    <tr>
+
+                        <th>Festival</th>
+
+                        <th>Temporada</th>
+
+                        <th>Fecha de inicio</th>
+
+                        <th>Fecha de fin</th>
+
+                        <th>Acciones</th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    <tr th:each="festival : ${festivales}">
+
+                        <td>
+
+                            <strong th:text="${festival.nombre}">
+                                Festival
+                            </strong>
+
+                        </td>
+
+                        <td th:text="${festival.temporada}">
+                            Temporada
+                        </td>
+
+                        <td th:text="${festival.fechaInicio}">
+                            Fecha inicio
+                        </td>
+
+                        <td th:text="${festival.fechaFin}">
+                            Fecha fin
+                        </td>
+
+                        <td>
+
+                            <a th:href="@{/admin/reportes/ranking-facturacion(idFestival=${festival.idFestival})}"
+                               class="btn btn-primary">
+
+                                Ver ranking
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="empty-state"
+                 th:if="${#lists.isEmpty(festivales)}">
+
+                <strong>
+                    No hay Festivales registrados.
+                </strong>
+
+                Para generar el reporte,
+                primero debe existir al menos un Festival.
+
+            </div>
+
+        </section>
+
+
+        <section class="panel"
+                 th:if="${festivalSeleccionado != null}">
+
+
+            <div class="panel-header">
+
+                <h2>
+
+                    Ranking de
+
+                    <span th:text="${festivalSeleccionado.nombre}">
+                        Festival
+                    </span>
+
+                </h2>
+
+                <span class="badge"
+                      th:text="${#maps.size(ranking) + ' unidades'}">
+
+                    0 unidades
+
+                </span>
+
+            </div>
+
+
+            <div class="table-responsive"
+                 th:if="${!ranking.isEmpty()}">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>Puesto</th>
+
+                        <th>Unidad de Venta</th>
+
+                        <th>Facturación total</th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="entrada, estado : ${ranking}">
+
+                        <td th:text="${estado.count}">
+                            1
+                        </td>
+
+                        <td th:text="${entrada.key.nombreComercial}">
+                            Unidad
+                        </td>
+
+                        <td th:text="${#numbers.formatDecimal(
+                                entrada.value,
+                                1,
+                                'POINT',
+                                2,
+                                'COMMA'
+                        )}">
+
+                            0,00
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="empty-state"
+                 th:if="${ranking.isEmpty()}">
+
+                <strong>
+                    Este Festival todavía no tiene ventas registradas.
+                </strong>
+
+                Cuando se registren pedidos,
+                aparecerán las unidades ordenadas por facturación.
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

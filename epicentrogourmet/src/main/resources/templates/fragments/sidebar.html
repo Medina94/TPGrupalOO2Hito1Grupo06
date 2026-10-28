@@ -1,16 +1,12 @@
 <!DOCTYPE html>
-<html lang="es"
-      xmlns:th="http://www.thymeleaf.org">
-
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <body>
-
 
 <!-- =====================================================
      ADMINISTRADOR
      ===================================================== -->
 
-<aside th:fragment="adminSidebar"
-       class="sidebar">
+<aside th:fragment="adminSidebar" class="sidebar">
 
     <div class="sidebar-title">
         Administración
@@ -18,114 +14,63 @@
 
     <nav class="sidebar-nav">
 
-        <a th:href="@{/admin}"
-           class="sidebar-link">
-
+        <!-- INICIO -->
+        <a th:href="@{/admin}" class="sidebar-link">
             <span class="sidebar-icon">⌂</span>
             <span class="sidebar-text">Inicio</span>
-
         </a>
 
-
+        <!-- FESTIVALES -->
         <div class="sidebar-section">
             FESTIVALES
         </div>
 
-
-        <a th:href="@{/admin#festivales}"
-           class="sidebar-link">
-
-            <span class="sidebar-icon">🎪</span>
+        <a th:href="@{/admin#festivales}" class="sidebar-link">
+            <span class="sidebar-icon">🏟️</span>
             <span class="sidebar-text">Festivales</span>
-
         </a>
 
-
-        <a th:href="@{/admin/unidades/nueva}"
-           class="sidebar-link">
-
-            <span class="sidebar-icon">🏪</span>
-            <span class="sidebar-text">Nueva Unidad</span>
-
-        </a>
-
-
-        <a th:href="@{/admin/festivales/costos}"
-           class="sidebar-link">
-
-            <span class="sidebar-icon">💲</span>
+        <a th:href="@{/admin/festivales/costos}" class="sidebar-link">
+            <span class="sidebar-icon">💰</span>
             <span class="sidebar-text">Costos de Festivales</span>
-
         </a>
 
-
+        <!-- SUPERVISIÓN -->
         <div class="sidebar-section">
-            PERSONAL
+            SUPERVISIÓN
         </div>
 
-
-        <div class="sidebar-link disabled">
-
+        <a th:href="@{/admin/empleados}" class="sidebar-link">
             <span class="sidebar-icon">👥</span>
+            <span class="sidebar-text">Empleados</span>
+        </a>
 
-            <span class="sidebar-text">
-
-                Empleados
-
-                <small>
-                    Próximamente
-                </small>
-
-            </span>
-
-        </div>
-
-
+        <!-- REPORTES -->
         <div class="sidebar-section">
             REPORTES
         </div>
 
-
-        <div class="sidebar-link disabled">
-
+        <a th:href="@{/admin/reportes/ranking-facturacion}"
+           class="sidebar-link">
             <span class="sidebar-icon">📊</span>
-
-            <span class="sidebar-text">
-
-                Ranking de facturación
-
-                <small>
-                    Próximamente
-                </small>
-
-            </span>
-
-        </div>
-
+            <span class="sidebar-text">Ranking de facturación</span>
+        </a>
 
         <a th:href="@{/admin/reportes/mayores-canones}"
            class="sidebar-link">
-
-            <span class="sidebar-icon">💰</span>
-
-            <span class="sidebar-text">
-                Mayores cánones
-            </span>
-
+            <span class="sidebar-icon">📈</span>
+            <span class="sidebar-text">Mayores cánones</span>
         </a>
 
     </nav>
-
 </aside>
-
 
 
 <!-- =====================================================
      RESPONSABLE
      ===================================================== -->
 
-<aside th:fragment="responsableSidebar"
-       class="sidebar">
+<aside th:fragment="responsableSidebar" class="sidebar">
 
     <div class="sidebar-title">
         Mi Unidad
@@ -133,126 +78,81 @@
 
     <nav class="sidebar-nav">
 
-        <a th:href="@{/responsable}"
-           class="sidebar-link">
-
+        <!-- INICIO -->
+        <a th:href="@{/responsable}" class="sidebar-link">
             <span class="sidebar-icon">⌂</span>
             <span class="sidebar-text">Inicio</span>
-
         </a>
 
-
+        <!-- UNIDAD DE VENTA -->
         <div class="sidebar-section">
             UNIDAD DE VENTA
         </div>
 
-
-        <a th:href="@{/responsable}"
-           class="sidebar-link">
-
+        <a th:href="@{/responsable}" class="sidebar-link">
             <span class="sidebar-icon">🏪</span>
             <span class="sidebar-text">Mi Unidad</span>
-
         </a>
-
 
         <a th:href="@{/responsable/mi-unidad/canon}"
            class="sidebar-link">
-
             <span class="sidebar-icon">💰</span>
             <span class="sidebar-text">Consultar Canon</span>
-
         </a>
 
-
         <div class="sidebar-link disabled">
-
             <span class="sidebar-icon">🍽️</span>
-
             <span class="sidebar-text">
-
                 Platos
-
-                <small>
-                    Próximamente
-                </small>
-
+                <small>Próximamente</small>
             </span>
-
         </div>
 
-
+        <!-- EMPLEADOS -->
         <div class="sidebar-section">
             EMPLEADOS
         </div>
 
-
         <a th:href="@{/responsable/empleados}"
            class="sidebar-link">
-
             <span class="sidebar-icon">👥</span>
-
-            <span class="sidebar-text">
-                Gestión de empleados
-            </span>
-
+            <span class="sidebar-text">Gestión de empleados</span>
         </a>
-
 
         <a th:href="@{/responsable/sueldos}"
            class="sidebar-link">
-
             <span class="sidebar-icon">💵</span>
-
-            <span class="sidebar-text">
-                Liquidar sueldos
-            </span>
-
+            <span class="sidebar-text">Liquidar sueldos</span>
         </a>
 
-
+        <!-- GESTIÓN -->
         <div class="sidebar-section">
             GESTIÓN
         </div>
 
-
         <div class="sidebar-link disabled">
-
-            <span class="sidebar-icon">🧾</span>
-
+            <span class="sidebar-icon">🛒</span>
             <span class="sidebar-text">
-
                 Ventas
-
-                <small>
-                    Próximamente
-                </small>
-
+                <small>Próximamente</small>
             </span>
-
         </div>
 
-
-		<a th:href="@{/rentabilidad/consultar}"
-		   class="sidebar-link">
-		    <span class="sidebar-icon">📈</span>
-		    <span class="sidebar-text">
-		        Rentabilidad
-		    </span>
-		</a>
+        <a th:href="@{/rentabilidad/consultar}"
+           class="sidebar-link">
+            <span class="sidebar-icon">📊</span>
+            <span class="sidebar-text">Rentabilidad</span>
+        </a>
 
     </nav>
-
 </aside>
-
 
 
 <!-- =====================================================
      EMPLEADO
      ===================================================== -->
 
-<aside th:fragment="empleadoSidebar"
-       class="sidebar">
+<aside th:fragment="empleadoSidebar" class="sidebar">
 
     <div class="sidebar-title">
         Mi información
@@ -260,125 +160,80 @@
 
     <nav class="sidebar-nav">
 
-
         <!-- INICIO -->
-
-        <a th:href="@{/empleado}"
-           class="sidebar-link">
-
+        <a th:href="@{/empleado}" class="sidebar-link">
             <span class="sidebar-icon">⌂</span>
-
-            <span class="sidebar-text">
-                Inicio
-            </span>
-
+            <span class="sidebar-text">Inicio</span>
         </a>
 
-
         <!-- TRABAJO -->
-
         <div class="sidebar-section">
             TRABAJO
         </div>
 
-
-        <a th:href="@{/empleado/actual}"
-           class="sidebar-link">
-
-            <span class="sidebar-icon">🏪</span>
-
-            <span class="sidebar-text">
-                Festival y Unidad actual
-            </span>
-
-        </a>
-
-
-        <a th:href="@{/empleado/historial}"
-           class="sidebar-link">
-
+        <a th:href="@{/empleado/actual}" class="sidebar-link">
             <span class="sidebar-icon">📅</span>
-
-            <span class="sidebar-text">
-                Historial laboral
-            </span>
-
+            <span class="sidebar-text">Festival y Unidad actual</span>
         </a>
 
+        <a th:href="@{/empleado/historial}" class="sidebar-link">
+            <span class="sidebar-icon">📋</span>
+            <span class="sidebar-text">Historial laboral</span>
+        </a>
 
         <!-- PEDIDOS -->
-
         <div class="sidebar-section">
             PEDIDOS
         </div>
 
-
         <a th:href="@{/empleado/pedidos/nuevo}"
            class="sidebar-link">
-
-            <span class="sidebar-icon">🧾</span>
-
-            <span class="sidebar-text">
-                Nuevo pedido
-            </span>
-
+            <span class="sidebar-icon">🛒</span>
+            <span class="sidebar-text">Nuevo pedido</span>
         </a>
 
-
         <!-- HABERES -->
-
         <div class="sidebar-section">
             HABERES
         </div>
 
-
-        <a th:href="@{/empleado/sueldos}"
-           class="sidebar-link">
-
+        <a th:href="@{/empleado/sueldos}" class="sidebar-link">
             <span class="sidebar-icon">💵</span>
-
-            <span class="sidebar-text">
-                Mis sueldos
-            </span>
-
+            <span class="sidebar-text">Mis sueldos</span>
         </a>
 
-
         <div class="sidebar-link disabled">
-
             <span class="sidebar-icon">📄</span>
-
             <span class="sidebar-text">
-
                 Recibos PDF
-
-                <small>
-                    Próximamente
-                </small>
-
+                <small>Próximamente</small>
             </span>
-
         </div>
 
+        <!-- =================================================
+             CAJERO
+             ================================================= -->
 
-
-        <!-- CAJERO -->
-        <div class="sidebar-section">
+        <div class="sidebar-section"
+             th:if="${empleado instanceof T(com.grupo06.epicentrogourmet.entity.Cajero)}">
             CAJERO
         </div>
 
         <a th:href="@{/cierre-caja/agregar}"
            class="sidebar-link"
            th:if="${empleado instanceof T(com.grupo06.epicentrogourmet.entity.Cajero)}">
-            <span class="sidebar-icon">💰</span>
+
+            <span class="sidebar-icon">🧾</span>
+
             <span class="sidebar-text">
                 Cierre de caja
-                <small>
-                    Solo Cajeros
-                </small>
+                <small>Solo Cajeros</small>
             </span>
+
         </a>
+
     </nav>
 </aside>
+
 </body>
 </html>
