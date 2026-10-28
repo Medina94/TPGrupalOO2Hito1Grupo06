@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${festival.nombre + ' - Epicentro Gourmet'}">
+        Festival - Epicentro Gourmet
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f7f5;
+            color: #1f2937;
+        }
+
+        /* =========================
+           HEADER
+           ========================= */
+
+        .public-header {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 72px;
+            padding: 0 24px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 800;
+            text-decoration: none;
+            color: #111827;
+        }
+
+        .brand span {
+            color: #d97706;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-link {
+            color: #374151;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 14px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 11px 18px;
+            border-radius: 8px;
+
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #d97706;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #b45309;
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1px solid #d1d5db;
+            color: #374151;
+        }
+
+        .btn-outline:hover {
+            background: #f3f4f6;
+        }
+
+        /* =========================
+           HERO FESTIVAL
+           ========================= */
+
+        .festival-hero {
+            background:
+                linear-gradient(
+                    135deg,
+                    #f59e0b,
+                    #ea580c
+                );
+
+            color: white;
+            padding: 65px 24px;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            margin-bottom: 28px;
+        }
+
+        .festival-status {
+            display: inline-block;
+
+            padding: 7px 13px;
+            border-radius: 30px;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            margin-bottom: 18px;
+        }
+
+        .status-current {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-future {
+            background: #fff7ed;
+            color: #9a3412;
+        }
+
+        .status-finished {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .festival-hero h1 {
+            font-size: 46px;
+            line-height: 1.1;
+            margin-bottom: 15px;
+        }
+
+        .festival-hero p {
+            font-size: 18px;
+            line-height: 1.6;
+            max-width: 700px;
+            color: #fff7ed;
+        }
+
+        /* =========================
+           DATOS DEL FESTIVAL
+           ========================= */
+
+        .section {
+            padding: 60px 24px;
+        }
+
+        .section-white {
+            background: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .festival-data {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .data-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 24px;
+        }
+
+        .data-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .data-label {
+            color: #6b7280;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .data-value {
+            color: #111827;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        /* =========================
+           UNIDADES
+           ========================= */
+
+        .section-heading {
+            margin-bottom: 30px;
+        }
+
+        .section-heading h2 {
+            color: #111827;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .section-heading p {
+            color: #6b7280;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .unidad-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
+        }
+
+        .unidad-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            background: white;
+            overflow: hidden;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .unidad-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 30px rgba(0,0,0,0.08);
+        }
+
+        .unidad-top {
+            background: #111827;
+            color: white;
+
+            min-height: 110px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 44px;
+        }
+
+        .unidad-content {
+            padding: 24px;
+        }
+
+        .unidad-type {
+            display: inline-block;
+            background: #ffedd5;
+            color: #9a3412;
+
+            border-radius: 20px;
+
+            padding: 6px 10px;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            margin-bottom: 13px;
+        }
+
+        .unidad-content h3 {
+            color: #111827;
+            font-size: 22px;
+            margin-bottom: 17px;
+        }
+
+        .unidad-info {
+            display: grid;
+            gap: 10px;
+
+            border-top: 1px solid #e5e7eb;
+            padding-top: 16px;
+
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .unidad-info strong {
+            color: #374151;
+        }
+
+        /* =========================
+           EMPTY
+           ========================= */
+
+        .empty-state {
+            border: 1px dashed #d1d5db;
+            border-radius: 16px;
+
+            background: #f9fafb;
+
+            padding: 50px 25px;
+
+            text-align: center;
+        }
+
+        .empty-state .icon {
+            font-size: 44px;
+            margin-bottom: 15px;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .empty-state p {
+            color: #6b7280;
+        }
+
+        /* =========================
+           CTA
+           ========================= */
+
+        .cta {
+            background: #111827;
+            color: white;
+
+            border-radius: 20px;
+
+            padding: 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 30px;
+        }
+
+        .cta h2 {
+            margin-bottom: 8px;
+        }
+
+        .cta p {
+            color: #d1d5db;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           FOOTER
+           ========================= */
+
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+
+            text-align: center;
+
+            padding: 30px 20px;
+
+            font-size: 14px;
+        }
+
+        /* =========================
+           RESPONSIVE
+           ========================= */
+
+        @media (max-width: 800px) {
+
+            .festival-hero h1 {
+                font-size: 36px;
+            }
+
+            .cta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav {
+                flex-wrap: wrap;
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
+<header class="public-header">
+
+    <nav class="nav">
+
+        <a th:href="@{/}"
+           class="brand">
+
+            Epicentro <span>Gourmet</span>
+
+        </a>
+
+
+        <div class="nav-links">
+
+            <a th:href="@{/}"
+               class="nav-link">
+                Festivales
+            </a>
+
+
+            <a th:if="${!autenticado}"
+               th:href="@{/login}"
+               class="btn btn-outline">
+                Iniciar sesión
+            </a>
+
+
+            <a th:if="${!autenticado}"
+               th:href="@{/registro/responsable}"
+               class="btn btn-primary">
+                Registrar mi negocio
+            </a>
+
+
+            <a th:if="${autenticado and esAdmin}"
+               th:href="@{/admin}"
+               class="btn btn-primary">
+                Ir a Administración
+            </a>
+
+
+            <a th:if="${autenticado and esResponsable}"
+               th:href="@{/responsable}"
+               class="btn btn-primary">
+                Ir a mi Unidad
+            </a>
+
+
+            <a th:if="${autenticado and esEmpleado}"
+               th:href="@{/empleado}"
+               class="btn btn-primary">
+                Ir a mi Panel
+            </a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<!-- =====================================================
+     HERO DEL FESTIVAL
+     ===================================================== -->
+
+<section class="festival-hero">
+
+    <div class="hero-container">
+
+        <a th:href="@{/#festivales}"
+           class="back-link">
+            ← Volver a festivales
+        </a>
+
+
+        <!-- PRÓXIMAMENTE -->
+
+        <div>
+
+            <span
+                class="festival-status status-future"
+                th:if="${festival.fechaInicio.isAfter(hoy)}">
+
+                PRÓXIMAMENTE
+
+            </span>
+
+
+            <!-- EN CURSO -->
+
+            <span
+                class="festival-status status-current"
+                th:if="${!festival.fechaInicio.isAfter(hoy)
+                       and !festival.fechaFin.isBefore(hoy)}">
+
+                EN CURSO
+
+            </span>
+
+
+            <!-- FINALIZADO -->
+
+            <span
+                class="festival-status status-finished"
+                th:if="${festival.fechaFin.isBefore(hoy)}">
+
+                FINALIZADO
+
+            </span>
+
+        </div>
+
+
+        <h1 th:text="${festival.nombre}">
+            Festival Gourmet
+        </h1>
+
+
+        <p>
+
+            Descubrí las propuestas gastronómicas y
+            Unidades de Venta que participan de
+
+            <strong th:text="${festival.nombre}">
+                este festival
+            </strong>.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     INFORMACIÓN DEL FESTIVAL
+     ===================================================== -->
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="festival-data">
+
+
+            <div class="data-card">
+
+                <div class="data-icon">
+                    🍂
+                </div>
+
+                <div class="data-label">
+                    TEMPORADA
+                </div>
+
+                <div
+                    class="data-value"
+                    th:text="${festival.temporada}">
+                    Temporada
+                </div>
+
+            </div>
+
+
+            <div class="data-card">
+
+                <div class="data-icon">
+                    📅
+                </div>
+
+                <div class="data-label">
+                    FECHA DE INICIO
+                </div>
+
+                <div
+                    class="data-value"
+                    th:text="${#temporals.format(
+                        festival.fechaInicio,
+                        'dd/MM/yyyy'
+                    )}">
+                    Fecha
+                </div>
+
+            </div>
+
+
+            <div class="data-card">
+
+                <div class="data-icon">
+                    🏁
+                </div>
+
+                <div class="data-label">
+                    FECHA DE FINALIZACIÓN
+                </div>
+
+                <div
+                    class="data-value"
+                    th:text="${#temporals.format(
+                        festival.fechaFin,
+                        'dd/MM/yyyy'
+                    )}">
+                    Fecha
+                </div>
+
+            </div>
+
+
+            <div class="data-card">
+
+                <div class="data-icon">
+                    🏪
+                </div>
+
+                <div class="data-label">
+                    UNIDADES PARTICIPANTES
+                </div>
+
+                <div
+                    class="data-value"
+                    th:text="${#lists.size(unidades)}">
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     UNIDADES PARTICIPANTES
+     ===================================================== -->
+
+<section class="section section-white">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <h2>
+                Unidades participantes
+            </h2>
+
+            <p>
+                Conocé los emprendimientos gastronómicos
+                que forman parte de este festival.
+            </p>
+
+        </div>
+
+
+        <!-- HAY UNIDADES -->
+
+        <div
+            class="unidad-grid"
+            th:if="${!#lists.isEmpty(unidades)}">
+
+
+            <article
+                class="unidad-card"
+                th:each="unidad : ${unidades}">
+
+
+                <div class="unidad-top">
+
+                    <span
+                        th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.FoodTruck)}">
+                        🚚
+                    </span>
+
+                    <span
+                        th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.PuestoDesarmable)}">
+                        ⛺
+                    </span>
+
+                </div>
+
+
+                <div class="unidad-content">
+
+
+                    <!-- FOOD TRUCK -->
+
+                    <span
+                        class="unidad-type"
+                        th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.FoodTruck)}">
+
+                        FOOD TRUCK
+
+                    </span>
+
+
+                    <!-- PUESTO DESARMABLE -->
+
+                    <span
+                        class="unidad-type"
+                        th:if="${unidad instanceof T(com.grupo06.epicentrogourmet.entity.PuestoDesarmable)}">
+
+                        PUESTO DESARMABLE
+
+                    </span>
+
+
+                    <h3 th:text="${unidad.nombreComercial}">
+                        Nombre comercial
+                    </h3>
+
+
+                    <div class="unidad-info">
+
+
+                        <div>
+
+                            <strong>
+                                Código:
+                            </strong>
+
+                            <span th:text="${unidad.codigo}">
+                                Código
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Superficie:
+                            </strong>
+
+                            <span th:text="${unidad.superficie}">
+                                0
+                            </span>
+
+                            m²
+
+                        </div>
+
+
+                        <div th:if="${unidad.responsable != null}">
+
+                            <strong>
+                                Responsable:
+                            </strong>
+
+                            <span
+                                th:text="${unidad.responsable.nombre
+                                    + ' '
+                                    + unidad.responsable.apellido}">
+                                Responsable
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </div>
+
+
+        <!-- NO HAY UNIDADES -->
+
+        <div
+            class="empty-state"
+            th:if="${#lists.isEmpty(unidades)}">
+
+            <div class="icon">
+                🍽️
+            </div>
+
+            <h3>
+                Todavía no hay Unidades de Venta registradas
+            </h3>
+
+            <p>
+                Próximamente vas a poder conocer las propuestas
+                gastronómicas participantes de este festival.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     CTA PARA NEGOCIOS
+     ===================================================== -->
+
+<section
+    class="section"
+    th:if="${!autenticado}">
+
+    <div class="container">
+
+        <div class="cta">
+
+            <div>
+
+                <h2>
+                    ¿Querés participar en Epicentro Gourmet?
+                </h2>
+
+                <p>
+                    Registrá tu negocio, seleccioná un festival
+                    y comenzá a administrar tu Unidad de Venta.
+                </p>
+
+            </div>
+
+
+            <a
+                th:href="@{/registro/responsable}"
+                class="btn btn-primary">
+
+                Registrar mi negocio
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer>
+
+    Epicentro Gourmet ·
+    Programación Orientada a Objetos II ·
+    Universidad Nacional de Lanús
+
+</footer>
+
+
+</body>
+</html>

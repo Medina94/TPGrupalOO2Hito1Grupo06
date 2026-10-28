@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.grupo06.epicentrogourmet.entity.Festival;
 import com.grupo06.epicentrogourmet.entity.UnidadVenta;
@@ -32,6 +33,7 @@ public class HomeController {
         this.usuarioActualService = usuarioActualService;
     }
 
+
     // =====================================================
     // HOME PUBLICA
     // =====================================================
@@ -49,64 +51,60 @@ public class HomeController {
                 festivales
         );
 
-        // Fecha actual para mostrar el estado de cada Festival
         model.addAttribute(
                 "hoy",
                 LocalDate.now()
         );
 
-        /*
-         * La Home es pública.
-         * Si existe un usuario autenticado, enviamos su rol
-         * para mostrar accesos personalizados.
-         */
-        if (authentication != null
-                && authentication.isAuthenticated()) {
-
-            model.addAttribute(
-                    "username",
-                    authentication.getName()
-            );
-
-            model.addAttribute(
-                    "autenticado",
-                    true
-            );
-
-            model.addAttribute(
-                    "esAdmin",
-                    tieneRol(
-                            authentication,
-                            "ROLE_ADMINISTRADOR"
-                    )
-            );
-
-            model.addAttribute(
-                    "esResponsable",
-                    tieneRol(
-                            authentication,
-                            "ROLE_RESPONSABLE"
-                    )
-            );
-
-            model.addAttribute(
-                    "esEmpleado",
-                    tieneRol(
-                            authentication,
-                            "ROLE_EMPLEADO"
-                    )
-            );
-
-        } else {
-
-            model.addAttribute(
-                    "autenticado",
-                    false
-            );
-        }
+        agregarDatosUsuario(
+                model,
+                authentication
+        );
 
         return "public-home";
     }
+
+
+    // =====================================================
+    // DETALLE PUBLICO DE FESTIVAL
+    // =====================================================
+
+    @GetMapping("/festivales/{idFestival}")
+    public String detalleFestivalPublico(
+            @PathVariable Long idFestival,
+            Model model,
+            Authentication authentication) {
+
+        Festival festival =
+                festivalService.buscarPorId(idFestival);
+
+        List<UnidadVenta> unidades =
+                unidadVentaService
+                        .listarPorFestival(idFestival);
+
+        model.addAttribute(
+                "festival",
+                festival
+        );
+
+        model.addAttribute(
+                "unidades",
+                unidades
+        );
+
+        model.addAttribute(
+                "hoy",
+                LocalDate.now()
+        );
+
+        agregarDatosUsuario(
+                model,
+                authentication
+        );
+
+        return "festival-publico";
+    }
+
 
     // =====================================================
     // PANEL DEL ADMINISTRADOR
@@ -139,11 +137,9 @@ public class HomeController {
                 true
         );
 
-        /*
-         * Se reutiliza index.html como panel administrativo.
-         */
         return "index";
     }
+
 
     // =====================================================
     // PANEL DEL RESPONSABLE
@@ -184,6 +180,7 @@ public class HomeController {
 
         return "responsable-dashboard";
     }
+
 
     // =====================================================
     // PANEL DEL EMPLEADO
@@ -232,6 +229,62 @@ public class HomeController {
 
         return "empleado-dashboard";
     }
+
+
+    // =====================================================
+    // DATOS DEL USUARIO PARA PAGINAS PUBLICAS
+    // =====================================================
+
+    private void agregarDatosUsuario(
+            Model model,
+            Authentication authentication) {
+
+        if (authentication != null
+                && authentication.isAuthenticated()) {
+
+            model.addAttribute(
+                    "username",
+                    authentication.getName()
+            );
+
+            model.addAttribute(
+                    "autenticado",
+                    true
+            );
+
+            model.addAttribute(
+                    "esAdmin",
+                    tieneRol(
+                            authentication,
+                            "ROLE_ADMINISTRADOR"
+                    )
+            );
+
+            model.addAttribute(
+                    "esResponsable",
+                    tieneRol(
+                            authentication,
+                            "ROLE_RESPONSABLE"
+                    )
+            );
+
+            model.addAttribute(
+                    "esEmpleado",
+                    tieneRol(
+                            authentication,
+                            "ROLE_EMPLEADO"
+                    )
+            );
+
+        } else {
+
+            model.addAttribute(
+                    "autenticado",
+                    false
+            );
+        }
+    }
+
 
     // =====================================================
     // UTILIDAD
