@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de Empleados - Epicentro Gourmet</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<form method="get" th:action="@{/responsable/empleados/antiguedad}">
+    <label>Fecha de referencia</label>
+    <input type="date" name="fechaReferencia" th:value="${fechaReferencia}">
+    <button type="submit">Consultar</button>
+</form>
+
+<table>
+    <thead>
+    <tr><th>Empleado</th><th>DNI</th><th>Puesto</th>
+        <th>Ingreso</th><th>Años</th><th>Categoría</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="a : ${antiguedades}">
+        <td th:text="${a.nombreCompleto}"></td>
+        <td th:text="${a.dni}"></td>
+        <td th:text="${a.tipoEmpleado}"></td>
+        <td th:text="${#temporals.format(a.fechaIngreso, 'dd/MM/yyyy')}"></td>
+        <td th:text="${a.aniosAntiguedad}"></td>
+        <td th:text="${a.categoria}"></td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(antiguedades)}">
+        <td colspan="6">No hay empleados para mostrar.</td>
+    </tr>
+    </tbody>
+</table>
+
+</html>
