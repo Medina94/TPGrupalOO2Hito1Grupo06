@@ -9,7 +9,9 @@
         body { font-family: Arial, Helvetica, sans-serif; background: #f5f6fa; color: #222; }
         .navbar { background: #17258f; color: white; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; }
         .navbar h1 { font-size: 22px; }
+        .navbar-links { display: flex; gap: 20px; }
         .navbar a { color: white; text-decoration: none; font-size: 14px; font-weight: bold; }
+        .navbar a:hover { text-decoration: underline; }
         .container { max-width: 1050px; margin: 40px auto; padding: 0 25px 50px; }
         .page-header { margin-bottom: 28px; }
         .page-header h2 { font-size: 30px; margin-bottom: 8px; }
@@ -26,7 +28,7 @@
         .alert-error { background: #fff0f0; color: #b42318; border: 1px solid #ffd0cc; }
         .alert-success { background: #effbf3; color: #17783c; border: 1px solid #c8efd4; }
         .actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 25px; }
-        .btn { padding: 12px 22px; border-radius: 8px; border: none; font-size: 14px; font-weight: bold; cursor: pointer; text-decoration: none; }
+        .btn { padding: 12px 22px; border-radius: 8px; border: none; font-size: 14px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; }
         .btn-secondary { background: #e9eaf0; color: #333; }
         .btn-primary { background: #17258f; color: white; }
         .btn-primary:hover { background: #243bff; }
@@ -37,7 +39,10 @@
 
 <nav class="navbar">
     <h1>Epicentro Gourmet</h1>
-    <a th:href="@{/cierre-caja/listar}">← Volver al listado</a>
+    <div class="navbar-links">
+        <a th:href="@{/empleado}">← Volver al inicio</a>
+        <a th:href="@{/cierre-caja/listar}">Ver listado</a>
+    </div>
 </nav>
 
 <main class="container">

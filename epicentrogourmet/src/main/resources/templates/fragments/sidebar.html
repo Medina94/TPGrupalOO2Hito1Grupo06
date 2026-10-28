@@ -233,21 +233,13 @@
         </div>
 
 
-        <div class="sidebar-link disabled">
-
-            <span class="sidebar-icon">📈</span>
-
-            <span class="sidebar-text">
-
-                Rentabilidad
-
-                <small>
-                    Próximamente
-                </small>
-
-            </span>
-
-        </div>
+		<a th:href="@{/rentabilidad/consultar}"
+		   class="sidebar-link">
+		    <span class="sidebar-icon">📈</span>
+		    <span class="sidebar-text">
+		        Rentabilidad
+		    </span>
+		</a>
 
     </nav>
 
@@ -369,33 +361,24 @@
         </div>
 
 
-        <!-- CAJERO -->
 
+        <!-- CAJERO -->
         <div class="sidebar-section">
             CAJERO
         </div>
 
-
-        <div class="sidebar-link disabled">
-
+        <a th:href="@{/cierre-caja/agregar}"
+           class="sidebar-link"
+           th:if="${empleado instanceof T(com.grupo06.epicentrogourmet.entity.Cajero)}">
             <span class="sidebar-icon">💰</span>
-
             <span class="sidebar-text">
-
                 Cierre de caja
-
                 <small>
                     Solo Cajeros
                 </small>
-
             </span>
-
-        </div>
-
+        </a>
     </nav>
-
 </aside>
-
-
 </body>
 </html>
