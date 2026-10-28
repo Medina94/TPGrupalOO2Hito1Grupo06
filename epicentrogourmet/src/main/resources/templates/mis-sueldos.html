@@ -257,6 +257,10 @@
                             Sueldo recibido
                         </th>
 
+                        <th>
+                            Descargar recibo
+                        </th>
+
                     </tr>
 
                     </thead>
@@ -337,7 +341,17 @@
                             </span>
 
                         </td>
-
+                        <td>
+                            <a th:if="${item.sueldoLiquidado != null}"
+                               th:href="@{/empleado/sueldos/{idAsignacion}/descargar(idAsignacion=${item.idAsignacion})}"
+                               aria-label="Descargar recibo de sueldo"
+                               title="Descargar recibo de sueldo">
+                                💾
+                            </a>
+                            <span th:if="${item.sueldoLiquidado == null}">
+                                No disponible
+                            </span>
+                        </td>
                     </tr>
 
                     </tbody>
