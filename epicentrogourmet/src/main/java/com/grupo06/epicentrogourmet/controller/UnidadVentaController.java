@@ -34,7 +34,9 @@ public class UnidadVentaController {
     }
 
 
-    // LISTADO DE UNIDADES POR FESTIVAL
+    // =====================================================
+    // LISTADO DE UNIDADES POR FESTIVAL - ADMIN
+    // =====================================================
 
     @GetMapping("/admin/festivales/{idFestival}/unidades")
     public String listarUnidadesPorFestival(
@@ -61,32 +63,30 @@ public class UnidadVentaController {
     }
 
 
-    // FORMULARIO DE ALTA
+    // =====================================================
+    // FORMULARIO DE ALTA - ADMIN
+    // =====================================================
 
     @GetMapping("/admin/unidades/nueva")
-    public String mostrarFormulario(Model model) {
+    public String mostrarFormularioAdmin(Model model) {
 
-        if (!model.containsAttribute("registroUnidad")) {
-
-            model.addAttribute(
-                    "registroUnidad",
-                    new RegistroUnidadResponsableDTO()
-            );
-        }
+        prepararFormulario(model);
 
         model.addAttribute(
-                "festivales",
-                festivalService.listarFestivales()
+                "modoPublico",
+                false
         );
 
         return "unidad-form";
     }
 
 
-    // REGISTRO DE UNIDAD + RESPONSABLE
+    // =====================================================
+    // REGISTRO DE UNIDAD + RESPONSABLE - ADMIN
+    // =====================================================
 
     @PostMapping("/admin/unidades/nueva")
-    public String registrarUnidad(
+    public String registrarUnidadAdmin(
             @Valid
             @ModelAttribute("registroUnidad")
             RegistroUnidadResponsableDTO dto,
@@ -97,9 +97,11 @@ public class UnidadVentaController {
 
         if (bindingResult.hasErrors()) {
 
+            prepararFormulario(model);
+
             model.addAttribute(
-                    "festivales",
-                    festivalService.listarFestivales()
+                    "modoPublico",
+                    false
             );
 
             return "unidad-form";
@@ -125,12 +127,114 @@ public class UnidadVentaController {
                     e.getMessage()
             );
 
+            prepararFormulario(model);
+
             model.addAttribute(
-                    "festivales",
-                    festivalService.listarFestivales()
+                    "modoPublico",
+                    false
             );
 
             return "unidad-form";
         }
+    }
+
+
+    // =====================================================
+    // FORMULARIO PUBLICO
+    // REGISTRO DE RESPONSABLE + NEGOCIO
+    // =====================================================
+
+    @GetMapping("/registro/responsable")
+    public String mostrarRegistroPublico(Model model) {
+
+        prepararFormulario(model);
+
+        model.addAttribute(
+                "modoPublico",
+                true
+        );
+
+        return "unidad-form";
+    }
+
+
+    // =====================================================
+    // REGISTRO PUBLICO
+    // RESPONSABLE + UNIDAD DE VENTA
+    // =====================================================
+
+    @PostMapping("/registro/responsable")
+    public String registrarResponsablePublico(
+            @Valid
+            @ModelAttribute("registroUnidad")
+            RegistroUnidadResponsableDTO dto,
+
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+
+            prepararFormulario(model);
+
+            model.addAttribute(
+                    "modoPublico",
+                    true
+            );
+
+            return "unidad-form";
+        }
+
+        try {
+
+            unidadVentaService
+                    .registrarUnidadConResponsable(dto);
+
+            redirectAttributes.addFlashAttribute(
+                    "mensajeExito",
+                    "Tu cuenta y tu Unidad de Venta "
+                    + "se registraron correctamente. "
+                    + "Ya podés iniciar sesión."
+            );
+
+            return "redirect:/login";
+
+        } catch (IllegalArgumentException e) {
+
+            model.addAttribute(
+                    "errorGeneral",
+                    e.getMessage()
+            );
+
+            prepararFormulario(model);
+
+            model.addAttribute(
+                    "modoPublico",
+                    true
+            );
+
+            return "unidad-form";
+        }
+    }
+
+
+    // =====================================================
+    // MÉTODO AUXILIAR
+    // =====================================================
+
+    private void prepararFormulario(Model model) {
+
+        if (!model.containsAttribute("registroUnidad")) {
+
+            model.addAttribute(
+                    "registroUnidad",
+                    new RegistroUnidadResponsableDTO()
+            );
+        }
+
+        model.addAttribute(
+                "festivales",
+                festivalService.listarFestivales()
+        );
     }
 }

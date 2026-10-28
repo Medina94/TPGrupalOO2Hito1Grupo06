@@ -7,13 +7,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 public class RegistroUnidadResponsableDTO {
 
+    // =====================================================
     // DATOS DE LA UNIDAD
+    // =====================================================
 
     @NotBlank(message = "El tipo de unidad es obligatorio")
     private String tipoUnidad;
@@ -37,21 +38,27 @@ public class RegistroUnidadResponsableDTO {
     private Long idFestival;
 
 
+    // =====================================================
     // DATOS ESPECÍFICOS DE FOOD TRUCK
+    // =====================================================
 
     private String patente;
 
     private boolean conexionElectrica;
 
 
+    // =====================================================
     // DATOS ESPECÍFICOS DE PUESTO DESARMABLE
+    // =====================================================
 
     private Integer cantidadCarpas;
 
     private Integer minutosMontaje;
 
 
+    // =====================================================
     // DATOS DEL RESPONSABLE
+    // =====================================================
 
     @NotBlank(message = "El nombre del responsable es obligatorio")
     private String nombreResponsable;
@@ -70,26 +77,14 @@ public class RegistroUnidadResponsableDTO {
     @Past(message = "La fecha de nacimiento debe ser anterior a hoy")
     private LocalDate fechaNacimientoResponsable;
 
-    @NotNull(message = "La fecha de ingreso es obligatoria")
-    @PastOrPresent(message = "La fecha de ingreso no puede ser futura")
-    private LocalDate fechaIngresoResponsable;
-
-
-    // TIPO DE EMPLEADO DEL RESPONSABLE
-
-    @NotBlank(message = "El tipo de empleado es obligatorio")
-    private String tipoEmpleado;
-
-    private String rolCocina;
-
-    private String turno;
-
 
     public RegistroUnidadResponsableDTO() {
     }
 
 
+    // =====================================================
     // VALIDACIÓN DE MAYORÍA DE EDAD
+    // =====================================================
 
     @AssertTrue(message = "El responsable debe ser mayor de 18 años")
     public boolean isMayorDeEdad() {
@@ -104,6 +99,10 @@ public class RegistroUnidadResponsableDTO {
         return !fechaMayoriaEdad.isAfter(LocalDate.now());
     }
 
+
+    // =====================================================
+    // GETTERS Y SETTERS
+    // =====================================================
 
     public String getTipoUnidad() {
         return tipoUnidad;
@@ -219,40 +218,4 @@ public class RegistroUnidadResponsableDTO {
         this.fechaNacimientoResponsable =
                 fechaNacimientoResponsable;
     }
-
-    public LocalDate getFechaIngresoResponsable() {
-        return fechaIngresoResponsable;
-    }
-
-    public void setFechaIngresoResponsable(
-            LocalDate fechaIngresoResponsable) {
-
-        this.fechaIngresoResponsable =
-                fechaIngresoResponsable;
-    }
-
-    public String getTipoEmpleado() {
-        return tipoEmpleado;
-    }
-
-    public void setTipoEmpleado(String tipoEmpleado) {
-        this.tipoEmpleado = tipoEmpleado;
-    }
-
-    public String getRolCocina() {
-        return rolCocina;
-    }
-
-    public void setRolCocina(String rolCocina) {
-        this.rolCocina = rolCocina;
-    }
-
-    public String getTurno() {
-        return turno;
-    }
-
-    public void setTurno(String turno) {
-        this.turno = turno;
-    }
-
 }
