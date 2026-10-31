@@ -1,8 +1,8 @@
 package com.grupo06.epicentrogourmet.dto;
 
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
@@ -17,12 +17,7 @@ public class CierreCajaDTO {
     @PastOrPresent(message = "La fecha no puede ser futura")
     private LocalDate fecha;
 
-    @NotNull(message = "El monto total es obligatorio")
-    @DecimalMin(
-            value = "0.0",
-            inclusive = true,
-            message = "El monto total no puede ser negativo"
-    )
+    // Se conserva para mostrar el monto calculado en las consultas.
     private BigDecimal montoTotal;
 
     @NotNull(message = "Debe seleccionar un cajero")
@@ -31,10 +26,8 @@ public class CierreCajaDTO {
     @NotNull(message = "Debe seleccionar una unidad de venta")
     private Long idUnidadVenta;
 
-
     public CierreCajaDTO() {
     }
-
 
     public Long getIdCierreCaja() {
         return idCierreCaja;
