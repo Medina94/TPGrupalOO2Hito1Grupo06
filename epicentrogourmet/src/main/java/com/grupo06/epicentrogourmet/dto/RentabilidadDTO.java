@@ -6,25 +6,26 @@ public class RentabilidadDTO {
 
     private String nombreUnidad;
 
-    private BigDecimal ingresosPedidos =
-            BigDecimal.ZERO;
+    private BigDecimal ingresosPedidos = BigDecimal.ZERO;
 
-    private BigDecimal costosPlatos =
-            BigDecimal.ZERO;
+    private BigDecimal costosPlatos = BigDecimal.ZERO;
 
-    private BigDecimal costosSueldos =
-            BigDecimal.ZERO;
+    private BigDecimal costosSueldos = BigDecimal.ZERO;
 
-    private BigDecimal costoCanon =
-            BigDecimal.ZERO;
+    // Canon base correspondiente al festival completo.
+    private BigDecimal canonTotalFestival = BigDecimal.ZERO;
 
-    private BigDecimal rentabilidadNeta =
-            BigDecimal.ZERO;
+    // Canon proporcional que se descuenta en la rentabilidad.
+    private BigDecimal costoCanon = BigDecimal.ZERO;
 
+    private long diasConsultados;
+
+    private long diasFestival;
+
+    private BigDecimal rentabilidadNeta = BigDecimal.ZERO;
 
     public RentabilidadDTO() {
     }
-
 
     public String getNombreUnidad() {
         return nombreUnidad;
@@ -38,9 +39,7 @@ public class RentabilidadDTO {
         return ingresosPedidos;
     }
 
-    public void setIngresosPedidos(
-            BigDecimal ingresosPedidos) {
-
+    public void setIngresosPedidos(BigDecimal ingresosPedidos) {
         this.ingresosPedidos = ingresosPedidos;
     }
 
@@ -48,9 +47,7 @@ public class RentabilidadDTO {
         return costosPlatos;
     }
 
-    public void setCostosPlatos(
-            BigDecimal costosPlatos) {
-
+    public void setCostosPlatos(BigDecimal costosPlatos) {
         this.costosPlatos = costosPlatos;
     }
 
@@ -58,30 +55,47 @@ public class RentabilidadDTO {
         return costosSueldos;
     }
 
-    public void setCostosSueldos(
-            BigDecimal costosSueldos) {
-
+    public void setCostosSueldos(BigDecimal costosSueldos) {
         this.costosSueldos = costosSueldos;
+    }
+
+    public BigDecimal getCanonTotalFestival() {
+        return canonTotalFestival;
+    }
+
+    public void setCanonTotalFestival(BigDecimal canonTotalFestival) {
+        this.canonTotalFestival = canonTotalFestival;
     }
 
     public BigDecimal getCostoCanon() {
         return costoCanon;
     }
 
-    public void setCostoCanon(
-            BigDecimal costoCanon) {
-
+    public void setCostoCanon(BigDecimal costoCanon) {
         this.costoCanon = costoCanon;
+    }
+
+    public long getDiasConsultados() {
+        return diasConsultados;
+    }
+
+    public void setDiasConsultados(long diasConsultados) {
+        this.diasConsultados = diasConsultados;
+    }
+
+    public long getDiasFestival() {
+        return diasFestival;
+    }
+
+    public void setDiasFestival(long diasFestival) {
+        this.diasFestival = diasFestival;
     }
 
     public BigDecimal getRentabilidadNeta() {
         return rentabilidadNeta;
     }
 
-    public void setRentabilidadNeta(
-            BigDecimal rentabilidadNeta) {
-
-        this.rentabilidadNeta =
-                rentabilidadNeta;
+    public void setRentabilidadNeta(BigDecimal rentabilidadNeta) {
+        this.rentabilidadNeta = rentabilidadNeta;
     }
 }

@@ -9,10 +9,20 @@ import java.util.List;
 
 @Repository
 public interface IPedidoRepository extends JpaRepository<Pedido, Long> {
-    
-    // Para el punto 6 (Todos los pedidos de la unidad)
+
+    // Para el punto 6: todos los pedidos de la unidad.
     List<Pedido> findByUnidadVenta_IdUnidadVenta(Long idUnidadVenta);
-    
-    // Para el punto 7 (Pedidos de la unidad entre dos fechas)
-    List<Pedido> findByUnidadVenta_IdUnidadVentaAndFechaBetween(Long idUnidadVenta, LocalDate fechaDesde, LocalDate fechaHasta);
+
+    // Para el punto 7: pedidos de la unidad entre dos fechas.
+    List<Pedido> findByUnidadVenta_IdUnidadVentaAndFechaBetween(
+            Long idUnidadVenta,
+            LocalDate fechaDesde,
+            LocalDate fechaHasta
+    );
+
+    // Para el cierre de caja: pedidos de la unidad en una fecha específica.
+    List<Pedido> findByUnidadVenta_IdUnidadVentaAndFecha(
+            Long idUnidadVenta,
+            LocalDate fecha
+    );
 }
