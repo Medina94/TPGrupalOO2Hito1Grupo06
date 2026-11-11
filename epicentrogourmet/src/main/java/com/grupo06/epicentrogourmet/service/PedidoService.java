@@ -185,7 +185,7 @@ public class PedidoService {
     @Transactional(readOnly = true)
     public List<Pedido> listarPedidosDeUnidad(String username) {
 
-        UnidadVenta unidad = unidadVentaService.buscarUnidadDelEmpleado(username);
+        UnidadVenta unidad = unidadVentaService.buscarUnidadDelResponsable(username);
 
         if (unidad == null) {
             throw new IllegalArgumentException("El responsable no tiene una Unidad de Venta asignada");
